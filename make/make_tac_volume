@@ -1,0 +1,44 @@
+#!/bin/bash
+option=$1
+cd /data1/projects/minc_helper/1.0; ./make; cd -;
+basename="tac_volume-1.0"
+
+if [ -f $basename ]; then
+    rm $basename
+fi
+
+src="${basename}.c"
+options="-g -pthread -static -O0 -ffast-math  -std=c99 -fopenmp "
+lib_dir="-L/data1/projects/minc-quarantine/install/lib/ -L/data1/projects/mycode-quarantine/5.15/lib"
+lib="-lminc_helper -lminc2 -lhdf5 -lnetcdf -lm -lz -ldl"
+include_dir="-I./ -I/data1/projects/minc-quarantine/install/include/ -I/data1/projects/mycode-quarantine/5.15/include/"
+
+echo $src
+gcc  $options  $src -o $basename $include_dir $lib_dir $lib ;
+
+
+if [ "$?" != "0" ]; then
+    exit 1
+else
+    cp $basename /data1/projects/mycode-quarantine/5.15/bin/
+    ln -fs /data1/projects/mycode-quarantine/5.15/bin/${basename}  /data1/projects/mycode-quarantine/5.15/bin/tac_volume
+    image="/data1/projects/bigbrain/occipital/segmentation/final_v1/complete/layers_v2_rsl.mnc" #"/data1/projects/bigbrain/occipital/segmentation/final_v1/complete/layers_v2_rsl.mnc"   # image.mnc
+    csv="/data1/projects/bigbrain/TAC/P03_I_tac.csv" #mask.mnc
+    output="tac.mnc"
+    command="${basename} $image $csv $output"  
+    echo $command
+    if [ "$option" == "-gdb" ]; then
+         gdb --args $command
+    elif [ "$option" == "-valgrind" ]; then
+       valgrind --tool=memcheck --leak-check=yes  --leak-check=full $command
+    elif [ "$option" == "-test" ]; then
+        echo Nothing set
+    else   
+        time $command
+    fi
+ 
+fi
+
+
+
+

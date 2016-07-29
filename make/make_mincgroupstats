@@ -1,0 +1,53 @@
+#!/bin/bash
+option=$1
+cd /data1/projects/minc_helper/1.0; ./make; cd -;
+basename="mincgroupstats-4.0"
+
+if [ -f $basename ]; then
+    rm $basename
+fi
+
+src="${basename}.c"
+options="-g -static -O0 -std=c99 "
+lib_dir="-L/data1/projects/minc-quarantine/install/lib/ -L/data1/projects/mycode-quarantine/5.15/lib"
+lib="-lminc_helper -lminc2 -lhdf5 -lnetcdf -lm -lz -ldl"
+include_dir="-I./ -I/data1/projects/minc-quarantine/install/include/ -I/data1/projects/mycode-quarantine/5.15/include/"
+
+echo $src
+gcc  $options  $src -o $basename $include_dir $lib_dir $lib ;
+
+
+if [ "$?" != "0" ]; then
+    exit 1
+else
+    cp $basename /data1/projects/mycode-quarantine/5.15/bin/
+    ln -fs /data1/projects/mycode-quarantine/5.15/bin/${basename}  /data1/projects/mycode-quarantine/5.15/bin/mincgroupstats
+    options="-linear"
+	image1=/data1/projects/PD/5.15/results/idsurf//pet//C1_C_pet-coreg2t1.mnc
+	image2=/data1/projects/PD/5.15/results/idsurf//tka/C1_C_pet-coreg2t1_loganplot.mnc #/home/t/neuro/projects/copula/data/Bangor/sub00031/func/rest.mnc
+	mask1=/data1/projects/PD/5.15/results/idsurf//roi//C1_C_premotor_L_gm_nat.mnc
+	mask2=/data1/projects/PD/5.15/results/idsurf//roi//C1_C_premotor_R_gm_nat.mnc
+    arguments="$options -i -g pet -g PD15 -g somethign $image1 -i -g bp $image2 -v -g atlas $mask1 -v -g okay -g jou $mask2 -o temp.txt"
+    #command="mincgroupstats  $arguments"
+    #command="${basename} -i -g GPI-P02  -g S  -g Cortical  -g F /data1/projects/Stroke/results/idsurf3//temp/temp.mnc -s -g  21 /data1/projects/Stroke/CIVET1.12/GPI-P02_S_Cortical_I/surfaces/GPI_2MEDA45Initial_mid_surface.obj  /data1/projects/Stroke/results/idsurf3//roi//GPI-P02_S_Cortical_F_infarct_right_defrag_distance-map_18.0-21.0mm.txt"
+    command="${basename} -i -g sub20127 /data1/projects/copula/data/Bangor//sub20127//func/rest.mnc -v -g atlas /data1/projects/copula/data/Bangor//sub20127/sub20127_nat_atlas.mnc" # -o /data1/projects/copula/data/Bangor//sub20127/sub20127_nat_atlas_results.txt"
+    #command="${basename}  -i   -g GPI-P13  -g S  -g Cortical  -g I  -g idSURF  -g loganplot /data1/projects/Stroke/results/idsurf3//tka/GPI-P13_S_Cortical_I_idSURF_loganplot.mnc  -i   -g GPI-P13  -g S  -g Cortical  -g I  -g pet-coreg2t1  -g loganplot /data1/projects/Stroke/results/idsurf3//tka/GPI-P13_S_Cortical_I_pet-coreg2t1_loganplot.mnc  -i   -g GPI-P13  -g S  -g Cortical  -g I  -g idSURF /data1/projects/Stroke/results/idsurf3//pvc/GPI-P13_S_Cortical_I_idSURF.mnc  -i   -g GPI-P13  -g S  -g Cortical  -g I  -g pet-coreg2t1 /data1/projects/Stroke/results/idsurf3//pet//GPI-P13_S_Cortical_I_pet-coreg2t1.mnc -v -g _srv_1_right_nat -g Both /data1/projects/Stroke/results/idsurf3//srv/GPI-P13_S_Cortical_I_srv_1_right_nat.mnc -s -g _infarct_left_defrag_distance-map_6.0-9.0mm -g Unaffected /data1/projects/Stroke/results/idsurf3//srv//GPI-P13_S_Cortical_I_mid_surface_nat_contra_rsl.obj /data1/projects/Stroke/results/idsurf3//roi//GPI-P13_S_Cortical_I_infarct_left_defrag_distance-map_6.0-9.0mm.txt"
+
+    echo $command
+#-i -n NA -s PD13 -g P -g pet-coreg2t1 -g loganplot  -i -n NA -s PD13 -g P -g pet-coreg2t1 -g NA  -i -n NA -s PD13 -g P -g idSURF -g loganplot /data1/projects/PD/7.15/results/idsurf//tka/PD13_P_idSURF_loganplot.mnc -v  -n _srv_1_left_nat 
+    
+    if [ "$option" == "-gdb" ]; then
+        gdb --args $command
+    elif [ "$option" == "-valgrind" ]; then
+       valgrind --tool=memcheck --leak-check=yes  --leak-check=full $command
+    elif [ "$option" == "-test" ]; then
+       mincstats -mean /data1/projects/PD/7.15/results/idsurf//tka/C1_C_pet-coreg2t1_loganplot.mnc -mask  /data1/projects/PD/7.15/results/idsurf//roi//C1_C_primary_motor_cortex_right_stx_gm_nat.mnc -mask_range 1,1 
+       mincstats -mean /data1/projects/PD/7.15/results/idsurf//tka/C1_C_pet-coreg2t1_loganplot.mnc -mask  /data1/projects/PD/7.15/results/idsurf//roi//C1_C_primary_motor_cortex_left_stx_gm_nat.mnc -mask_range 1,1 
+
+    else    
+        time $command
+    fi
+fi
+
+
+

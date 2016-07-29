@@ -1,0 +1,52 @@
+#!/bin/bash
+option=$1
+
+basename="surf_defrag-1.1"
+
+if [ -f $basename ]; then
+    rm $basename
+fi
+
+
+src="$basename.c "
+lib="-L/data1/projects/minc-quarantine/install/lib -L/data1/projects/mycode-quarantine/5.15/lib/ -lmy_interpolate_sphere -lbicpl  -lminc2 -lhdf5 -lnetcdf -lz -lm"
+options="-g -O0 -std=c99 "
+gcc $options  $src -o $basename -I"/data1/projects/minc-quarantine/install/include" $lib ;
+
+cp $basename /data1/projects/mycode-quarantine/5.15/bin/
+
+
+
+if [ "$?" != "0" ]; then
+    exit 1
+else
+    #options="-linear"
+    #surface="test/GPI_2MEDA45Initial_mid_surface_right_81920.obj"
+    #values="test/infarct_surface.txt"
+    #output="test/P02_infarct_filled.txt"
+    #output_2="test/P02_infarct_filled_2.txt"
+    #inside_label_1=1
+    #inside_label_2=0
+    #threshold="0.80"
+    #arguments="$surface $values $inside_label_1 $threshold $output"
+    #command="./$basename  $arguments"
+    #arguments="$surface $output $inside_label_2 $threshold $output_2"
+    #command_2="./$basename  $arguments"
+    command="surf_defrag-1.1 /data1/projects/Stroke/results/idsurf3//srv//GPI-P03_S_Cortical_I_mid_surface_nat.obj /data1/projects/Stroke/ROI_minuk/stereotaxic/GPI-P03_S_Cortical_I_infarct_left.txt 1 0.25 /data1/projects/Stroke/results/idsurf3//temp//temp.txt" 
+    command_2="surf_defrag-1.1 /data1/projects/Stroke/results/idsurf3//srv//GPI-P03_S_Cortical_I_mid_surface_nat.obj /data1/projects/Stroke/results/idsurf3//temp//temp.txt 1 0 test/GPI-P03_S_Cortical_I_infarct_left_defrag.txt"
+
+    echo $command
+    if [ "$option" == "-gdb" ]; then
+        gdb --args $command
+    elif [ "$option" == "-valgrind" ]; then
+       valgrind --tool=memcheck --leak-check=yes  --leak-check=full $command
+    else    
+        time $command
+        time $command_2
+        #/usr/local/mni/bin/brain-view $surface $output_2 &
+        #/usr/local/mni/bin/brain-view $surface $values &
+    fi
+    brain-view.sh  /data1/projects/Stroke/results/idsurf3//srv//GPI-P03_S_Cortical_I_mid_surface_nat.obj /data1/projects/Stroke/ROI_minuk/stereotaxic/GPI-P03_S_Cortical_I_infarct_left.txt
+    brain-view.sh /data1/projects/Stroke/results/idsurf3//srv//GPI-P03_S_Cortical_I_mid_surface_nat.obj /data1/projects/Stroke/results/idsurf3//temp//temp.txt
+    brain-view.sh /data1/projects/Stroke/results/idsurf3//srv//GPI-P03_S_Cortical_I_mid_surface_nat.obj test/GPI-P03_S_Cortical_I_infarct_left_defrag.txt 
+fi

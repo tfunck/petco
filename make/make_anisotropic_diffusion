@@ -1,0 +1,74 @@
+#!/bin/bash
+option=$1
+cd /data1/projects/minc_helper/1.0; ./make; cd -;
+basename="anisotropic_diffusion-2.0"
+
+if [ -f $basename ]; then
+    rm $basename
+fi
+
+src="${basename}.c"
+options="-g -pthread -static -O0 -ffast-math  -std=c99 3x3-C/dsyevh3.c 3x3-C/dsyevd3.c 3x3-C/dsyevc3.c 3x3-C/dsyevq3.c 3x3-C/dsytrd3.c 3x3-C/dsyev2.c 3x3-C/slvsec3.c "
+lib_dir="-L/data1/projects/minc-quarantine/install/lib/ -L/data1/projects/mycode-quarantine/5.15/lib"
+lib="-lminc_helper -lminc2 -lhdf5 -lnetcdf -lm -lz -ldl"
+include_dir="-I./ -I/data1/projects/minc-quarantine/install/include/ -I/data1/projects/mycode-quarantine/5.15/include/"
+
+echo $src
+gcc  $options  $src -o $basename $include_dir $lib_dir $lib ;
+
+
+if [ "$?" != "0" ]; then
+    exit 1
+else
+    cp $basename /data1/projects/mycode-quarantine/5.15/bin/
+    ln -fs /data1/projects/mycode-quarantine/5.15/bin/${basename}  /data1/projects/mycode-quarantine/5.15/bin/anisotropic_diffusion
+    #options="-linear"
+	fwhm="4"
+    lambda="0.75"
+    dt="0.02"
+    #mask1=bigbrain/blob_no_gradient.mnc 
+    mask1=subject/mask_blur.mnc
+    #mask1=srv_1.mnc 
+    #mask1=srv_1_blur.mnc
+    #mask1=no_gradient.mnc
+	#image1=observed4.mnc 
+    #mask1=t1.mnc
+    #image1=t1.mnc
+    #image1=srv_1_nomidline.mnc 
+    #image1=noise.mnc
+    image1=subject/mask.mnc
+    output=${image1%.*}${method}_${fwhm}_${lambda}_${dt}.mnc
+    output_ushort=${image1%.*}${method}_${fwhm}_${lambda}_${dt}_ushort.mnc
+    command="${basename} $fwhm $dt $lambda   $mask1 $image1 $output"  
+    echo $command
+    if [ "$option" == "-gdb" ]; then
+         gdb --args $command
+    elif [ "$option" == "-valgrind" ]; then
+       valgrind --tool=memcheck --leak-check=yes  --leak-check=full $command
+    elif [ "$option" == "-test" ]; then
+        echo Nothing set
+    else   
+        time $command
+    fi
+    minccalc -clob -expression "if(abs(A[0]/A[1])<4) A[0]/A[1] else 0" $output $image1 mse.mnc
+    Display mse.mnc
+    #register bigbrain/blob_blur_ushort.mnc $output_ushort
+    #register noise.mnc $output 
+    exit
+#    blur=${image1%.*}_fwhm-${fwhm}_blur.mnc
+    blur=bigbrain/blob_blur.mnc
+    mincblur -fwhm $fwhm $image1 ${image1%.*}_fwhm-$fwhm
+    for i in `seq 1 $maxIterations`; do
+        out=outputfile_${i}.mnc 
+        mse=mse_$blur
+        minccalc -quiet -clob -expression "abs(A[0] - A[1])/A[1]" $out $blur $mse
+        mean=`mincstats -quiet -mean $mse -mask $image1 -mask_range 1,1`
+        t=` echo "scale=2; $i * $dt" | bc `
+        t=`echo $t | sed "s#\n##"`
+        printf "%f\t%f\n" $t $mean
+    done
+    #register $image1 $output #-label $mask1
+fi
+
+
+

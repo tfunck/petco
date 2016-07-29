@@ -1,0 +1,39 @@
+#!/bin/bash
+cd /data1/projects/minc_helper/1.0; ./make; cd -;
+option=$1
+
+basename="volume_dist-1.0"
+if [ -f $basename ]; then
+    rm $basename
+fi
+
+src="$basename.c" 
+lib="-L/data1/projects/minc-quarantine/install/lib/ -L/data1/projects/mycode-quarantine/5.15/lib -lmy_interpolate_sphere -lminc_helper -lbicpl  -lminc2 -lhdf5 -lnetcdf -lz -lm -ldl"
+include_dir="-I/data1/projects/minc-quarantine/install/include -I./ -I/data1/projects/mycode-quarantine/5.15/include"
+options="-g -O0 -std=c99 "
+gcc -static $options $src -o $basename   $lib $include_dir
+
+cp $basename /data1/projects/mycode-quarantine/5.15/bin/
+
+if [ "$?" != "0" ]; then
+    exit 1
+else
+    #anatomy="test/template.mnc" 
+    #anatomy="test/GPI-P02_S_Cortical_I_brain_mask.mnc" 
+    anatomy="test/GPI-P06_S_Cortical_I_brain_mask.mnc"
+    #roi="test/template_roi.mnc" #
+    #roi="test/roi2_rsl.mnc"
+    roi="test/GPI-P06_S_Cortical_I_infarct_right_nat.mnc"
+    dist="test/GPI-P02_S_Cortical_I_roi2_distance.mnc"
+    arguments="$anatomy $roi $dist"
+    command="./$basename  $arguments"
+    echo $command
+    if [ "$option" == "-gdb" ]; then
+        gdb --args $command
+    elif [ "$option" == "-valgrind" ]; then
+       valgrind --tool=memcheck --leak-check=yes  --leak-check=full $command
+    else    
+        time $command
+        Display2 $dist -label $roi
+    fi
+fi

@@ -1,0 +1,45 @@
+#!/bin/bash
+clear; 
+#!/bin/bash
+cd /data1/projects/minc_helper/1.0; ./make; cd -;
+option=$1
+
+basename="srv-2.0"
+if [ -f $basename ]; then
+    rm $basename
+fi
+
+src="$basename.c rrefTest.c ray_casting.c pet_input.c " 
+lib_dir="-L/data1/projects/minc-quarantine/install/lib/ -L/data1/projects/mycode-quarantine/5.15/lib  "
+lib="-lmy_interpolate_sphere -lminc_helper -lbicpl -lminc2 -lhdf5 -lnetcdf -lz -lm -ldl"
+include_dir="-I./ -I/data1/projects/minc-quarantine/install/include/  -I/data1/projects/mycode-quarantine/5.15/include/  "
+options="-ggdb -O0 -static -std=c99 "
+echo gcc $options $src -o $basename $include_dir $lib_dir $lib
+gcc  $options $src -o $basename $include_dir $lib_dir $lib
+cp $basename /data1/projects/mycode-quarantine/5.15/bin/
+
+exit 0
+if [ "$?" != "0" ]; then
+    exit 1
+else
+    vol="GPI_3KOMI24Initial_t1_final.mnc" #"-pet GPI-P03_S_Cortical_I_pet-coreg2t1.mnc" #"-pet GPI-P03_S_Cortical_I_srv_1_nat_signal_blur.mnc" #  "-pet GPI-P03_S_Cortical_I_srv_1_nat_signal_blur.mnc"
+    outer="GPI_3KOMI24Initial_gray_surface_left_81920.obj"    
+    inner="GPI_3KOMI24Initial_white_surface_left_81920.obj" # -mask GPI-P03_S_Cortical_I_wm.mnc"
+    parameters="1"
+    output="srv.mnc"
+    arguments="$vol $outer $inner $parameters $output"
+    command="./$basename  $arguments"
+    echo $command
+    if [ "$option" == "-gdb" ]; then
+        gdb --args $command
+    elif [ "$option" == "-valgrind" ]; then
+       valgrind --tool=memcheck --leak-check=yes  --leak-check=full $command
+    else    
+        time $command
+    fi
+fi
+
+
+
+
+

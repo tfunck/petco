@@ -1,0 +1,31 @@
+#!/bin/bash
+option=$1
+
+basename="minc2ascii"
+
+if [ -f $basename ]; then
+    rm $basename
+fi
+
+
+src="$basename.c "
+lib="-L/data1/projects/minc-quarantine/install/lib -L/data1/projects/mycode-quarantine/5.15/lib/ -lminc_helper  -lmy_interpolate_sphere -lbicpl  -lminc2 -lhdf5 -lnetcdf -lz -lm -ldl"
+options="-static -g -O0 -std=c99 "
+gcc $options  $src -o $basename -I"/data1/projects/minc-quarantine/install/include" -I"/data1/projects/mycode-quarantine/5.15/include/" $lib ;
+
+cp $basename /data1/projects/mycode-quarantine/5.15/bin/
+
+if [ "$?" != "0" ]; then
+    exit 1
+else
+    command="minc2ascii -int GPI_3KOMI24Initial_pve_classify.mnc ascii.txt" # t1_sub01_pve_exactgm.mnc" 
+
+    echo $command
+    if [ "$option" == "-gdb" ]; then
+        gdb --args $command
+    elif [ "$option" == "-valgrind" ]; then
+       valgrind --tool=memcheck --leak-check=yes  --leak-check=full $command
+    else    
+        time $command
+    fi
+fi
