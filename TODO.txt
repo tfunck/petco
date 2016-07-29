@@ -1,0 +1,1 @@
+1) Create cmake file to install all of the software
