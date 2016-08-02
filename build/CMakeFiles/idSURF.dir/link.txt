@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/idSURF.dir/src/idSURF/idSURF-4.2.c.o CMakeFiles/idSURF.dir/src/idSURF/gaussianiir3d.c.o  -o idSURF  -L/home/users/tfunck/local/lib -rdynamic libminc_helper.so -lminc2 -lhdf5 -lnetcdf -lz -ldl -lm -lpthread -Wl,-rpath,/home/users/tfunck/local/lib:/home/users/tfunck/PhD/build: 
