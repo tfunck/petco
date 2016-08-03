@@ -32,35 +32,80 @@ SET(CPACK_PACKAGE_RELOCATABLE OFF)
 # Set MINC2 installation directory #
 ####################################
 SET(MINC_INSTALL_DIR /usr/local CACHE PATH "Path for MINC prefix, prepended onto install directories.")
-message(${MINC_INSTALL_DIR})
 set(MINC_INCLUDE_DIR ${MINC_INSTALL_DIR}/include/)
 set(MINC_LIB_DIR ${MINC_INSTALL_DIR}/lib/)
-set(MINC2_LIB minc2 hdf5 netcdf z dl)
+set(MINC2_LIB  minc2 hdf5 netcdf z znz dl)
+set(BICPL_LIB  bicpl  minc2 hdf5 netcdf niftiio z znz dl )
 link_directories(${MINC_LIB_DIR})
 
 include_directories(include)
 
-#######################
-# Compile minc_helper #
-#######################
+###############################
+# Compile minc_helper library #
+###############################
 set(minc_helper_src src/minc_helper/minc_helper-1.2.c ${MINC_INCLUDE_DIR}/minc2.h)
 add_library(minc_helper STATIC ${minc_helper_src})
 target_link_libraries(minc_helper ${MINC2_LIB} )
 target_include_directories(minc_helper PUBLIC ${MINC_INCLUDE_DIR})
 set_target_properties(minc_helper PROPERTIES COMPILE_FLAGS "-std=c99")
 
+#############################
+# Compile minc_fftw library #
+#############################
+set(minc_fftw_src src/minc_fftw/minc_fftw-1.0.c include/minc_fftw-1.0.h ${MINC_INCLUDE_DIR}/minc2.h include/minc_helper.h)
+add_library(minc_fftw STATIC ${minc_fftw_src})
+target_link_libraries(minc_fftw fftw3 ${MINC2_LIB} minc_helper )
+target_include_directories(minc_fftw PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(minc_fftw PROPERTIES COMPILE_FLAGS "-std=c99")
 
 ##################
 # Compile idSURF #
 ##################
-set(idSURF_SRC src/idSURF/idSURF-4.2.c src/idSURF/gaussianiir3d.c  ${MINC_INCLUDE_DIR}/minc2.h include/minc_helper.h)
+set(idSURF_SRC src/idSURF/idSURF-4.2.c src/idSURF/gaussianiir3d.c   ${MINC_INCLUDE_DIR}/minc2.h include/minc_helper.h)
 add_executable(idSURF ${idSURF_SRC})
 target_link_libraries(idSURF  minc_helper ${MINC2_LIB} m pthread )
 target_include_directories(idSURF PUBLIC ${MINC_INCLUDE_DIR})
 set_target_properties(idSURF PROPERTIES COMPILE_FLAGS "-static -std=c99")
-#SET(CMAKE_EXE_LINKER_FLAGS "-static")
-message(${MINC2_LIB})
 
-install(TARGETS idSURF DESTINATION bin)
-install(TARGETS minc_helper DESTINATION lib)
+##########################
+# Compile mincgroupstats #
+##########################
+set(mincgroupstats_SRC  src/mincgroupstats/mincgroupstats-4.0.c  ${MINC_INCLUDE_DIR}/minc2.h include/minc_helper.h)
+add_executable(mincgroupstats ${mincgroupstats_SRC})
+target_link_libraries(mincgroupstats  minc_helper ${MINC2_LIB} m pthread )
+target_include_directories(mincgroupstats PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(mincgroupstats PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
+###############
+# Compile gtm #
+###############
+set(gtm_SRC  src/gtm/gtm-3.2.c src/gtm/gaussj.c src/nrutil/nrutil.c include/nrutil.h  ${MINC_INCLUDE_DIR}/minc2.h include/minc_fftw-1.0.h include/minc_helper.h)
+add_executable(gtm ${gtm_SRC})
+target_link_libraries(gtm minc_fftw minc_helper ${MINC2_LIB} m pthread fftw3 )
+target_include_directories(gtm PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(gtm PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
+###############
+# Compile srv #
+###############
+set(srv_SRC  src/srv/srv-3.0.c src/srv/rrefTest.c src/srv/my_interpolate_sphere.c   src/srv/ray_casting.c ${MINC_INCLUDE_DIR}/minc2.h include/minc_helper.h)
+add_executable(srv ${srv_SRC})
+target_link_libraries(srv  minc_helper ${BICPL_LIB} m pthread )
+target_include_directories(srv PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(srv PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
+
+
+###########################
+# Set install directories #
+###########################
+set(progs gtm idSURF mincgroupstats )
+foreach(prog ${progs})
+	install(TARGETS ${prog} DESTINATION bin)
+endforeach(prog)
+
+set(libs minc_helper minc_fftw)
+foreach(lib ${libs})
+	install(TARGETS ${lib} DESTINATION lib)
+endforeach(lib)
 

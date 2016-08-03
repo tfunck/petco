@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/mincgroupstats.dir/src/mincgroupstats/mincgroupstats-4.0.c.o  -o mincgroupstats  -L/home/t/neuro/quarantines/minc-toolkit-v2-install/lib -rdynamic libminc_helper.a -lminc2 -lhdf5 -lnetcdf -lz -lznz -ldl -lm -lpthread -Wl,-rpath,/home/t/neuro/quarantines/minc-toolkit-v2-install/lib: 

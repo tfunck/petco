@@ -1,0 +1,5 @@
+/home/t/local/bin/gtm
+/home/t/local/bin/idSURF
+/home/t/local/bin/mincgroupstats
+/home/t/local/lib/libminc_helper.a
+/home/t/local/lib/libminc_fftw.a

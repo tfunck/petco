@@ -1,0 +1,2 @@
+/usr/bin/ar qc libminc_fftw.a  CMakeFiles/minc_fftw.dir/src/minc_fftw/minc_fftw-1.0.c.o
+/usr/bin/ranlib libminc_fftw.a

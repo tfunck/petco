@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/idSURF.dir/src/idSURF/idSURF-4.2.c.o CMakeFiles/idSURF.dir/src/idSURF/gaussianiir3d.c.o  -o idSURF  -L/home/t/neuro/quarantines/minc-toolkit-v2-install/lib -rdynamic libminc_helper.a -lminc2 -lhdf5 -lnetcdf -lz -lznz -ldl -lm -lpthread -Wl,-rpath,/home/t/neuro/quarantines/minc-toolkit-v2-install/lib: 
