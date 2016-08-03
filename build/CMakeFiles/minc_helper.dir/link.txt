@@ -1,1 +1,0 @@
-/usr/bin/cc  -fPIC   -shared -Wl,-soname,libminc_helper.so -o libminc_helper.so CMakeFiles/minc_helper.dir/src/minc_helper/minc_helper-1.2.c.o  -L/home/users/tfunck/local/lib -lminc2 -lhdf5 -lnetcdf -lz -ldl -Wl,-rpath,/home/users/tfunck/local/lib 
