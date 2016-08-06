@@ -1,0 +1,46 @@
+#!/bin/bash
+option=$1
+cd /data1/projects/minc_helper/1.0; ./make; cd -;
+basename="tka-2.0"
+
+if [ -f $basename ]; then
+    rm $basename
+fi
+
+src="${basename}.c"
+options="-g -pthread -static -O0 -ffast-math  -std=c99  "
+lib_dir="-L/data1/projects/minc-quarantine/install/lib/ -L/data1/projects/mycode-quarantine/5.15/lib"
+lib="-lminc_helper -lminc2 -lhdf5 -lnetcdf -lm -lz -ldl"
+include_dir="-I./ -I/data1/projects/minc-quarantine/install/include/ -I/data1/projects/mycode-quarantine/5.15/include/"
+
+echo $src
+gcc  $options  $src -o $basename $include_dir $lib_dir $lib ;
+
+
+if [ "$?" != "0" ]; then
+    exit 1
+else
+    cp $basename /data1/projects/mycode-quarantine/5.15/bin/
+    #ln -fs /data1/projects/mycode-quarantine/5.15/bin/${basename}  /data1/projects/mycode-quarantine/5.15/bin/tka-2.0
+    pet="-pet /data1/projects/Stroke/results/idsurf3b/pet/GPI-P02_S_Cortical_I_pet-coreg2t1.mnc "
+    ref="-ref_mask /data1/projects/Stroke/results/idsurf3b/srv/GPI-P02_S_Cortical_I_wm_4-eroded.mnc "
+    brain="-brain_mask /data1/projects/Stroke/results/idsurf3b/srv/GPI-P02_S_Cortical_I_brain_mask_nat.mnc"
+    time_widths="-time_widths time_widths.txt"
+    out="-o lp.mnc"
+    start_frame="-start_frame 8"
+    lp="-analysis lp -k2 0.256"
+    command="$basename $lp $time_widths  $pet $ref $brain $start_frame $out"
+    echo $command
+    if [ "$option" == "-gdb" ]; then
+         gdb --args $command
+    elif [ "$option" == "-valgrind" ]; then
+       valgrind --tool=memcheck --leak-check=yes  --leak-check=full $command
+    elif [ "$option" == "-test" ]; then
+        echo Nothing set
+    else   
+        time $command
+    fi
+    
+fi
+
+

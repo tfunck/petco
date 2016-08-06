@@ -92,6 +92,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/minc_fftw.dir/DependInfo.cmake"
   "CMakeFiles/gtm.dir/DependInfo.cmake"
+  "CMakeFiles/tka.dir/DependInfo.cmake"
   "CMakeFiles/srv.dir/DependInfo.cmake"
   "CMakeFiles/surf_dist.dir/DependInfo.cmake"
   "CMakeFiles/mincgroupstats.dir/DependInfo.cmake"

@@ -181,6 +181,19 @@ gtm/fast:
 .PHONY : gtm/fast
 
 #=============================================================================
+# Target rules for targets named tka
+
+# Build rule for target.
+tka: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tka
+.PHONY : tka
+
+# fast build rule for target.
+tka/fast:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/build
+.PHONY : tka/fast
+
+#=============================================================================
 # Target rules for targets named srv
 
 # Build rule for target.
@@ -682,6 +695,141 @@ src/surf_dist/surf_dist-5.1.c.s:
 	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/src/surf_dist/surf_dist-5.1.c.s
 .PHONY : src/surf_dist/surf_dist-5.1.c.s
 
+src/tka/1.0/llsqwt.o: src/tka/1.0/llsqwt.c.o
+
+.PHONY : src/tka/1.0/llsqwt.o
+
+# target to build an object file
+src/tka/1.0/llsqwt.c.o:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/llsqwt.c.o
+.PHONY : src/tka/1.0/llsqwt.c.o
+
+src/tka/1.0/llsqwt.i: src/tka/1.0/llsqwt.c.i
+
+.PHONY : src/tka/1.0/llsqwt.i
+
+# target to preprocess a source file
+src/tka/1.0/llsqwt.c.i:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/llsqwt.c.i
+.PHONY : src/tka/1.0/llsqwt.c.i
+
+src/tka/1.0/llsqwt.s: src/tka/1.0/llsqwt.c.s
+
+.PHONY : src/tka/1.0/llsqwt.s
+
+# target to generate assembly for a file
+src/tka/1.0/llsqwt.c.s:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/llsqwt.c.s
+.PHONY : src/tka/1.0/llsqwt.c.s
+
+src/tka/1.0/pet_analyze.o: src/tka/1.0/pet_analyze.c.o
+
+.PHONY : src/tka/1.0/pet_analyze.o
+
+# target to build an object file
+src/tka/1.0/pet_analyze.c.o:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/pet_analyze.c.o
+.PHONY : src/tka/1.0/pet_analyze.c.o
+
+src/tka/1.0/pet_analyze.i: src/tka/1.0/pet_analyze.c.i
+
+.PHONY : src/tka/1.0/pet_analyze.i
+
+# target to preprocess a source file
+src/tka/1.0/pet_analyze.c.i:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/pet_analyze.c.i
+.PHONY : src/tka/1.0/pet_analyze.c.i
+
+src/tka/1.0/pet_analyze.s: src/tka/1.0/pet_analyze.c.s
+
+.PHONY : src/tka/1.0/pet_analyze.s
+
+# target to generate assembly for a file
+src/tka/1.0/pet_analyze.c.s:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/pet_analyze.c.s
+.PHONY : src/tka/1.0/pet_analyze.c.s
+
+src/tka/1.0/pet_core.o: src/tka/1.0/pet_core.c.o
+
+.PHONY : src/tka/1.0/pet_core.o
+
+# target to build an object file
+src/tka/1.0/pet_core.c.o:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/pet_core.c.o
+.PHONY : src/tka/1.0/pet_core.c.o
+
+src/tka/1.0/pet_core.i: src/tka/1.0/pet_core.c.i
+
+.PHONY : src/tka/1.0/pet_core.i
+
+# target to preprocess a source file
+src/tka/1.0/pet_core.c.i:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/pet_core.c.i
+.PHONY : src/tka/1.0/pet_core.c.i
+
+src/tka/1.0/pet_core.s: src/tka/1.0/pet_core.c.s
+
+.PHONY : src/tka/1.0/pet_core.s
+
+# target to generate assembly for a file
+src/tka/1.0/pet_core.c.s:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/pet_core.c.s
+.PHONY : src/tka/1.0/pet_core.c.s
+
+src/tka/1.0/pet_input.o: src/tka/1.0/pet_input.c.o
+
+.PHONY : src/tka/1.0/pet_input.o
+
+# target to build an object file
+src/tka/1.0/pet_input.c.o:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/pet_input.c.o
+.PHONY : src/tka/1.0/pet_input.c.o
+
+src/tka/1.0/pet_input.i: src/tka/1.0/pet_input.c.i
+
+.PHONY : src/tka/1.0/pet_input.i
+
+# target to preprocess a source file
+src/tka/1.0/pet_input.c.i:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/pet_input.c.i
+.PHONY : src/tka/1.0/pet_input.c.i
+
+src/tka/1.0/pet_input.s: src/tka/1.0/pet_input.c.s
+
+.PHONY : src/tka/1.0/pet_input.s
+
+# target to generate assembly for a file
+src/tka/1.0/pet_input.c.s:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/pet_input.c.s
+.PHONY : src/tka/1.0/pet_input.c.s
+
+src/tka/1.0/tracerDatabase.o: src/tka/1.0/tracerDatabase.c.o
+
+.PHONY : src/tka/1.0/tracerDatabase.o
+
+# target to build an object file
+src/tka/1.0/tracerDatabase.c.o:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/tracerDatabase.c.o
+.PHONY : src/tka/1.0/tracerDatabase.c.o
+
+src/tka/1.0/tracerDatabase.i: src/tka/1.0/tracerDatabase.c.i
+
+.PHONY : src/tka/1.0/tracerDatabase.i
+
+# target to preprocess a source file
+src/tka/1.0/tracerDatabase.c.i:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/tracerDatabase.c.i
+.PHONY : src/tka/1.0/tracerDatabase.c.i
+
+src/tka/1.0/tracerDatabase.s: src/tka/1.0/tracerDatabase.c.s
+
+.PHONY : src/tka/1.0/tracerDatabase.s
+
+# target to generate assembly for a file
+src/tka/1.0/tracerDatabase.c.s:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/src/tka/1.0/tracerDatabase.c.s
+.PHONY : src/tka/1.0/tracerDatabase.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -693,6 +841,7 @@ help:
 	@echo "... minc_fftw"
 	@echo "... gtm"
 	@echo "... edit_cache"
+	@echo "... tka"
 	@echo "... srv"
 	@echo "... install/local"
 	@echo "... install"
@@ -748,6 +897,21 @@ help:
 	@echo "... src/surf_dist/surf_dist-5.1.o"
 	@echo "... src/surf_dist/surf_dist-5.1.i"
 	@echo "... src/surf_dist/surf_dist-5.1.s"
+	@echo "... src/tka/1.0/llsqwt.o"
+	@echo "... src/tka/1.0/llsqwt.i"
+	@echo "... src/tka/1.0/llsqwt.s"
+	@echo "... src/tka/1.0/pet_analyze.o"
+	@echo "... src/tka/1.0/pet_analyze.i"
+	@echo "... src/tka/1.0/pet_analyze.s"
+	@echo "... src/tka/1.0/pet_core.o"
+	@echo "... src/tka/1.0/pet_core.i"
+	@echo "... src/tka/1.0/pet_core.s"
+	@echo "... src/tka/1.0/pet_input.o"
+	@echo "... src/tka/1.0/pet_input.i"
+	@echo "... src/tka/1.0/pet_input.s"
+	@echo "... src/tka/1.0/tracerDatabase.o"
+	@echo "... src/tka/1.0/tracerDatabase.i"
+	@echo "... src/tka/1.0/tracerDatabase.s"
 .PHONY : help
 
 

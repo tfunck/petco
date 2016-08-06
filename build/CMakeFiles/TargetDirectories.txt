@@ -3,6 +3,7 @@
 /home/users/tfunck/rep/phd/build/CMakeFiles/minc_fftw.dir
 /home/users/tfunck/rep/phd/build/CMakeFiles/gtm.dir
 /home/users/tfunck/rep/phd/build/CMakeFiles/edit_cache.dir
+/home/users/tfunck/rep/phd/build/CMakeFiles/tka.dir
 /home/users/tfunck/rep/phd/build/CMakeFiles/srv.dir
 /home/users/tfunck/rep/phd/build/CMakeFiles/install/local.dir
 /home/users/tfunck/rep/phd/build/CMakeFiles/install.dir

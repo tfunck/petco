@@ -135,6 +135,43 @@ clean: CMakeFiles/gtm.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/tka.dir
+
+# All Build rule for target.
+CMakeFiles/tka.dir/all: CMakeFiles/minc_helper.dir/all
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/depend
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=27,28,29,30,31,32 "Built target tka"
+.PHONY : CMakeFiles/tka.dir/all
+
+# Include target in all.
+all: CMakeFiles/tka.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/tka.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 8
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tka.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 0
+.PHONY : CMakeFiles/tka.dir/rule
+
+# Convenience name for target.
+tka: CMakeFiles/tka.dir/rule
+
+.PHONY : tka
+
+# clean rule for target.
+CMakeFiles/tka.dir/clean:
+	$(MAKE) -f CMakeFiles/tka.dir/build.make CMakeFiles/tka.dir/clean
+.PHONY : CMakeFiles/tka.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/tka.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/srv.dir
 
 # All Build rule for target.

@@ -1000,7 +1000,7 @@ int main(int argc, char** argv){
 
 
 void useage(){
-        printf("\nName:\n\tidSURF-3.0 -- partial-volume correct PET image using masks of anatomical regions\n");
+        printf("\nName:\n\tidSURF-4.2 -- partial-volume correct PET image using masks of anatomical regions\n");
         printf("Description:\n");
         printf("\tPerform partial-volume correction PET image using masks of anatomical regions\n");
         printf("Useage:\n");

@@ -121,13 +121,20 @@ target_link_libraries(surf_defrag minc_helper  ${BICPL_LIB} m pthread)
 target_include_directories(surf_defrag PUBLIC ${MINC_INCLUDE_DIR})
 set_target_properties(surf_defrag PROPERTIES COMPILE_FLAGS "-static -std=c99")
 
-
+###############
+# Compile tka #
+###############
+set(tka_SRC  src/tka/1.0/pet_input.c src/tka/1.0/pet_core.c src/tka/1.0/pet_analyze.c src/tka/1.0/llsqwt.c src/tka/1.0/tracerDatabase.c include/llsqwt.h include/mtga.h include/nrutil.h include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
+add_executable(tka ${tka_SRC})
+target_link_libraries(tka minc_helper  ${MINC2_LIB} m pthread)
+target_include_directories(tka PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(tka PROPERTIES COMPILE_FLAGS "-static -std=c99")
 
 ###########################
 # Set install directories #
 ###########################
-set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag)
-foreach(prog ${progs})
+set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag tka)
+foreach(prog ${progs}) 
 	install(TARGETS ${prog} DESTINATION bin)
 endforeach(prog)
 
