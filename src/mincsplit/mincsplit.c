@@ -3,7 +3,7 @@
 #include <malloc.h>
 #include <math.h>
 #include "minc2.h"
-#include "hdf5.h"
+//#include "hdf5.h"
 #include "minc_helper.h"
 
 void useage();

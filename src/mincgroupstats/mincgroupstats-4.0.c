@@ -366,12 +366,12 @@ int make_unique(data* atlas,  int natlas, int* n_roi, int*** nat_id /*Native id 
 int aggregate_roi(data* atlas, int* n_roi, int natlas,  point**** roi_list /*list of points for each roi*/, int** roi_list_n /*number of points in each roi*/,   
 					int*** nat_id /*list of ids in atlases*/, int** n_nat_id /*number of ids in each atlas*/, int*** unique_id ){
     /*Aggrate the ROIs in volumetric or surface-based masks into a single array*/
-    /*This is done by creating a list of the label values that uniquely species id values in each of the atlases. For each unique label
+    /*This is done by creating a list of the label values that uniquely specifies id values in each of the atlases. For each unique label
     *value, a list of points is created that contains all the points specified by that label.*/
     int n=0;
     int l=0;
     int** nat_id_ptr, *n_nat_id_ptr, **unique_id_ptr, *roi_list_n_ptr;
-	
+	float sum;	
     make_unique(atlas, natlas, n_roi, nat_id, n_nat_id, unique_id);
 	unique_id_ptr=*unique_id;
     nat_id_ptr=*nat_id;
@@ -394,10 +394,12 @@ int aggregate_roi(data* atlas, int* n_roi, int natlas,  point**** roi_list /*lis
 
 	/*For atlas in list of atlases */
 	for(int atlas_i=0; atlas_i < natlas; atlas_i++){
+	  	sum=0;
 		/*For i in atlas */
 		for(int index=0; index < atlas[atlas_i].n; index++){
 			/*If value for atlas at i does not equal 0...*/
-			int id=round(atlas[atlas_i].points[index].value);	
+			sum+=atlas[atlas_i].points[index].value;
+		  	int id=round(atlas[atlas_i].points[index].value);	
 			if( id != 0){
 				/*find the unique id for i in atlas*/
 				int uid = mapping(id, nat_id_ptr[atlas_i], unique_id_ptr[atlas_i], n_nat_id_ptr[atlas_i] );
@@ -410,6 +412,7 @@ int aggregate_roi(data* atlas, int* n_roi, int natlas,  point**** roi_list /*lis
 
             }
 		}
+		printf("%d, %f\n", atlas_i, sum);
 	}
 
     return(0);
@@ -549,7 +552,6 @@ int main(int argc, char** argv){
     if(argc <= 4 || strcmp(argv[1], "-help") == 0 ){
 	  	useage();
 	}
-    int n_aux_inputs=2;
     char* interpolation_method=NULL;
 	char* output_fn=NULL;
     int nimages=0;

@@ -78,17 +78,6 @@ rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
 
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/home/t/local/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: install/local
-
-.PHONY : install/local/fast
-
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -101,6 +90,16 @@ install/fast: preinstall/fast
 	/home/t/local/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
 # Special rule for the target install/strip
 install/strip: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
@@ -112,15 +111,16 @@ install/strip/fast: install/strip
 
 .PHONY : install/strip/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/home/t/local/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
 
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
+# Special rule for the target install/local
+install/local/fast: install/local
 
-.PHONY : list_install_components/fast
+.PHONY : install/local/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -207,6 +207,32 @@ gtm/fast:
 .PHONY : gtm/fast
 
 #=============================================================================
+# Target rules for targets named srv
+
+# Build rule for target.
+srv: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 srv
+.PHONY : srv
+
+# fast build rule for target.
+srv/fast:
+	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/build
+.PHONY : srv/fast
+
+#=============================================================================
+# Target rules for targets named mincsplit
+
+# Build rule for target.
+mincsplit: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 mincsplit
+.PHONY : mincsplit
+
+# fast build rule for target.
+mincsplit/fast:
+	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/build
+.PHONY : mincsplit/fast
+
+#=============================================================================
 # Target rules for targets named mincgroupstats
 
 # Build rule for target.
@@ -220,17 +246,17 @@ mincgroupstats/fast:
 .PHONY : mincgroupstats/fast
 
 #=============================================================================
-# Target rules for targets named srv
+# Target rules for targets named surf_dist
 
 # Build rule for target.
-srv: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 srv
-.PHONY : srv
+surf_dist: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 surf_dist
+.PHONY : surf_dist
 
 # fast build rule for target.
-srv/fast:
-	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/build
-.PHONY : srv/fast
+surf_dist/fast:
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/build
+.PHONY : surf_dist/fast
 
 src/gtm/gaussj.o: src/gtm/gaussj.c.o
 
@@ -421,6 +447,33 @@ src/mincgroupstats/mincgroupstats-4.0.c.s:
 	$(MAKE) -f CMakeFiles/mincgroupstats.dir/build.make CMakeFiles/mincgroupstats.dir/src/mincgroupstats/mincgroupstats-4.0.c.s
 .PHONY : src/mincgroupstats/mincgroupstats-4.0.c.s
 
+src/mincsplit/mincsplit.o: src/mincsplit/mincsplit.c.o
+
+.PHONY : src/mincsplit/mincsplit.o
+
+# target to build an object file
+src/mincsplit/mincsplit.c.o:
+	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/src/mincsplit/mincsplit.c.o
+.PHONY : src/mincsplit/mincsplit.c.o
+
+src/mincsplit/mincsplit.i: src/mincsplit/mincsplit.c.i
+
+.PHONY : src/mincsplit/mincsplit.i
+
+# target to preprocess a source file
+src/mincsplit/mincsplit.c.i:
+	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/src/mincsplit/mincsplit.c.i
+.PHONY : src/mincsplit/mincsplit.c.i
+
+src/mincsplit/mincsplit.s: src/mincsplit/mincsplit.c.s
+
+.PHONY : src/mincsplit/mincsplit.s
+
+# target to generate assembly for a file
+src/mincsplit/mincsplit.c.s:
+	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/src/mincsplit/mincsplit.c.s
+.PHONY : src/mincsplit/mincsplit.c.s
+
 src/nrutil/nrutil.o: src/nrutil/nrutil.c.o
 
 .PHONY : src/nrutil/nrutil.o
@@ -455,6 +508,7 @@ src/srv/my_interpolate_sphere.o: src/srv/my_interpolate_sphere.c.o
 # target to build an object file
 src/srv/my_interpolate_sphere.c.o:
 	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.o
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/src/srv/my_interpolate_sphere.c.o
 .PHONY : src/srv/my_interpolate_sphere.c.o
 
 src/srv/my_interpolate_sphere.i: src/srv/my_interpolate_sphere.c.i
@@ -464,6 +518,7 @@ src/srv/my_interpolate_sphere.i: src/srv/my_interpolate_sphere.c.i
 # target to preprocess a source file
 src/srv/my_interpolate_sphere.c.i:
 	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.i
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/src/srv/my_interpolate_sphere.c.i
 .PHONY : src/srv/my_interpolate_sphere.c.i
 
 src/srv/my_interpolate_sphere.s: src/srv/my_interpolate_sphere.c.s
@@ -473,6 +528,7 @@ src/srv/my_interpolate_sphere.s: src/srv/my_interpolate_sphere.c.s
 # target to generate assembly for a file
 src/srv/my_interpolate_sphere.c.s:
 	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.s
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/src/srv/my_interpolate_sphere.c.s
 .PHONY : src/srv/my_interpolate_sphere.c.s
 
 src/srv/ray_casting.o: src/srv/ray_casting.c.o
@@ -556,6 +612,33 @@ src/srv/srv-3.0.c.s:
 	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/src/srv/srv-3.0.c.s
 .PHONY : src/srv/srv-3.0.c.s
 
+src/surf_dist/surf_dist-5.1.o: src/surf_dist/surf_dist-5.1.c.o
+
+.PHONY : src/surf_dist/surf_dist-5.1.o
+
+# target to build an object file
+src/surf_dist/surf_dist-5.1.c.o:
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/src/surf_dist/surf_dist-5.1.c.o
+.PHONY : src/surf_dist/surf_dist-5.1.c.o
+
+src/surf_dist/surf_dist-5.1.i: src/surf_dist/surf_dist-5.1.c.i
+
+.PHONY : src/surf_dist/surf_dist-5.1.i
+
+# target to preprocess a source file
+src/surf_dist/surf_dist-5.1.c.i:
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/src/surf_dist/surf_dist-5.1.c.i
+.PHONY : src/surf_dist/surf_dist-5.1.c.i
+
+src/surf_dist/surf_dist-5.1.s: src/surf_dist/surf_dist-5.1.c.s
+
+.PHONY : src/surf_dist/surf_dist-5.1.s
+
+# target to generate assembly for a file
+src/surf_dist/surf_dist-5.1.c.s:
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/src/surf_dist/surf_dist-5.1.c.s
+.PHONY : src/surf_dist/surf_dist-5.1.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -564,16 +647,18 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... install"
 	@echo "... minc_helper"
 	@echo "... idSURF"
 	@echo "... minc_fftw"
 	@echo "... gtm"
-	@echo "... mincgroupstats"
 	@echo "... srv"
-	@echo "... install/local"
-	@echo "... install"
-	@echo "... install/strip"
+	@echo "... mincsplit"
+	@echo "... mincgroupstats"
+	@echo "... surf_dist"
 	@echo "... list_install_components"
+	@echo "... install/strip"
+	@echo "... install/local"
 	@echo "... src/gtm/gaussj.o"
 	@echo "... src/gtm/gaussj.i"
 	@echo "... src/gtm/gaussj.s"
@@ -595,6 +680,9 @@ help:
 	@echo "... src/mincgroupstats/mincgroupstats-4.0.o"
 	@echo "... src/mincgroupstats/mincgroupstats-4.0.i"
 	@echo "... src/mincgroupstats/mincgroupstats-4.0.s"
+	@echo "... src/mincsplit/mincsplit.o"
+	@echo "... src/mincsplit/mincsplit.i"
+	@echo "... src/mincsplit/mincsplit.s"
 	@echo "... src/nrutil/nrutil.o"
 	@echo "... src/nrutil/nrutil.i"
 	@echo "... src/nrutil/nrutil.s"
@@ -610,6 +698,9 @@ help:
 	@echo "... src/srv/srv-3.0.o"
 	@echo "... src/srv/srv-3.0.i"
 	@echo "... src/srv/srv-3.0.s"
+	@echo "... src/surf_dist/surf_dist-5.1.o"
+	@echo "... src/surf_dist/surf_dist-5.1.i"
+	@echo "... src/surf_dist/surf_dist-5.1.s"
 .PHONY : help
 
 

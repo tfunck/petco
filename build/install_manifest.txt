@@ -1,5 +1,8 @@
 /home/t/local/bin/gtm
 /home/t/local/bin/idSURF
 /home/t/local/bin/mincgroupstats
+/home/t/local/bin/srv
+/home/t/local/bin/mincsplit
+/home/t/local/bin/surf_dist
 /home/t/local/lib/libminc_helper.a
 /home/t/local/lib/libminc_fftw.a

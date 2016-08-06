@@ -94,12 +94,32 @@ target_link_libraries(srv  minc_helper ${BICPL_LIB} m pthread )
 target_include_directories(srv PUBLIC ${MINC_INCLUDE_DIR})
 set_target_properties(srv PROPERTIES COMPILE_FLAGS "-static -std=c99")
 
+#####################
+# Compile mincsplit #
+#####################
+set(mincsplit_SRC  src/mincsplit/mincsplit.c   include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
+add_executable(mincsplit ${mincsplit_SRC})
+target_link_libraries(mincsplit minc_helper  ${MINC2_LIB} m pthread)
+target_include_directories(mincsplit PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(mincsplit PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
+#####################
+# Compile surf_dist #
+#####################
+set(surf_dist_SRC  src/surf_dist/surf_dist-5.1.c src/srv/my_interpolate_sphere.c    include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
+add_executable(surf_dist ${surf_dist_SRC})
+target_link_libraries(surf_dist minc_helper  ${BICPL_LIB} m pthread)
+target_include_directories(surf_dist PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(surf_dist PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
+
+
 
 
 ###########################
 # Set install directories #
 ###########################
-set(progs gtm idSURF mincgroupstats )
+set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist)
 foreach(prog ${progs})
 	install(TARGETS ${prog} DESTINATION bin)
 endforeach(prog)

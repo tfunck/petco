@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/surf_dist.dir/src/surf_dist/surf_dist-5.1.c.o CMakeFiles/surf_dist.dir/src/srv/my_interpolate_sphere.c.o  -o surf_dist  -L/home/t/neuro/quarantines/minc-toolkit-v2-install/lib -rdynamic libminc_helper.a -lbicpl -lminc2 -lhdf5 -lnetcdf -lniftiio -lz -lznz -ldl -lm -lpthread -Wl,-rpath,/home/t/neuro/quarantines/minc-toolkit-v2-install/lib: 

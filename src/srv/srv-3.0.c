@@ -28,14 +28,13 @@ void linkVerticesToNeighbours(  vector* mesh, int* n_ngh, int** ngh, int nvertic
 
 };
 
-int readData(char* outerMeshfilename, char* innerMeshfilename, int* nvertices, vector** inner_mesh,  vector** outer_mesh  ){
+int readData(char* outerMeshfilename, char* innerMeshfilename, char* maskfilename, int* nvertices, vector** inner_mesh,  vector** outer_mesh, int** mask  ){
 char buffer1[100], buffer2[100], buffer3[100], buffer4[100], buffer5[100], buffer6[100]; //should probably improve buffer length so that it is not a fixed size
 int i; 
 int vertices;
 FILE *outerMeshFile;
 FILE *innerMeshFile;
-FILE *outer_activityFile;
-FILE *inner_activityFile;
+FILE *maskfile;
 char *token;
 char dlm[]=" "; 
 int xmin=0, ymin=0, zmin=0;
@@ -43,8 +42,11 @@ int nodeCounter=0;
 
 outerMeshFile=fopen(outerMeshfilename, "rt");
 innerMeshFile=fopen(innerMeshfilename, "rt"); 
+maskfile=fopen(maskfilename, "rt");
+
 fgets(buffer1, sizeof(buffer1), outerMeshFile) ;
 fgets(buffer2, sizeof(buffer2), innerMeshFile);
+fgets(buffer3, sizeof(buffer3), maskfile);
 
 //read nvertices from file
 strtok(buffer1, dlm);  
@@ -56,11 +58,13 @@ strtok(NULL, dlm);
 *nvertices=atoi(strtok(NULL, dlm));
 *inner_mesh=malloc(sizeof(vector) * *nvertices);
 *outer_mesh=malloc(sizeof(vector) * *nvertices);
+*mask=calloc(*nvertices, sizeof(*mask));
 
 for(i=0; i< *nvertices; i++){
 	fgets(buffer1, sizeof(buffer1), outerMeshFile);
 	fgets(buffer2, sizeof(buffer2), innerMeshFile);
-       		 
+    fgets(buffer3, sizeof(buffer3), maskfile);
+
         /*OUTER*/
         (*outer_mesh)[i].x=atof(strtok(buffer1, dlm)); 
         (*outer_mesh)[i].y=atof(strtok(NULL, dlm)); 
@@ -76,10 +80,10 @@ for(i=0; i< *nvertices; i++){
         /*Mid*/
 	(*outer_mesh)[i].pair=&(*inner_mesh)[i];
 	(*inner_mesh)[i].pair=&(*outer_mesh)[i];
-
+	(*mask)[i]=atoi(buffer3);
 }
  
-
+fclose(maskfile);
 fclose(outerMeshFile);
 fclose(innerMeshFile);
 return(0);
@@ -162,8 +166,8 @@ int voxel_vertexPairs(vector** vertices , double maxima[3], double minima[3], do
 }
 
 int main(int argc, char** argv){         
-    if(argc != 6) {
-        printf("Usage: <MRI file> <Outer surface vertices> <Inner surface vertices> <Scaling Factor>  <Output MINC file> \n");
+    if(argc != 6 && argc != 7 ) {
+        printf("Usage:<Optional mask> <MRI file> <Outer surface vertices> <Inner surface vertices> <Scaling Factor>  <Output MINC file> \n");
         exit(1);
     }        
     int argi=1, i=0, x, y, z, w;          
@@ -171,6 +175,7 @@ int main(int argc, char** argv){
     int *n_ngh_inner, **ngh_inner;
     int *n_ngh_mid, **ngh_mid;
     int *n_ngh_outer, **ngh_outer;
+	int* mask;
     vector* inner_mesh, *mid_mesh, *outer_mesh;
     vector min, max;
     vector vox_min, vox_max;
@@ -184,6 +189,8 @@ int main(int argc, char** argv){
     double xmin, ymin, zmin;
     double native_step[3];
     double zmax, ymax, xmax;
+	char* maskfilename;
+	if(argc==7) maskfilename=argv[argi++];
     char* mrifilename=argv[argi++];
     char* outer_surface_file=argv[argi++];
     char* inner_surface_file=argv[argi++];
@@ -222,7 +229,7 @@ int main(int argc, char** argv){
     printf("Step: %f %f %f\n", native_step[0], native_step[1], native_step[2]);
     float* array=calloc(nvox, sizeof(*array));
     int nvoxels_in_mesh=0;
-	readData(outer_surface_file , inner_surface_file ,   &nvertices, &inner_mesh,   &outer_mesh  );
+	readData(outer_surface_file , inner_surface_file , maskfilename,   &nvertices, &inner_mesh,   &outer_mesh, &mask  );
 
     interpolate_sphere( outer_surface_file , &n_ngh_outer, &ngh_outer);
     interpolate_sphere( inner_surface_file , &n_ngh_inner, &ngh_inner);
@@ -233,6 +240,12 @@ int main(int argc, char** argv){
 	//linkVerticesToNeighbours( mid_mesh, n_ngh_mid, ngh_mid, nvertices);
 
 for(counter=0; counter < nvertices; counter++){
+
+  	if(maskfilename != NULL) {
+		if( mask[counter] == 0){ 
+			continue;
+	  	}
+	}
 	surf_nvertices=outer_mesh[counter].nneighbours;
 	loc_nvertices=2*surf_nvertices;
 	vertices=malloc( loc_nvertices * sizeof(vector*));
