@@ -4,5 +4,6 @@
 /home/users/tfunck/local/bin/srv
 /home/users/tfunck/local/bin/mincsplit
 /home/users/tfunck/local/bin/surf_dist
+/home/users/tfunck/local/bin/surf_defrag
 /home/users/tfunck/local/lib/libminc_helper.a
 /home/users/tfunck/local/lib/libminc_fftw.a

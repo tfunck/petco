@@ -15,28 +15,28 @@ The C compiler identification is GNU, found in "/home/users/tfunck/rep/phd/build
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_17ef0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_17ef0.dir/build.make CMakeFiles/cmTC_17ef0.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_3b7a9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3b7a9.dir/build.make CMakeFiles/cmTC_3b7a9.dir/build
 make[1]: Entering directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_17ef0.dir/testCCompiler.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_17ef0.dir/testCCompiler.c.o   -c /home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_17ef0
-/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_17ef0.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_17ef0.dir/testCCompiler.c.o  -o cmTC_17ef0 -rdynamic 
+Building C object CMakeFiles/cmTC_3b7a9.dir/testCCompiler.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_3b7a9.dir/testCCompiler.c.o   -c /home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_3b7a9
+/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3b7a9.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_3b7a9.dir/testCCompiler.c.o  -o cmTC_3b7a9 -rdynamic 
 make[1]: Leaving directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7cb28/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7cb28.dir/build.make CMakeFiles/cmTC_7cb28.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_55629/fast"
+/usr/bin/make -f CMakeFiles/cmTC_55629.dir/build.make CMakeFiles/cmTC_55629.dir/build
 make[1]: Entering directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_7cb28.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_7cb28.dir/CMakeCCompilerABI.c.o   -c /home/users/tfunck/local/share/cmake-3.6/Modules/CMakeCCompilerABI.c
-Linking C executable cmTC_7cb28
-/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7cb28.dir/link.txt --verbose=1
-/usr/bin/cc      -v CMakeFiles/cmTC_7cb28.dir/CMakeCCompilerABI.c.o  -o cmTC_7cb28 -rdynamic  
+Building C object CMakeFiles/cmTC_55629.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_55629.dir/CMakeCCompilerABI.c.o   -c /home/users/tfunck/local/share/cmake-3.6/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_55629
+/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_55629.dir/link.txt --verbose=1
+/usr/bin/cc      -v CMakeFiles/cmTC_55629.dir/CMakeCCompilerABI.c.o  -o cmTC_55629 -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.6/lto-wrapper
@@ -46,8 +46,8 @@ Thread model: posix
 gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu5) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.6/:/usr/lib/gcc/x86_64-linux-gnu/4.6/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.6/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.6/:/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_7cb28' '-rdynamic' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/4.6/collect2 --sysroot=/ --build-id --no-add-needed --as-needed --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_7cb28 /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.6/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.6 -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../.. CMakeFiles/cmTC_7cb28.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/4.6/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_55629' '-rdynamic' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/4.6/collect2 --sysroot=/ --build-id --no-add-needed --as-needed --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_55629 /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.6/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.6 -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../.. CMakeFiles/cmTC_55629.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/4.6/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crtn.o
 make[1]: Leaving directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp'
 
 
@@ -55,14 +55,14 @@ Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_7cb28/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_7cb28.dir/build.make CMakeFiles/cmTC_7cb28.dir/build]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_55629/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_55629.dir/build.make CMakeFiles/cmTC_55629.dir/build]
   ignore line: [make[1]: Entering directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_7cb28.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_7cb28.dir/CMakeCCompilerABI.c.o   -c /home/users/tfunck/local/share/cmake-3.6/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTC_7cb28]
-  ignore line: [/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7cb28.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_7cb28.dir/CMakeCCompilerABI.c.o  -o cmTC_7cb28 -rdynamic  ]
+  ignore line: [Building C object CMakeFiles/cmTC_55629.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_55629.dir/CMakeCCompilerABI.c.o   -c /home/users/tfunck/local/share/cmake-3.6/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_55629]
+  ignore line: [/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_55629.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_55629.dir/CMakeCCompilerABI.c.o  -o cmTC_55629 -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.6/lto-wrapper]
@@ -72,8 +72,8 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu5) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.6/:/usr/lib/gcc/x86_64-linux-gnu/4.6/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.6/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.6/:/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_7cb28' '-rdynamic' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/4.6/collect2 --sysroot=/ --build-id --no-add-needed --as-needed --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_7cb28 /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.6/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.6 -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../.. CMakeFiles/cmTC_7cb28.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/4.6/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_55629' '-rdynamic' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/4.6/collect2 --sysroot=/ --build-id --no-add-needed --as-needed --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_55629 /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.6/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.6 -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../.. CMakeFiles/cmTC_55629.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/4.6/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.6/collect2] ==> ignore
     arg [--sysroot=/] ==> ignore
     arg [--build-id] ==> ignore
@@ -88,7 +88,7 @@ Parsed C implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_7cb28] ==> ignore
+    arg [cmTC_55629] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.6/crtbegin.o] ==> ignore
@@ -100,7 +100,7 @@ Parsed C implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/4.6/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/4.6/../../..]
-    arg [CMakeFiles/cmTC_7cb28.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_55629.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -134,14 +134,14 @@ Parsed C implicit link information from above output:
 Detecting C [-std=c1x] compiler features compiled with the following output:
 Change Dir: /home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_570e0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_570e0.dir/build.make CMakeFiles/cmTC_570e0.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_8cc40/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8cc40.dir/build.make CMakeFiles/cmTC_8cc40.dir/build
 make[1]: Entering directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_570e0.dir/feature_tests.c.o
-/usr/bin/cc    -std=c1x -o CMakeFiles/cmTC_570e0.dir/feature_tests.c.o   -c /home/users/tfunck/rep/phd/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_570e0
-/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_570e0.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_570e0.dir/feature_tests.c.o  -o cmTC_570e0 -rdynamic 
+Building C object CMakeFiles/cmTC_8cc40.dir/feature_tests.c.o
+/usr/bin/cc    -std=c1x -o CMakeFiles/cmTC_8cc40.dir/feature_tests.c.o   -c /home/users/tfunck/rep/phd/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_8cc40
+/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8cc40.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_8cc40.dir/feature_tests.c.o  -o cmTC_8cc40 -rdynamic 
 make[1]: Leaving directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp'
 
 
@@ -154,14 +154,14 @@ make[1]: Leaving directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp
 Detecting C [-std=c99] compiler features compiled with the following output:
 Change Dir: /home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_a5fa1/fast"
-/usr/bin/make -f CMakeFiles/cmTC_a5fa1.dir/build.make CMakeFiles/cmTC_a5fa1.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_8bf39/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8bf39.dir/build.make CMakeFiles/cmTC_8bf39.dir/build
 make[1]: Entering directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a5fa1.dir/feature_tests.c.o
-/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_a5fa1.dir/feature_tests.c.o   -c /home/users/tfunck/rep/phd/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_a5fa1
-/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a5fa1.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_a5fa1.dir/feature_tests.c.o  -o cmTC_a5fa1 -rdynamic 
+Building C object CMakeFiles/cmTC_8bf39.dir/feature_tests.c.o
+/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_8bf39.dir/feature_tests.c.o   -c /home/users/tfunck/rep/phd/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_8bf39
+/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8bf39.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_8bf39.dir/feature_tests.c.o  -o cmTC_8bf39 -rdynamic 
 make[1]: Leaving directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp'
 
 
@@ -174,14 +174,14 @@ make[1]: Leaving directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp
 Detecting C [-std=c90] compiler features compiled with the following output:
 Change Dir: /home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_6040f/fast"
-/usr/bin/make -f CMakeFiles/cmTC_6040f.dir/build.make CMakeFiles/cmTC_6040f.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_7d1c8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7d1c8.dir/build.make CMakeFiles/cmTC_7d1c8.dir/build
 make[1]: Entering directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_6040f.dir/feature_tests.c.o
-/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_6040f.dir/feature_tests.c.o   -c /home/users/tfunck/rep/phd/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_6040f
-/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6040f.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_6040f.dir/feature_tests.c.o  -o cmTC_6040f -rdynamic 
+Building C object CMakeFiles/cmTC_7d1c8.dir/feature_tests.c.o
+/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_7d1c8.dir/feature_tests.c.o   -c /home/users/tfunck/rep/phd/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_7d1c8
+/home/users/tfunck/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7d1c8.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_7d1c8.dir/feature_tests.c.o  -o cmTC_7d1c8 -rdynamic 
 make[1]: Leaving directory `/home/users/tfunck/rep/phd/build/CMakeFiles/CMakeTmp'
 
 

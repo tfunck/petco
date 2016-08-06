@@ -258,6 +258,19 @@ mincsplit/fast:
 	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/build
 .PHONY : mincsplit/fast
 
+#=============================================================================
+# Target rules for targets named surf_defrag
+
+# Build rule for target.
+surf_defrag: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 surf_defrag
+.PHONY : surf_defrag
+
+# fast build rule for target.
+surf_defrag/fast:
+	$(MAKE) -f CMakeFiles/surf_defrag.dir/build.make CMakeFiles/surf_defrag.dir/build
+.PHONY : surf_defrag/fast
+
 src/gtm/gaussj.o: src/gtm/gaussj.c.o
 
 .PHONY : src/gtm/gaussj.o
@@ -509,6 +522,7 @@ src/srv/my_interpolate_sphere.o: src/srv/my_interpolate_sphere.c.o
 src/srv/my_interpolate_sphere.c.o:
 	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.o
 	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/src/srv/my_interpolate_sphere.c.o
+	$(MAKE) -f CMakeFiles/surf_defrag.dir/build.make CMakeFiles/surf_defrag.dir/src/srv/my_interpolate_sphere.c.o
 .PHONY : src/srv/my_interpolate_sphere.c.o
 
 src/srv/my_interpolate_sphere.i: src/srv/my_interpolate_sphere.c.i
@@ -519,6 +533,7 @@ src/srv/my_interpolate_sphere.i: src/srv/my_interpolate_sphere.c.i
 src/srv/my_interpolate_sphere.c.i:
 	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.i
 	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/src/srv/my_interpolate_sphere.c.i
+	$(MAKE) -f CMakeFiles/surf_defrag.dir/build.make CMakeFiles/surf_defrag.dir/src/srv/my_interpolate_sphere.c.i
 .PHONY : src/srv/my_interpolate_sphere.c.i
 
 src/srv/my_interpolate_sphere.s: src/srv/my_interpolate_sphere.c.s
@@ -529,6 +544,7 @@ src/srv/my_interpolate_sphere.s: src/srv/my_interpolate_sphere.c.s
 src/srv/my_interpolate_sphere.c.s:
 	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.s
 	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/src/srv/my_interpolate_sphere.c.s
+	$(MAKE) -f CMakeFiles/surf_defrag.dir/build.make CMakeFiles/surf_defrag.dir/src/srv/my_interpolate_sphere.c.s
 .PHONY : src/srv/my_interpolate_sphere.c.s
 
 src/srv/ray_casting.o: src/srv/ray_casting.c.o
@@ -612,6 +628,33 @@ src/srv/srv-3.0.c.s:
 	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/src/srv/srv-3.0.c.s
 .PHONY : src/srv/srv-3.0.c.s
 
+src/surf_defrag/surf_defrag-1.1.o: src/surf_defrag/surf_defrag-1.1.c.o
+
+.PHONY : src/surf_defrag/surf_defrag-1.1.o
+
+# target to build an object file
+src/surf_defrag/surf_defrag-1.1.c.o:
+	$(MAKE) -f CMakeFiles/surf_defrag.dir/build.make CMakeFiles/surf_defrag.dir/src/surf_defrag/surf_defrag-1.1.c.o
+.PHONY : src/surf_defrag/surf_defrag-1.1.c.o
+
+src/surf_defrag/surf_defrag-1.1.i: src/surf_defrag/surf_defrag-1.1.c.i
+
+.PHONY : src/surf_defrag/surf_defrag-1.1.i
+
+# target to preprocess a source file
+src/surf_defrag/surf_defrag-1.1.c.i:
+	$(MAKE) -f CMakeFiles/surf_defrag.dir/build.make CMakeFiles/surf_defrag.dir/src/surf_defrag/surf_defrag-1.1.c.i
+.PHONY : src/surf_defrag/surf_defrag-1.1.c.i
+
+src/surf_defrag/surf_defrag-1.1.s: src/surf_defrag/surf_defrag-1.1.c.s
+
+.PHONY : src/surf_defrag/surf_defrag-1.1.s
+
+# target to generate assembly for a file
+src/surf_defrag/surf_defrag-1.1.c.s:
+	$(MAKE) -f CMakeFiles/surf_defrag.dir/build.make CMakeFiles/surf_defrag.dir/src/surf_defrag/surf_defrag-1.1.c.s
+.PHONY : src/surf_defrag/surf_defrag-1.1.c.s
+
 src/surf_dist/surf_dist-5.1.o: src/surf_dist/surf_dist-5.1.c.o
 
 .PHONY : src/surf_dist/surf_dist-5.1.o
@@ -659,6 +702,7 @@ help:
 	@echo "... idSURF"
 	@echo "... minc_helper"
 	@echo "... mincsplit"
+	@echo "... surf_defrag"
 	@echo "... src/gtm/gaussj.o"
 	@echo "... src/gtm/gaussj.i"
 	@echo "... src/gtm/gaussj.s"
@@ -698,6 +742,9 @@ help:
 	@echo "... src/srv/srv-3.0.o"
 	@echo "... src/srv/srv-3.0.i"
 	@echo "... src/srv/srv-3.0.s"
+	@echo "... src/surf_defrag/surf_defrag-1.1.o"
+	@echo "... src/surf_defrag/surf_defrag-1.1.i"
+	@echo "... src/surf_defrag/surf_defrag-1.1.s"
 	@echo "... src/surf_dist/surf_dist-5.1.o"
 	@echo "... src/surf_dist/surf_dist-5.1.i"
 	@echo "... src/surf_dist/surf_dist-5.1.s"

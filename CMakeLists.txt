@@ -112,14 +112,21 @@ target_link_libraries(surf_dist minc_helper  ${BICPL_LIB} m pthread)
 target_include_directories(surf_dist PUBLIC ${MINC_INCLUDE_DIR})
 set_target_properties(surf_dist PROPERTIES COMPILE_FLAGS "-static -std=c99")
 
-
+#######################
+# Compile surf_defrag #
+#######################
+set(surf_defrag_SRC  src/surf_defrag/surf_defrag-1.1.c src/srv/my_interpolate_sphere.c    include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
+add_executable(surf_defrag ${surf_defrag_SRC})
+target_link_libraries(surf_defrag minc_helper  ${BICPL_LIB} m pthread)
+target_include_directories(surf_defrag PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(surf_defrag PROPERTIES COMPILE_FLAGS "-static -std=c99")
 
 
 
 ###########################
 # Set install directories #
 ###########################
-set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist)
+set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag)
 foreach(prog ${progs})
 	install(TARGETS ${prog} DESTINATION bin)
 endforeach(prog)

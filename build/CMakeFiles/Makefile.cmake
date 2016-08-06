@@ -98,4 +98,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/idSURF.dir/DependInfo.cmake"
   "CMakeFiles/minc_helper.dir/DependInfo.cmake"
   "CMakeFiles/mincsplit.dir/DependInfo.cmake"
+  "CMakeFiles/surf_defrag.dir/DependInfo.cmake"
   )

@@ -12,3 +12,4 @@
 /home/users/tfunck/rep/phd/build/CMakeFiles/idSURF.dir
 /home/users/tfunck/rep/phd/build/CMakeFiles/minc_helper.dir
 /home/users/tfunck/rep/phd/build/CMakeFiles/mincsplit.dir
+/home/users/tfunck/rep/phd/build/CMakeFiles/surf_defrag.dir
