@@ -45,93 +45,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/t/local/bin/cmake
+CMAKE_COMMAND = /home/users/tfunck/local/bin/cmake
 
 # The command to remove a file.
-RM = /home/t/local/bin/cmake -E remove -f
+RM = /home/users/tfunck/local/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/t/neuro/projects/PhD
+CMAKE_SOURCE_DIR = /home/users/tfunck/rep/phd
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/t/neuro/projects/PhD/build
-
-#=============================================================================
-# Target rules for target CMakeFiles/minc_helper.dir
-
-# All Build rule for target.
-CMakeFiles/minc_helper.dir/all:
-	$(MAKE) -f CMakeFiles/minc_helper.dir/build.make CMakeFiles/minc_helper.dir/depend
-	$(MAKE) -f CMakeFiles/minc_helper.dir/build.make CMakeFiles/minc_helper.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=10,11 "Built target minc_helper"
-.PHONY : CMakeFiles/minc_helper.dir/all
-
-# Include target in all.
-all: CMakeFiles/minc_helper.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/minc_helper.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/minc_helper.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 0
-.PHONY : CMakeFiles/minc_helper.dir/rule
-
-# Convenience name for target.
-minc_helper: CMakeFiles/minc_helper.dir/rule
-
-.PHONY : minc_helper
-
-# clean rule for target.
-CMakeFiles/minc_helper.dir/clean:
-	$(MAKE) -f CMakeFiles/minc_helper.dir/build.make CMakeFiles/minc_helper.dir/clean
-.PHONY : CMakeFiles/minc_helper.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/minc_helper.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/idSURF.dir
-
-# All Build rule for target.
-CMakeFiles/idSURF.dir/all: CMakeFiles/minc_helper.dir/all
-	$(MAKE) -f CMakeFiles/idSURF.dir/build.make CMakeFiles/idSURF.dir/depend
-	$(MAKE) -f CMakeFiles/idSURF.dir/build.make CMakeFiles/idSURF.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=5,6,7 "Built target idSURF"
-.PHONY : CMakeFiles/idSURF.dir/all
-
-# Include target in all.
-all: CMakeFiles/idSURF.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/idSURF.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 5
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/idSURF.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 0
-.PHONY : CMakeFiles/idSURF.dir/rule
-
-# Convenience name for target.
-idSURF: CMakeFiles/idSURF.dir/rule
-
-.PHONY : idSURF
-
-# clean rule for target.
-CMakeFiles/idSURF.dir/clean:
-	$(MAKE) -f CMakeFiles/idSURF.dir/build.make CMakeFiles/idSURF.dir/clean
-.PHONY : CMakeFiles/idSURF.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/idSURF.dir/clean
-
-.PHONY : clean
+CMAKE_BINARY_DIR = /home/users/tfunck/rep/phd/build
 
 #=============================================================================
 # Target rules for target CMakeFiles/minc_fftw.dir
@@ -140,7 +66,7 @@ clean: CMakeFiles/idSURF.dir/clean
 CMakeFiles/minc_fftw.dir/all: CMakeFiles/minc_helper.dir/all
 	$(MAKE) -f CMakeFiles/minc_fftw.dir/build.make CMakeFiles/minc_fftw.dir/depend
 	$(MAKE) -f CMakeFiles/minc_fftw.dir/build.make CMakeFiles/minc_fftw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=8,9 "Built target minc_fftw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=8,9 "Built target minc_fftw"
 .PHONY : CMakeFiles/minc_fftw.dir/all
 
 # Include target in all.
@@ -150,9 +76,9 @@ all: CMakeFiles/minc_fftw.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/minc_fftw.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/minc_fftw.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 0
 .PHONY : CMakeFiles/minc_fftw.dir/rule
 
 # Convenience name for target.
@@ -178,7 +104,7 @@ CMakeFiles/gtm.dir/all: CMakeFiles/minc_helper.dir/all
 CMakeFiles/gtm.dir/all: CMakeFiles/minc_fftw.dir/all
 	$(MAKE) -f CMakeFiles/gtm.dir/build.make CMakeFiles/gtm.dir/depend
 	$(MAKE) -f CMakeFiles/gtm.dir/build.make CMakeFiles/gtm.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=1,2,3,4 "Built target gtm"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=1,2,3,4 "Built target gtm"
 .PHONY : CMakeFiles/gtm.dir/all
 
 # Include target in all.
@@ -188,9 +114,9 @@ all: CMakeFiles/gtm.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/gtm.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 8
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/gtm.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 0
 .PHONY : CMakeFiles/gtm.dir/rule
 
 # Convenience name for target.
@@ -215,7 +141,7 @@ clean: CMakeFiles/gtm.dir/clean
 CMakeFiles/srv.dir/all: CMakeFiles/minc_helper.dir/all
 	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/depend
 	$(MAKE) -f CMakeFiles/srv.dir/build.make CMakeFiles/srv.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=16,17,18,19,20 "Built target srv"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=16,17,18,19,20 "Built target srv"
 .PHONY : CMakeFiles/srv.dir/all
 
 # Include target in all.
@@ -225,9 +151,9 @@ all: CMakeFiles/srv.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/srv.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/srv.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 0
 .PHONY : CMakeFiles/srv.dir/rule
 
 # Convenience name for target.
@@ -246,39 +172,39 @@ clean: CMakeFiles/srv.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/mincsplit.dir
+# Target rules for target CMakeFiles/surf_dist.dir
 
 # All Build rule for target.
-CMakeFiles/mincsplit.dir/all: CMakeFiles/minc_helper.dir/all
-	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/depend
-	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=14,15 "Built target mincsplit"
-.PHONY : CMakeFiles/mincsplit.dir/all
+CMakeFiles/surf_dist.dir/all: CMakeFiles/minc_helper.dir/all
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/depend
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=21,22,23 "Built target surf_dist"
+.PHONY : CMakeFiles/surf_dist.dir/all
 
 # Include target in all.
-all: CMakeFiles/mincsplit.dir/all
+all: CMakeFiles/surf_dist.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/mincsplit.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/mincsplit.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 0
-.PHONY : CMakeFiles/mincsplit.dir/rule
+CMakeFiles/surf_dist.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/surf_dist.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 0
+.PHONY : CMakeFiles/surf_dist.dir/rule
 
 # Convenience name for target.
-mincsplit: CMakeFiles/mincsplit.dir/rule
+surf_dist: CMakeFiles/surf_dist.dir/rule
 
-.PHONY : mincsplit
-
-# clean rule for target.
-CMakeFiles/mincsplit.dir/clean:
-	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/clean
-.PHONY : CMakeFiles/mincsplit.dir/clean
+.PHONY : surf_dist
 
 # clean rule for target.
-clean: CMakeFiles/mincsplit.dir/clean
+CMakeFiles/surf_dist.dir/clean:
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/clean
+.PHONY : CMakeFiles/surf_dist.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/surf_dist.dir/clean
 
 .PHONY : clean
 
@@ -289,7 +215,7 @@ clean: CMakeFiles/mincsplit.dir/clean
 CMakeFiles/mincgroupstats.dir/all: CMakeFiles/minc_helper.dir/all
 	$(MAKE) -f CMakeFiles/mincgroupstats.dir/build.make CMakeFiles/mincgroupstats.dir/depend
 	$(MAKE) -f CMakeFiles/mincgroupstats.dir/build.make CMakeFiles/mincgroupstats.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=12,13 "Built target mincgroupstats"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=12,13 "Built target mincgroupstats"
 .PHONY : CMakeFiles/mincgroupstats.dir/all
 
 # Include target in all.
@@ -299,9 +225,9 @@ all: CMakeFiles/mincgroupstats.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/mincgroupstats.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/mincgroupstats.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 0
 .PHONY : CMakeFiles/mincgroupstats.dir/rule
 
 # Convenience name for target.
@@ -320,39 +246,113 @@ clean: CMakeFiles/mincgroupstats.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/surf_dist.dir
+# Target rules for target CMakeFiles/idSURF.dir
 
 # All Build rule for target.
-CMakeFiles/surf_dist.dir/all: CMakeFiles/minc_helper.dir/all
-	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/depend
-	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=21,22,23 "Built target surf_dist"
-.PHONY : CMakeFiles/surf_dist.dir/all
+CMakeFiles/idSURF.dir/all: CMakeFiles/minc_helper.dir/all
+	$(MAKE) -f CMakeFiles/idSURF.dir/build.make CMakeFiles/idSURF.dir/depend
+	$(MAKE) -f CMakeFiles/idSURF.dir/build.make CMakeFiles/idSURF.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=5,6,7 "Built target idSURF"
+.PHONY : CMakeFiles/idSURF.dir/all
 
 # Include target in all.
-all: CMakeFiles/surf_dist.dir/all
+all: CMakeFiles/idSURF.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/surf_dist.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 5
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/surf_dist.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 0
-.PHONY : CMakeFiles/surf_dist.dir/rule
+CMakeFiles/idSURF.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/idSURF.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 0
+.PHONY : CMakeFiles/idSURF.dir/rule
 
 # Convenience name for target.
-surf_dist: CMakeFiles/surf_dist.dir/rule
+idSURF: CMakeFiles/idSURF.dir/rule
 
-.PHONY : surf_dist
-
-# clean rule for target.
-CMakeFiles/surf_dist.dir/clean:
-	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/clean
-.PHONY : CMakeFiles/surf_dist.dir/clean
+.PHONY : idSURF
 
 # clean rule for target.
-clean: CMakeFiles/surf_dist.dir/clean
+CMakeFiles/idSURF.dir/clean:
+	$(MAKE) -f CMakeFiles/idSURF.dir/build.make CMakeFiles/idSURF.dir/clean
+.PHONY : CMakeFiles/idSURF.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/idSURF.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/minc_helper.dir
+
+# All Build rule for target.
+CMakeFiles/minc_helper.dir/all:
+	$(MAKE) -f CMakeFiles/minc_helper.dir/build.make CMakeFiles/minc_helper.dir/depend
+	$(MAKE) -f CMakeFiles/minc_helper.dir/build.make CMakeFiles/minc_helper.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=10,11 "Built target minc_helper"
+.PHONY : CMakeFiles/minc_helper.dir/all
+
+# Include target in all.
+all: CMakeFiles/minc_helper.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/minc_helper.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/minc_helper.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 0
+.PHONY : CMakeFiles/minc_helper.dir/rule
+
+# Convenience name for target.
+minc_helper: CMakeFiles/minc_helper.dir/rule
+
+.PHONY : minc_helper
+
+# clean rule for target.
+CMakeFiles/minc_helper.dir/clean:
+	$(MAKE) -f CMakeFiles/minc_helper.dir/build.make CMakeFiles/minc_helper.dir/clean
+.PHONY : CMakeFiles/minc_helper.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/minc_helper.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/mincsplit.dir
+
+# All Build rule for target.
+CMakeFiles/mincsplit.dir/all: CMakeFiles/minc_helper.dir/all
+	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/depend
+	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=14,15 "Built target mincsplit"
+.PHONY : CMakeFiles/mincsplit.dir/all
+
+# Include target in all.
+all: CMakeFiles/mincsplit.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/mincsplit.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/mincsplit.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 0
+.PHONY : CMakeFiles/mincsplit.dir/rule
+
+# Convenience name for target.
+mincsplit: CMakeFiles/mincsplit.dir/rule
+
+.PHONY : mincsplit
+
+# clean rule for target.
+CMakeFiles/mincsplit.dir/clean:
+	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/clean
+.PHONY : CMakeFiles/mincsplit.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/mincsplit.dir/clean
 
 .PHONY : clean
 

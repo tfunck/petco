@@ -6,221 +6,191 @@
 
 #IncludeRegexTransform: 
 
-/home/t/neuro/projects/PhD/src/srv/my_interpolate_sphere.c
-math.h
--
-stdio.h
--
-minc2.h
-/home/t/neuro/projects/PhD/src/srv/minc2.h
-volume_io.h
-/home/t/neuro/projects/PhD/src/srv/volume_io.h
-bicpl.h
-/home/t/neuro/projects/PhD/src/srv/bicpl.h
-
-/home/t/neuro/projects/PhD/src/surf_dist/surf_dist-5.1.c
-stdio.h
--
-stdlib.h
--
-unistd.h
--
-errno.h
--
-string.h
--
-malloc.h
--
-math.h
--
-minc2.h
-/home/t/neuro/projects/PhD/src/surf_dist/minc2.h
-
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5ACpublic.h
+/home/users/tfunck/local/include/H5ACpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Cpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Cpublic.h
+/home/users/tfunck/local/include/H5Cpublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Apublic.h
+/home/users/tfunck/local/include/H5Apublic.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 H5Opublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Opublic.h
+/home/users/tfunck/local/include/H5Opublic.h
 H5Tpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Tpublic.h
+/home/users/tfunck/local/include/H5Tpublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Cpublic.h
+/home/users/tfunck/local/include/H5Cpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Dpublic.h
+/home/users/tfunck/local/include/H5Dpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Epubgen.h
+/home/users/tfunck/local/include/H5Epubgen.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Epublic.h
+/home/users/tfunck/local/include/H5Epublic.h
 stdio.h
 -
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 H5Epubgen.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Epubgen.h
+/home/users/tfunck/local/include/H5Epubgen.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDcore.h
+/home/users/tfunck/local/include/H5FDcore.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDdirect.h
+/home/users/tfunck/local/include/H5FDdirect.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDfamily.h
+/home/users/tfunck/local/include/H5FDfamily.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDlog.h
+/home/users/tfunck/local/include/H5FDlog.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDmpi.h
+/home/users/tfunck/local/include/H5FDmpi.h
 H5FDmpio.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDmpio.h
+/home/users/tfunck/local/include/H5FDmpio.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDmpio.h
+/home/users/tfunck/local/include/H5FDmpio.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDmulti.h
+/home/users/tfunck/local/include/H5FDmulti.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 H5Ppublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ppublic.h
+/home/users/tfunck/local/include/H5Ppublic.h
 H5Fpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Fpublic.h
+/home/users/tfunck/local/include/H5Fpublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDpublic.h
+/home/users/tfunck/local/include/H5FDpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Fpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Fpublic.h
+/home/users/tfunck/local/include/H5Fpublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDsec2.h
+/home/users/tfunck/local/include/H5FDsec2.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDstdio.h
+/home/users/tfunck/local/include/H5FDstdio.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Fpublic.h
+/home/users/tfunck/local/include/H5Fpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5ACpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5ACpublic.h
+/home/users/tfunck/local/include/H5ACpublic.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Gpublic.h
+/home/users/tfunck/local/include/H5Gpublic.h
 sys/types.h
 -
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Lpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Lpublic.h
+/home/users/tfunck/local/include/H5Lpublic.h
 H5Opublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Opublic.h
+/home/users/tfunck/local/include/H5Opublic.h
 H5Tpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Tpublic.h
+/home/users/tfunck/local/include/H5Tpublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Lpublic.h
+/home/users/tfunck/local/include/H5Lpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 H5Tpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Tpublic.h
+/home/users/tfunck/local/include/H5Tpublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5MMpublic.h
+/home/users/tfunck/local/include/H5MMpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Opublic.h
+/home/users/tfunck/local/include/H5Opublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 H5Lpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Lpublic.h
+/home/users/tfunck/local/include/H5Lpublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5PLpublic.h
+/home/users/tfunck/local/include/H5PLpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ppublic.h
+/home/users/tfunck/local/include/H5Ppublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5ACpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5ACpublic.h
+/home/users/tfunck/local/include/H5ACpublic.h
 H5Dpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Dpublic.h
+/home/users/tfunck/local/include/H5Dpublic.h
 H5Fpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Fpublic.h
+/home/users/tfunck/local/include/H5Fpublic.h
 H5FDpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDpublic.h
+/home/users/tfunck/local/include/H5FDpublic.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 H5Lpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Lpublic.h
+/home/users/tfunck/local/include/H5Lpublic.h
 H5Opublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Opublic.h
+/home/users/tfunck/local/include/H5Opublic.h
 H5MMpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5MMpublic.h
+/home/users/tfunck/local/include/H5MMpublic.h
 H5Tpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Tpublic.h
+/home/users/tfunck/local/include/H5Tpublic.h
 H5Zpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Zpublic.h
+/home/users/tfunck/local/include/H5Zpublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Rpublic.h
+/home/users/tfunck/local/include/H5Rpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Gpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Gpublic.h
+/home/users/tfunck/local/include/H5Gpublic.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Spublic.h
+/home/users/tfunck/local/include/H5Spublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Tpublic.h
+/home/users/tfunck/local/include/H5Tpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Zpublic.h
+/home/users/tfunck/local/include/H5Zpublic.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5api_adpt.h
+/home/users/tfunck/local/include/H5api_adpt.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5pubconf.h
+/home/users/tfunck/local/include/H5pubconf.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5pubconf.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5pubconf.h
+/home/users/tfunck/local/include/H5pubconf.h
 H5version.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5version.h
+/home/users/tfunck/local/include/H5version.h
 features.h
 -
 sys/types.h
@@ -240,11 +210,11 @@ mpi.h
 mpio.h
 -
 H5api_adpt.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5api_adpt.h
+/home/users/tfunck/local/include/H5api_adpt.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5version.h
+/home/users/tfunck/local/include/H5version.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl.h
+/home/users/tfunck/local/include/bicpl.h
 bicpl/data_structures.h
 -
 bicpl/geom.h
@@ -262,29 +232,29 @@ bicpl/vols.h
 bicpl/images.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/amoeba.h
+/home/users/tfunck/local/include/bicpl/amoeba.h
 volume_io.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/bintree.h
+/home/users/tfunck/local/include/bicpl/bintree.h
 volume_io/geometry.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/bitlist.h
+/home/users/tfunck/local/include/bicpl/bitlist.h
 volume_io.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/colour_coding.h
+/home/users/tfunck/local/include/bicpl/colour_coding.h
 bicpl/objects.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/colours.h
+/home/users/tfunck/local/include/bicpl/colours.h
 volume_io.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/compute_xfm.h
+/home/users/tfunck/local/include/bicpl/compute_xfm.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/data_structures.h
+/home/users/tfunck/local/include/bicpl/data_structures.h
 bicpl/objects.h
 -
 volume_io.h
@@ -304,9 +274,9 @@ bicpl/stack.h
 bicpl/ds_prototypes.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/ds_prototypes.h
+/home/users/tfunck/local/include/bicpl/ds_prototypes.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/geom.h
+/home/users/tfunck/local/include/bicpl/geom.h
 volume_io.h
 -
 bicpl/objects.h
@@ -314,33 +284,33 @@ bicpl/objects.h
 bicpl/geom_prototypes.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/geom_prototypes.h
+/home/users/tfunck/local/include/bicpl/geom_prototypes.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/global_lookup.h
+/home/users/tfunck/local/include/bicpl/global_lookup.h
 volume_io.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/hash.h
+/home/users/tfunck/local/include/bicpl/hash.h
 volume_io.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/histogram.h
+/home/users/tfunck/local/include/bicpl/histogram.h
 volume_io.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/image_prototypes.h
+/home/users/tfunck/local/include/bicpl/image_prototypes.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/images.h
+/home/users/tfunck/local/include/bicpl/images.h
 bicpl/objects.h
 -
 bicpl/image_prototypes.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/minimization.h
+/home/users/tfunck/local/include/bicpl/minimization.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/numeric_prototypes.h
+/home/users/tfunck/local/include/bicpl/numeric_prototypes.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/numerical.h
+/home/users/tfunck/local/include/bicpl/numerical.h
 volume_io.h
 -
 bicpl/objects.h
@@ -356,7 +326,7 @@ bicpl/statistics.h
 bicpl/numeric_prototypes.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/obj_defs.h
+/home/users/tfunck/local/include/bicpl/obj_defs.h
 volume_io.h
 -
 bicpl/stack.h
@@ -364,9 +334,9 @@ bicpl/stack.h
 bicpl/bintree.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/object_prototypes.h
+/home/users/tfunck/local/include/bicpl/object_prototypes.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/objects.h
+/home/users/tfunck/local/include/bicpl/objects.h
 volume_io.h
 -
 bicpl/obj_defs.h
@@ -378,13 +348,13 @@ bicpl/data_structures.h
 bicpl/object_prototypes.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/priority_queue.h
+/home/users/tfunck/local/include/bicpl/priority_queue.h
 volume_io/arrays.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/prog_prototypes.h
+/home/users/tfunck/local/include/bicpl/prog_prototypes.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/prog_utils.h
+/home/users/tfunck/local/include/bicpl/prog_utils.h
 volume_io.h
 -
 bicpl/global_lookup.h
@@ -392,23 +362,23 @@ bicpl/global_lookup.h
 bicpl/prog_prototypes.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/queue.h
+/home/users/tfunck/local/include/bicpl/queue.h
 volume_io/arrays.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/skiplist.h
+/home/users/tfunck/local/include/bicpl/skiplist.h
 volume_io.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/stack.h
+/home/users/tfunck/local/include/bicpl/stack.h
 volume_io.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/statistics.h
+/home/users/tfunck/local/include/bicpl/statistics.h
 volume_io.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/trans.h
+/home/users/tfunck/local/include/bicpl/trans.h
 volume_io.h
 -
 bicpl/compute_xfm.h
@@ -416,11 +386,11 @@ bicpl/compute_xfm.h
 bicpl/trans_prototypes.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/trans_prototypes.h
+/home/users/tfunck/local/include/bicpl/trans_prototypes.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/vol_prototypes.h
+/home/users/tfunck/local/include/bicpl/vol_prototypes.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/bicpl/vols.h
+/home/users/tfunck/local/include/bicpl/vols.h
 volume_io.h
 -
 bicpl/colour_coding.h
@@ -428,97 +398,97 @@ bicpl/colour_coding.h
 bicpl/vol_prototypes.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/hdf5.h
+/home/users/tfunck/local/include/hdf5.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 H5Apublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Apublic.h
+/home/users/tfunck/local/include/H5Apublic.h
 H5ACpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5ACpublic.h
+/home/users/tfunck/local/include/H5ACpublic.h
 H5Dpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Dpublic.h
+/home/users/tfunck/local/include/H5Dpublic.h
 H5Epublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Epublic.h
+/home/users/tfunck/local/include/H5Epublic.h
 H5Fpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Fpublic.h
+/home/users/tfunck/local/include/H5Fpublic.h
 H5FDpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDpublic.h
+/home/users/tfunck/local/include/H5FDpublic.h
 H5Gpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Gpublic.h
+/home/users/tfunck/local/include/H5Gpublic.h
 H5Ipublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ipublic.h
+/home/users/tfunck/local/include/H5Ipublic.h
 H5Lpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Lpublic.h
+/home/users/tfunck/local/include/H5Lpublic.h
 H5MMpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5MMpublic.h
+/home/users/tfunck/local/include/H5MMpublic.h
 H5Opublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Opublic.h
+/home/users/tfunck/local/include/H5Opublic.h
 H5Ppublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Ppublic.h
+/home/users/tfunck/local/include/H5Ppublic.h
 H5PLpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5PLpublic.h
+/home/users/tfunck/local/include/H5PLpublic.h
 H5Rpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Rpublic.h
+/home/users/tfunck/local/include/H5Rpublic.h
 H5Spublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Spublic.h
+/home/users/tfunck/local/include/H5Spublic.h
 H5Tpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Tpublic.h
+/home/users/tfunck/local/include/H5Tpublic.h
 H5Zpublic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5Zpublic.h
+/home/users/tfunck/local/include/H5Zpublic.h
 H5FDcore.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDcore.h
+/home/users/tfunck/local/include/H5FDcore.h
 H5FDfamily.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDfamily.h
+/home/users/tfunck/local/include/H5FDfamily.h
 H5FDlog.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDlog.h
+/home/users/tfunck/local/include/H5FDlog.h
 H5FDmpi.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDmpi.h
+/home/users/tfunck/local/include/H5FDmpi.h
 H5FDmulti.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDmulti.h
+/home/users/tfunck/local/include/H5FDmulti.h
 H5FDsec2.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDsec2.h
+/home/users/tfunck/local/include/H5FDsec2.h
 H5FDstdio.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDstdio.h
+/home/users/tfunck/local/include/H5FDstdio.h
 H5FDwindows.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDwindows.h
+/home/users/tfunck/local/include/H5FDwindows.h
 H5FDdirect.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5FDdirect.h
+/home/users/tfunck/local/include/H5FDdirect.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc.h
+/home/users/tfunck/local/include/minc.h
 hdf5.h
 -
 netcdf.h
 -
 minc_compat.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc_compat.h
+/home/users/tfunck/local/include/minc_compat.h
 netcdf.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc2.h
+/home/users/tfunck/local/include/minc2.h
 hdf5.h
 -
 minc2_defs.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc2_defs.h
+/home/users/tfunck/local/include/minc2_defs.h
 minc2_structs.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc2_structs.h
+/home/users/tfunck/local/include/minc2_structs.h
 minc2_error.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc2_error.h
+/home/users/tfunck/local/include/minc2_error.h
 minc2_api.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc2_api.h
+/home/users/tfunck/local/include/minc2_api.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc2_api.h
+/home/users/tfunck/local/include/minc2_api.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc2_defs.h
+/home/users/tfunck/local/include/minc2_defs.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc2_error.h
+/home/users/tfunck/local/include/minc2_error.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc2_structs.h
+/home/users/tfunck/local/include/minc2_structs.h
 H5public.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/H5public.h
+/home/users/tfunck/local/include/H5public.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/minc_compat.h
+/home/users/tfunck/local/include/minc_compat.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/netcdf.h
+/home/users/tfunck/local/include/netcdf.h
 stddef.h
 -
 errno.h
@@ -530,7 +500,7 @@ sys/stat.h
 io.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io.h
+/home/users/tfunck/local/include/volume_io.h
 volume_io/basic.h
 -
 volume_io/string_funcs.h
@@ -552,17 +522,17 @@ volume_io/transforms.h
 volume_io/vol_io_prototypes.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/alloc.h
+/home/users/tfunck/local/include/volume_io/alloc.h
 volume_io/basic.h
 -
 stdlib.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/arrays.h
+/home/users/tfunck/local/include/volume_io/arrays.h
 volume_io/alloc.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/basic.h
+/home/users/tfunck/local/include/volume_io/basic.h
 math.h
 -
 stdlib.h
@@ -578,35 +548,35 @@ volume_io/def_math.h
 volume_io/system_dependent.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/def_math.h
+/home/users/tfunck/local/include/volume_io/def_math.h
 math.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/files.h
+/home/users/tfunck/local/include/volume_io/files.h
 stdio.h
 -
 volume_io/basic.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/geom_structs.h
+/home/users/tfunck/local/include/volume_io/geom_structs.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/geometry.h
+/home/users/tfunck/local/include/volume_io/geometry.h
 volume_io/basic.h
 -
 volume_io/geom_structs.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/multidim.h
+/home/users/tfunck/local/include/volume_io/multidim.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/progress.h
+/home/users/tfunck/local/include/volume_io/progress.h
 volume_io/basic.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/string_funcs.h
+/home/users/tfunck/local/include/volume_io/string_funcs.h
 string.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/system_dependent.h
+/home/users/tfunck/local/include/volume_io/system_dependent.h
 float.h
 -
 values.h
@@ -614,15 +584,15 @@ values.h
 stdlib.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/transforms.h
+/home/users/tfunck/local/include/volume_io/transforms.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/vol_io_prototypes.h
+/home/users/tfunck/local/include/volume_io/vol_io_prototypes.h
 basic.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/basic.h
+/home/users/tfunck/local/include/volume_io/basic.h
 minc2_structs.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/minc2_structs.h
+/home/users/tfunck/local/include/volume_io/minc2_structs.h
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/volume.h
+/home/users/tfunck/local/include/volume_io/volume.h
 minc.h
 -
 minc2.h
@@ -634,9 +604,39 @@ volume_io/multidim.h
 volume_io/volume_cache.h
 -
 
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/volume_cache.h
+/home/users/tfunck/local/include/volume_io/volume_cache.h
 volume.h
-/home/t/neuro/quarantines/minc-toolkit-v2-install/include/volume_io/volume.h
+/home/users/tfunck/local/include/volume_io/volume.h
 volume_io/multidim.h
 -
+
+/home/users/tfunck/rep/phd/src/srv/my_interpolate_sphere.c
+math.h
+-
+stdio.h
+-
+minc2.h
+/home/users/tfunck/rep/phd/src/srv/minc2.h
+volume_io.h
+/home/users/tfunck/rep/phd/src/srv/volume_io.h
+bicpl.h
+/home/users/tfunck/rep/phd/src/srv/bicpl.h
+
+/home/users/tfunck/rep/phd/src/surf_dist/surf_dist-5.1.c
+stdio.h
+-
+stdlib.h
+-
+unistd.h
+-
+errno.h
+-
+string.h
+-
+malloc.h
+-
+math.h
+-
+minc2.h
+/home/users/tfunck/rep/phd/src/surf_dist/minc2.h
 

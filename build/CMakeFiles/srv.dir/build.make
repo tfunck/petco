@@ -34,19 +34,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/t/local/bin/cmake
+CMAKE_COMMAND = /home/users/tfunck/local/bin/cmake
 
 # The command to remove a file.
-RM = /home/t/local/bin/cmake -E remove -f
+RM = /home/users/tfunck/local/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/t/neuro/projects/PhD
+CMAKE_SOURCE_DIR = /home/users/tfunck/rep/phd
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/t/neuro/projects/PhD/build
+CMAKE_BINARY_DIR = /home/users/tfunck/rep/phd/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/srv.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/srv.dir/flags.make
 
 CMakeFiles/srv.dir/src/srv/srv-3.0.c.o: CMakeFiles/srv.dir/flags.make
 CMakeFiles/srv.dir/src/srv/srv-3.0.c.o: ../src/srv/srv-3.0.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/srv.dir/src/srv/srv-3.0.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/srv.dir/src/srv/srv-3.0.c.o   -c /home/t/neuro/projects/PhD/src/srv/srv-3.0.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/srv.dir/src/srv/srv-3.0.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/srv.dir/src/srv/srv-3.0.c.o   -c /home/users/tfunck/rep/phd/src/srv/srv-3.0.c
 
 CMakeFiles/srv.dir/src/srv/srv-3.0.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/srv.dir/src/srv/srv-3.0.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/t/neuro/projects/PhD/src/srv/srv-3.0.c > CMakeFiles/srv.dir/src/srv/srv-3.0.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/users/tfunck/rep/phd/src/srv/srv-3.0.c > CMakeFiles/srv.dir/src/srv/srv-3.0.c.i
 
 CMakeFiles/srv.dir/src/srv/srv-3.0.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/srv.dir/src/srv/srv-3.0.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/t/neuro/projects/PhD/src/srv/srv-3.0.c -o CMakeFiles/srv.dir/src/srv/srv-3.0.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/users/tfunck/rep/phd/src/srv/srv-3.0.c -o CMakeFiles/srv.dir/src/srv/srv-3.0.c.s
 
 CMakeFiles/srv.dir/src/srv/srv-3.0.c.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/srv.dir/src/srv/srv-3.0.c.o.provides.build: CMakeFiles/srv.dir/src/sr
 
 CMakeFiles/srv.dir/src/srv/rrefTest.c.o: CMakeFiles/srv.dir/flags.make
 CMakeFiles/srv.dir/src/srv/rrefTest.c.o: ../src/srv/rrefTest.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/srv.dir/src/srv/rrefTest.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/srv.dir/src/srv/rrefTest.c.o   -c /home/t/neuro/projects/PhD/src/srv/rrefTest.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/srv.dir/src/srv/rrefTest.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/srv.dir/src/srv/rrefTest.c.o   -c /home/users/tfunck/rep/phd/src/srv/rrefTest.c
 
 CMakeFiles/srv.dir/src/srv/rrefTest.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/srv.dir/src/srv/rrefTest.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/t/neuro/projects/PhD/src/srv/rrefTest.c > CMakeFiles/srv.dir/src/srv/rrefTest.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/users/tfunck/rep/phd/src/srv/rrefTest.c > CMakeFiles/srv.dir/src/srv/rrefTest.c.i
 
 CMakeFiles/srv.dir/src/srv/rrefTest.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/srv.dir/src/srv/rrefTest.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/t/neuro/projects/PhD/src/srv/rrefTest.c -o CMakeFiles/srv.dir/src/srv/rrefTest.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/users/tfunck/rep/phd/src/srv/rrefTest.c -o CMakeFiles/srv.dir/src/srv/rrefTest.c.s
 
 CMakeFiles/srv.dir/src/srv/rrefTest.c.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/srv.dir/src/srv/rrefTest.c.o.provides.build: CMakeFiles/srv.dir/src/s
 
 CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.o: CMakeFiles/srv.dir/flags.make
 CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.o: ../src/srv/my_interpolate_sphere.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.o   -c /home/t/neuro/projects/PhD/src/srv/my_interpolate_sphere.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.o   -c /home/users/tfunck/rep/phd/src/srv/my_interpolate_sphere.c
 
 CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/t/neuro/projects/PhD/src/srv/my_interpolate_sphere.c > CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/users/tfunck/rep/phd/src/srv/my_interpolate_sphere.c > CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.i
 
 CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/t/neuro/projects/PhD/src/srv/my_interpolate_sphere.c -o CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/users/tfunck/rep/phd/src/srv/my_interpolate_sphere.c -o CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.s
 
 CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/srv.dir/src/srv/my_interpolate_sphere.c.o.provides.build: CMakeFiles/
 
 CMakeFiles/srv.dir/src/srv/ray_casting.c.o: CMakeFiles/srv.dir/flags.make
 CMakeFiles/srv.dir/src/srv/ray_casting.c.o: ../src/srv/ray_casting.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/srv.dir/src/srv/ray_casting.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/srv.dir/src/srv/ray_casting.c.o   -c /home/t/neuro/projects/PhD/src/srv/ray_casting.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/srv.dir/src/srv/ray_casting.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/srv.dir/src/srv/ray_casting.c.o   -c /home/users/tfunck/rep/phd/src/srv/ray_casting.c
 
 CMakeFiles/srv.dir/src/srv/ray_casting.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/srv.dir/src/srv/ray_casting.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/t/neuro/projects/PhD/src/srv/ray_casting.c > CMakeFiles/srv.dir/src/srv/ray_casting.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/users/tfunck/rep/phd/src/srv/ray_casting.c > CMakeFiles/srv.dir/src/srv/ray_casting.c.i
 
 CMakeFiles/srv.dir/src/srv/ray_casting.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/srv.dir/src/srv/ray_casting.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/t/neuro/projects/PhD/src/srv/ray_casting.c -o CMakeFiles/srv.dir/src/srv/ray_casting.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/users/tfunck/rep/phd/src/srv/ray_casting.c -o CMakeFiles/srv.dir/src/srv/ray_casting.c.s
 
 CMakeFiles/srv.dir/src/srv/ray_casting.c.o.requires:
 
@@ -170,7 +170,7 @@ srv: CMakeFiles/srv.dir/src/srv/ray_casting.c.o
 srv: CMakeFiles/srv.dir/build.make
 srv: libminc_helper.a
 srv: CMakeFiles/srv.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/t/neuro/projects/PhD/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable srv"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/users/tfunck/rep/phd/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable srv"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/srv.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -190,6 +190,6 @@ CMakeFiles/srv.dir/clean:
 .PHONY : CMakeFiles/srv.dir/clean
 
 CMakeFiles/srv.dir/depend:
-	cd /home/t/neuro/projects/PhD/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/t/neuro/projects/PhD /home/t/neuro/projects/PhD /home/t/neuro/projects/PhD/build /home/t/neuro/projects/PhD/build /home/t/neuro/projects/PhD/build/CMakeFiles/srv.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/users/tfunck/rep/phd/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/users/tfunck/rep/phd /home/users/tfunck/rep/phd /home/users/tfunck/rep/phd/build /home/users/tfunck/rep/phd/build /home/users/tfunck/rep/phd/build/CMakeFiles/srv.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/srv.dir/depend
 

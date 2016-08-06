@@ -1,8 +1,8 @@
-/home/t/local/bin/gtm
-/home/t/local/bin/idSURF
-/home/t/local/bin/mincgroupstats
-/home/t/local/bin/srv
-/home/t/local/bin/mincsplit
-/home/t/local/bin/surf_dist
-/home/t/local/lib/libminc_helper.a
-/home/t/local/lib/libminc_fftw.a
+/home/users/tfunck/local/bin/gtm
+/home/users/tfunck/local/bin/idSURF
+/home/users/tfunck/local/bin/mincgroupstats
+/home/users/tfunck/local/bin/srv
+/home/users/tfunck/local/bin/mincsplit
+/home/users/tfunck/local/bin/surf_dist
+/home/users/tfunck/local/lib/libminc_helper.a
+/home/users/tfunck/local/lib/libminc_fftw.a

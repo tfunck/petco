@@ -39,56 +39,33 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/t/local/bin/cmake
+CMAKE_COMMAND = /home/users/tfunck/local/bin/cmake
 
 # The command to remove a file.
-RM = /home/t/local/bin/cmake -E remove -f
+RM = /home/users/tfunck/local/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/t/neuro/projects/PhD
+CMAKE_SOURCE_DIR = /home/users/tfunck/rep/phd
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/t/neuro/projects/PhD/build
+CMAKE_BINARY_DIR = /home/users/tfunck/rep/phd/build
 
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/home/t/local/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : edit_cache
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/home/users/tfunck/local/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
 
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
+# Special rule for the target install/strip
+install/strip/fast: install/strip
 
-.PHONY : edit_cache/fast
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/home/t/local/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/home/t/local/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/home/t/local/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
+.PHONY : install/strip/fast
 
 # Special rule for the target list_install_components
 list_install_components:
@@ -100,21 +77,21 @@ list_install_components/fast: list_install_components
 
 .PHONY : list_install_components/fast
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/home/t/local/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/home/users/tfunck/local/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : edit_cache
 
-# Special rule for the target install/strip
-install/strip/fast: install/strip
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
 
-.PHONY : install/strip/fast
+.PHONY : edit_cache/fast
 
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/home/t/local/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+	/home/users/tfunck/local/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local
 
 # Special rule for the target install/local
@@ -122,11 +99,34 @@ install/local/fast: install/local
 
 .PHONY : install/local/fast
 
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/home/users/tfunck/local/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/home/users/tfunck/local/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/home/users/tfunck/local/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles /home/t/neuro/projects/PhD/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles /home/users/tfunck/rep/phd/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t/neuro/projects/PhD/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/users/tfunck/rep/phd/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -153,32 +153,6 @@ preinstall/fast:
 depend:
 	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
-
-#=============================================================================
-# Target rules for targets named minc_helper
-
-# Build rule for target.
-minc_helper: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 minc_helper
-.PHONY : minc_helper
-
-# fast build rule for target.
-minc_helper/fast:
-	$(MAKE) -f CMakeFiles/minc_helper.dir/build.make CMakeFiles/minc_helper.dir/build
-.PHONY : minc_helper/fast
-
-#=============================================================================
-# Target rules for targets named idSURF
-
-# Build rule for target.
-idSURF: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 idSURF
-.PHONY : idSURF
-
-# fast build rule for target.
-idSURF/fast:
-	$(MAKE) -f CMakeFiles/idSURF.dir/build.make CMakeFiles/idSURF.dir/build
-.PHONY : idSURF/fast
 
 #=============================================================================
 # Target rules for targets named minc_fftw
@@ -220,17 +194,17 @@ srv/fast:
 .PHONY : srv/fast
 
 #=============================================================================
-# Target rules for targets named mincsplit
+# Target rules for targets named surf_dist
 
 # Build rule for target.
-mincsplit: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 mincsplit
-.PHONY : mincsplit
+surf_dist: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 surf_dist
+.PHONY : surf_dist
 
 # fast build rule for target.
-mincsplit/fast:
-	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/build
-.PHONY : mincsplit/fast
+surf_dist/fast:
+	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/build
+.PHONY : surf_dist/fast
 
 #=============================================================================
 # Target rules for targets named mincgroupstats
@@ -246,17 +220,43 @@ mincgroupstats/fast:
 .PHONY : mincgroupstats/fast
 
 #=============================================================================
-# Target rules for targets named surf_dist
+# Target rules for targets named idSURF
 
 # Build rule for target.
-surf_dist: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 surf_dist
-.PHONY : surf_dist
+idSURF: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 idSURF
+.PHONY : idSURF
 
 # fast build rule for target.
-surf_dist/fast:
-	$(MAKE) -f CMakeFiles/surf_dist.dir/build.make CMakeFiles/surf_dist.dir/build
-.PHONY : surf_dist/fast
+idSURF/fast:
+	$(MAKE) -f CMakeFiles/idSURF.dir/build.make CMakeFiles/idSURF.dir/build
+.PHONY : idSURF/fast
+
+#=============================================================================
+# Target rules for targets named minc_helper
+
+# Build rule for target.
+minc_helper: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 minc_helper
+.PHONY : minc_helper
+
+# fast build rule for target.
+minc_helper/fast:
+	$(MAKE) -f CMakeFiles/minc_helper.dir/build.make CMakeFiles/minc_helper.dir/build
+.PHONY : minc_helper/fast
+
+#=============================================================================
+# Target rules for targets named mincsplit
+
+# Build rule for target.
+mincsplit: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 mincsplit
+.PHONY : mincsplit
+
+# fast build rule for target.
+mincsplit/fast:
+	$(MAKE) -f CMakeFiles/mincsplit.dir/build.make CMakeFiles/mincsplit.dir/build
+.PHONY : mincsplit/fast
 
 src/gtm/gaussj.o: src/gtm/gaussj.c.o
 
@@ -645,20 +645,20 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
-	@echo "... rebuild_cache"
-	@echo "... install"
-	@echo "... minc_helper"
-	@echo "... idSURF"
+	@echo "... install/strip"
+	@echo "... list_install_components"
 	@echo "... minc_fftw"
 	@echo "... gtm"
+	@echo "... edit_cache"
 	@echo "... srv"
-	@echo "... mincsplit"
-	@echo "... mincgroupstats"
-	@echo "... surf_dist"
-	@echo "... list_install_components"
-	@echo "... install/strip"
 	@echo "... install/local"
+	@echo "... install"
+	@echo "... rebuild_cache"
+	@echo "... surf_dist"
+	@echo "... mincgroupstats"
+	@echo "... idSURF"
+	@echo "... minc_helper"
+	@echo "... mincsplit"
 	@echo "... src/gtm/gaussj.o"
 	@echo "... src/gtm/gaussj.i"
 	@echo "... src/gtm/gaussj.s"

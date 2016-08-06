@@ -4,20 +4,20 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/t/neuro/projects/PhD/src/idSURF/gaussianiir3d.c" "/home/t/neuro/projects/PhD/build/CMakeFiles/idSURF.dir/src/idSURF/gaussianiir3d.c.o"
-  "/home/t/neuro/projects/PhD/src/idSURF/idSURF-4.2.c" "/home/t/neuro/projects/PhD/build/CMakeFiles/idSURF.dir/src/idSURF/idSURF-4.2.c.o"
+  "/home/users/tfunck/rep/phd/src/idSURF/gaussianiir3d.c" "/home/users/tfunck/rep/phd/build/CMakeFiles/idSURF.dir/src/idSURF/gaussianiir3d.c.o"
+  "/home/users/tfunck/rep/phd/src/idSURF/idSURF-4.2.c" "/home/users/tfunck/rep/phd/build/CMakeFiles/idSURF.dir/src/idSURF/idSURF-4.2.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
   "../include"
-  "/home/t/neuro/quarantines/minc-toolkit-v2-install/include"
+  "/home/users/tfunck/local/include"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/t/neuro/projects/PhD/build/CMakeFiles/minc_helper.dir/DependInfo.cmake"
+  "/home/users/tfunck/rep/phd/build/CMakeFiles/minc_helper.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.
