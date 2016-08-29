@@ -1,1 +1,0 @@
-/usr/bin/cc     CMakeFiles/mincsplit.dir/src/mincsplit/mincsplit.c.o  -o mincsplit  -L/home/users/tfunck/local/lib -rdynamic libminc_helper.a -lminc2 -lhdf5 -lnetcdf -lz -lznz -ldl -lrt -lm -lpthread -Wl,-rpath,/home/users/tfunck/local/lib: 

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libminc_helper.a  CMakeFiles/minc_helper.dir/src/minc_helper/minc_helper-1.2.c.o
-/usr/bin/ranlib libminc_helper.a

@@ -1,1 +1,0 @@
-/usr/bin/cc     CMakeFiles/gtm.dir/src/gtm/gtm-3.2.c.o CMakeFiles/gtm.dir/src/gtm/gaussj.c.o CMakeFiles/gtm.dir/src/nrutil/nrutil.c.o  -o gtm  -L/home/users/tfunck/local/lib -rdynamic libminc_fftw.a libminc_helper.a -lminc2 -lhdf5 -lnetcdf -lz -lznz -ldl -lrt -lm -lpthread -lfftw3 -Wl,-rpath,/home/users/tfunck/local/lib: 

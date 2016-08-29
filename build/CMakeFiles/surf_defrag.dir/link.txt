@@ -1,1 +1,0 @@
-/usr/bin/cc     CMakeFiles/surf_defrag.dir/src/surf_defrag/surf_defrag-1.1.c.o CMakeFiles/surf_defrag.dir/src/srv/my_interpolate_sphere.c.o  -o surf_defrag  -L/home/users/tfunck/local/lib -rdynamic libminc_helper.a -lbicpl -lminc2 -lhdf5 -lnetcdf -lniftiio -lz -lznz -ldl -lrt -lm -lpthread -Wl,-rpath,/home/users/tfunck/local/lib: 
