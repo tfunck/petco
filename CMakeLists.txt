@@ -130,10 +130,21 @@ target_link_libraries(tka minc_helper  ${MINC2_LIB} m pthread)
 target_include_directories(tka PUBLIC ${MINC_INCLUDE_DIR})
 set_target_properties(tka PROPERTIES COMPILE_FLAGS "-static -std=c99")
 
+######################
+# Compile minc2ascii #
+######################
+set(minc2ascii_SRC  src/minc2ascii/minc2ascii.c  include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
+add_executable(minc2ascii ${minc2ascii_SRC})
+target_link_libraries(minc2ascii minc_helper  ${MINC2_LIB} m pthread)
+target_include_directories(minc2ascii PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(minc2ascii PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
+
+
 ###########################
 # Set install directories #
 ###########################
-set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag tka)
+set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag tka minc2ascii)
 foreach(prog ${progs}) 
 	install(TARGETS ${prog} DESTINATION bin)
 endforeach(prog)
