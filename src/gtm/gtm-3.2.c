@@ -42,12 +42,11 @@ int isin(int x, int* list, int n){
 }
 
 
-struct linfo* get_nlabels(data* mask, float* mask_array){
+struct linfo* get_nlabels(data* mask, int* mask_array){
     int nlabels=0;
     struct linfo* label_info=malloc(sizeof(*label_info));
     int* labels=NULL; //labels stores the integer values of atlas
     int* nLocalVoxels=NULL;
-
     for( int z=0;  z < mask->zmax; z++ ) {
         for( int y=0; y < mask->ymax; y++) {
             for( int x=0; x < mask->xmax; x++){
@@ -73,82 +72,53 @@ struct linfo* get_nlabels(data* mask, float* mask_array){
     return(label_info);
 }
 
-int get_rsf( data* mask, float* mask_array, int** temp_masks, float** rsf,  double fwhm, int numsteps, int* labels,int nlabels, int* nLocalVoxels){
-    float sigma=fwhm/2.35482005;
-    int nvox = mask->n;
-    double* temp=malloc(nvox*sizeof(*temp));
 
-    for( int z=0;  z < mask->zmax; z++ ) {
-        for( int y=0; y < mask->ymax; y++) {
-            for( int x=0; x < mask->xmax; x++){
-                int index=z*mask->ymax*mask->xmax + y*mask->xmax+x;
-                if( mask_array[index] != 0 ){
-                    int label = mask_array[index];
-                    int idx=find(label, labels, nlabels);
-                    //printf("%d %d %d\n", label, nlabels, idx);
-                    if(idx < 0) pexit("Error with list of labels", "", 1);
-                    temp_masks[idx][index]=1;
-                }
-            }
-        }
-    }
-
-    for(int i=0; i<nlabels; i++){
-        for(int k=0; k<nvox; k++) temp[k]=temp_masks[i][k];
-        //gaussianiir3d(temp, mask->xmax, mask->ymax, mask->zmax, sigma, numsteps);
-        gaussian_filter(temp, fwhm, mask->count, mask->step); 
-        for(int k=0; k<nvox; k++) rsf[i][k]=temp[k];
-    }
-    writeVolume("test.mnc", rsf[0], mask->start, mask->step, mask->wcount, MI_TYPE_FLOAT);
-    free(temp); 
-    return(0);
-}   
-
-int gtm_solve(data* mask, float* mask_array, int nlabels, float** gtm, double fwhm, int numsteps, 
-                    int* labels, int* nLocalVoxels){
+int gtm_solve(data* mask, int* mask_array, int nlabels, float** gtm, double fwhm, int* labels, int* nLocalVoxels){
     double* rsfTotal;
-    int nVoxels=mask->n;
     int i, j, k, n=0;
     mihandle_t image;
     int* mask1, *mask2;
-    float** rsf;
-    float** zero_array;
-    int** temp_masks;
+    float* rsf;
+    float** zero_array; //Used for inverting GTM with gaussj 
+    int nvox = mask->n;
+    int label;
+    double* temp=malloc(nvox*sizeof(*temp)); //
     int x;
     
-    rsf=malloc(sizeof(*rsf)*nlabels);
+    rsf=calloc( nvox, sizeof(*rsf));
     zero_array=malloc(sizeof(*zero_array) * nlabels);
-    temp_masks=malloc(sizeof(*temp_masks) * nlabels);
     for(i=0; i< nlabels; i++){ 
-        temp_masks[i]=calloc(nVoxels,  sizeof(**temp_masks));
         zero_array[i]=calloc(nlabels,  sizeof(**zero_array));
-        rsf[i]=calloc( nVoxels, sizeof(**rsf));
-        //int sum=0;
-        //for(x=0; x < mask->n; x++){
-        //    if( mask_array[x] == i+1  ) sum++;
-        // }
-        //printf("%d %d\n", i+1, sum);
     }
-
+    
     //Calculate the regional response function (RSF)
-    get_rsf(mask, mask_array, temp_masks, rsf, fwhm, numsteps, labels, nlabels,  nLocalVoxels );
-    for(j=0; j < nlabels; j++) printf("%d\n",nLocalVoxels[j] );
     printf("Label\tNVoxels\tRSF\n");
     for(i=0; i < nlabels; i++){
+        label=labels[i];
+        for(int index=0;  index < nvox; index++ ) {
+            if( mask_array[index] == label ){
+                temp[index]=1;
+            }
+        }
+        gaussian_filter(temp, fwhm, mask->count, mask->step); 
+        for(int k=0; k<nvox; k++){ 
+            rsf[k]=temp[k];
+            temp[k]=0;
+        }
         //find the proportion of each blurred mask j in mask i
         //cycle through each mask j...
         for(j=0; j < nlabels; j++){
-            mask2=temp_masks[j];
-            gtm[i][j]=0; //initialize to 0, just in case its automatically set to another value
-            for(k=0; k < nVoxels; k++){
+            int label2 = labels[j];
+            gtm[i][j]=0; //initialize to 0, just in case it was automatically set to another value
+            for(k=0; k < nvox; k++){
                 //Find the amount of rsf of mask j in mask i
-                if( mask2[k] != 0){ 
+                if( mask_array[k] == label2){ 
                     //for this k we are in our mask i, so we add up the values of mask j at k
-                    gtm[i][j] += (float) rsf[i][k]; //this voxel is in region, so we add rsf j to sum
+                    //printf("%d %f\n", mask_array[k], rsf[k]);
+                    gtm[i][j] += (float) rsf[k]; //this voxel is in region, so we add rsf j to sum
                 }
             }
         }
-        
     
         for(j=0; j < nlabels; j++){
             if(nLocalVoxels[j] > 0) gtm[i][j] /=  nLocalVoxels[j]; //Divide the total signal in mask j 
@@ -168,17 +138,15 @@ int gtm_solve(data* mask, float* mask_array, int nlabels, float** gtm, double fw
 
 
     for(j=0; j < nlabels; j++){ 
-        free(rsf[j]);
         free(zero_array[j]);
-        free(temp_masks[j]);
     }
     free(rsf);
-    free(temp_masks);
     free(zero_array);
+    free(temp); 
 return 0;
 }
 
-int gtm_apply(data* image, data* masks, float* mask_array, int* labels, int* nLocalVoxels, int nlabels, char* outputfilename, float** gtm){
+int gtm_apply(data* image, data* masks, int* mask_array, int* labels, int* nLocalVoxels, int nlabels, char* outputfilename, float** gtm){
     int i,j,  k, index;
     int nVoxels=masks[0].n;
     int max_frames;
@@ -319,7 +287,7 @@ int main(int argc, char** argv){
     int nlabels=0;
     double fwhm;
     float **gtm;
-    float* mask_array;
+    int* mask_array;
     int* nLocalVoxels; 
     int* labels;    
     int nmasks=0;
@@ -327,23 +295,24 @@ int main(int argc, char** argv){
     data* image=temp[0];
     data* masks=temp[1];
 
-    image->data=(double*) readVolume(image, 1, MI_TYPE_DOUBLE );
-    mask_array=(float*) readVolume(masks, 1, MI_TYPE_FLOAT );
-    createVolume(outputfilename, image->ndim, image->wcount, image->step, image->start, MI_TYPE_FLOAT);
-    int numsteps=100;
+    image->data=(double*) readVolume(image, 1, MI_TYPE_DOUBLE ); //Load PET image
+    mask_array=(int*) readVolume(masks, 1, MI_TYPE_INT ); //Load mask image
+    createVolume(outputfilename, image->ndim, image->wcount, image->step, image->start, MI_TYPE_FLOAT); //Create output MINC file
 
-    struct linfo* label_info=get_nlabels(masks, mask_array);
-    nlabels=label_info->nlabels;
-    nLocalVoxels=label_info->nLocalVoxels;
-    labels=label_info->labels;
+    struct linfo* label_info=get_nlabels(masks, mask_array); //Figure out how many and what labels are in the mask image
+    nlabels=label_info->nlabels; //Number of labels
+    nLocalVoxels=label_info->nLocalVoxels; //Number of voxels with this label
+    labels=label_info->labels; //List of the labels in the mask file
    
-    gtm=malloc(nlabels * sizeof(*gtm));
     //Allocate memory for GTM matrix
+    gtm=malloc(nlabels * sizeof(*gtm));
     for(i=0; i < nlabels; i++){ 
         gtm[i]=calloc( nlabels, sizeof(**gtm));
     }
 
-    gtm_solve(masks, mask_array, nlabels,  gtm, fwhm, numsteps, labels, nLocalVoxels);
+    //Get rsf from each label and solve the GTM
+    gtm_solve(masks, mask_array, nlabels,  gtm, fwhm, labels, nLocalVoxels);
+    //Apply gtm to each frame
     gtm_apply(image, masks, mask_array, labels, nLocalVoxels, nlabels, outputfilename, gtm);
 
     for(i=0; i < nlabels; i++){ 

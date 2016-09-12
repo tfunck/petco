@@ -532,8 +532,8 @@ data* copyVolume(data* vol){
 
 void* readVolume(data* volume, int read_hyperslab /*1 for read, o.w. don't read*/, mitype_t dtype){
     mihandle_t img;
-	void* ptr=NULL;
-	int status=MI_NOERROR;
+    void* ptr=NULL;
+    int status=MI_NOERROR;
     int offset;
     int sizeof_dtype;
     
@@ -550,7 +550,7 @@ void* readVolume(data* volume, int read_hyperslab /*1 for read, o.w. don't read*
 
             ptr=malloc_check(volume->tmax, volume->zmax, volume->ymax, volume->xmax, sizeof_dtype, volume->ndim);
             status=miget_real_value_hyperslab(img, dtype, volume->wstarts, volume->wcount, ptr); 
-		}
+	}
         if(status != MI_NOERROR) {
             miclose_volume(img);
             pexit(volume->filename, "Could not read values.", 1);

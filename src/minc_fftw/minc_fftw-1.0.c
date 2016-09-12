@@ -128,7 +128,7 @@ double* create_filter(double fwhm, int* N, double* step){
     double a=1/(sd*sqrt(2*pi));
     double b=1/(2*sd*sd);
     double min = sd * sqrt( -2* log(t/a)  );
-    int minima[3]= { ceil(min/step[0]),   ceil(min/step[1]),   ceil(min/step[2]) }; //minimal distance in voxels needed to achieve desired precision 
+    int minima[3]= { ceil(min/fabsf(step[0])),   ceil(min/fabsf(step[1])),   ceil(min/fabsf(step[2])) }; //minimal distance in voxels needed to achieve desired precision 
     int length[3]={minima[0]*2+1, minima[1]*2+1, minima[2]*2+1 };
     double start[3]={};
     double** gauss1d=malloc(sizeof(*gauss1d)* 3);
