@@ -41,12 +41,12 @@ int xmin=0, ymin=0, zmin=0;
 int nodeCounter=0;
 
 outerMeshFile=fopen(outerMeshfilename, "rt");
-innerMeshFile=fopen(innerMeshfilename, "rt"); 
-maskfile=fopen(maskfilename, "rt");
+innerMeshFile=fopen(innerMeshfilename, "rt");
+if(maskfilename != NULL) maskfile=fopen(maskfilename, "rt");
 
 fgets(buffer1, sizeof(buffer1), outerMeshFile) ;
 fgets(buffer2, sizeof(buffer2), innerMeshFile);
-fgets(buffer3, sizeof(buffer3), maskfile);
+if(maskfilename != NULL) fgets(buffer3, sizeof(buffer3), maskfile);
 
 //read nvertices from file
 strtok(buffer1, dlm);  
@@ -63,7 +63,7 @@ strtok(NULL, dlm);
 for(i=0; i< *nvertices; i++){
 	fgets(buffer1, sizeof(buffer1), outerMeshFile);
 	fgets(buffer2, sizeof(buffer2), innerMeshFile);
-    fgets(buffer3, sizeof(buffer3), maskfile);
+        if(maskfilename != NULL)  fgets(buffer3, sizeof(buffer3), maskfile);
 
         /*OUTER*/
         (*outer_mesh)[i].x=atof(strtok(buffer1, dlm)); 
@@ -83,7 +83,7 @@ for(i=0; i< *nvertices; i++){
 	(*mask)[i]=atoi(buffer3);
 }
  
-fclose(maskfile);
+if(maskfilename != NULL) fclose(maskfile);
 fclose(outerMeshFile);
 fclose(innerMeshFile);
 return(0);
@@ -189,8 +189,8 @@ int main(int argc, char** argv){
     double xmin, ymin, zmin;
     double native_step[3];
     double zmax, ymax, xmax;
-	char* maskfilename;
-	if(argc==7) maskfilename=argv[argi++];
+    char* maskfilename=NULL;
+    if(argc==7) maskfilename=argv[argi++];
     char* mrifilename=argv[argi++];
     char* outer_surface_file=argv[argi++];
     char* inner_surface_file=argv[argi++];
@@ -229,7 +229,8 @@ int main(int argc, char** argv){
     printf("Step: %f %f %f\n", native_step[0], native_step[1], native_step[2]);
     float* array=calloc(nvox, sizeof(*array));
     int nvoxels_in_mesh=0;
-	readData(outer_surface_file , inner_surface_file , maskfilename,   &nvertices, &inner_mesh,   &outer_mesh, &mask  );
+    
+    readData(outer_surface_file , inner_surface_file , maskfilename,   &nvertices, &inner_mesh,   &outer_mesh, &mask  );
 
     interpolate_sphere( outer_surface_file , &n_ngh_outer, &ngh_outer);
     interpolate_sphere( inner_surface_file , &n_ngh_inner, &ngh_inner);

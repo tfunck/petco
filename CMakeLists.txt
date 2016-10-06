@@ -1,6 +1,6 @@
 project(PhD C)
 enable_language(C)
-
+#sudo apt-get install libnifti-dev libfftw3-dev
 
 cmake_minimum_required(VERSION 2.8.7)
 SET(PHD_PACKAGE_VERSION_MAJOR 1)
@@ -64,7 +64,7 @@ set_target_properties(minc_fftw PROPERTIES COMPILE_FLAGS "-std=c99")
 ##################
 # Compile idSURF #
 ##################
-set(idSURF_SRC src/idSURF/idSURF-4.2.c src/idSURF/gaussianiir3d.c   ${MINC_INCLUDE_DIR}/minc2.h include/minc_helper.h)
+set(idSURF_SRC src/idSURF/idSURF-4.1.1.c src/idSURF/gaussianiir3d.c   ${MINC_INCLUDE_DIR}/minc2.h include/minc_helper.h)
 add_executable(idSURF ${idSURF_SRC})
 target_link_libraries(idSURF  minc_helper ${MINC2_LIB} m pthread )
 target_include_directories(idSURF PUBLIC ${MINC_INCLUDE_DIR})
@@ -143,11 +143,29 @@ target_include_directories(minc2ascii PUBLIC ${MINC_INCLUDE_DIR})
 set_target_properties(minc2ascii PROPERTIES COMPILE_FLAGS "-static -std=c99")
 
 
+##########################
+# Compile crop_from_mask #
+##########################
+set(crop_from_mask_SRC  src/crop_from_mask/crop_from_mask.c  include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
+add_executable(crop_from_mask ${crop_from_mask_SRC})
+target_link_libraries(crop_from_mask minc_helper  ${MINC2_LIB} m pthread)
+target_include_directories(crop_from_mask PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(crop_from_mask PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
+############################
+# Compile join_mask_labels #
+############################
+set(join_mask_labels_SRC  src/join_mask_labels/join_mask_labels.c  include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
+add_executable(join_mask_labels ${join_mask_labels_SRC})
+target_link_libraries(join_mask_labels minc_helper  ${MINC2_LIB} m pthread)
+target_include_directories(join_mask_labels PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(join_mask_labels PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
 
 ###########################
 # Set install directories #
 ###########################
-set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag tka minc2ascii)
+set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag tka minc2ascii crop_from_mask join_mask_labels)
 foreach(prog ${progs}) 
 	install(TARGETS ${prog} DESTINATION bin)
 endforeach(prog)
