@@ -1,8 +1,8 @@
-# petco
-## About
-### Miscallaneous programs for analyzing (mostly) PET images  
-**idSURF**: voxel-wise partial-volume correction of PET images [1]
-**gtm**: geometric transfer matrix partial-volume correction method [2]
+# petco  
+## About  
+Miscallaneous programs for analyzing (mostly) PET images  
+**idSURF**: voxel-wise partial-volume correction of PET images [1]  
+**gtm**: geometric transfer matrix partial-volume correction method [2]  
 **srv**: create super-resolution volumetric image based on pair of surfaces  
 **tka**: perform tracer kinetic analysis on PET images (patlak[3], logan[4], suvr)  
 **surf_dist**: calculate geodesic surface distance from a roi [5]
