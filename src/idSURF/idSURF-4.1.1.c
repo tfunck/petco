@@ -643,6 +643,7 @@ int idSURF(data* image, char* outputfilename, int*** regions, int *n_avg_region,
 
     for(int i=0; i < nvox; i++) if( nlabels < mask_label[i]) nlabels=mask_label[i];
     
+    
     for(int t=0; t < max_frames; t++){
         printf("Frame: %d\n", t);
         read_frame(image, t, image->data, MI_TYPE_DOUBLE);
@@ -657,7 +658,9 @@ int idSURF(data* image, char* outputfilename, int*** regions, int *n_avg_region,
         double initial_energy=0, old_max=0;
         if(first_guess->filename != NULL) read_frame(first_guess, t, first_guess->data, MI_TYPE_DOUBLE); 
         else first_guess->data=observed;
-        copy_with_threshold(test,first_guess->data, mask_label, nvox, &initial_energy, &old_max, 0); 
+        copy_with_threshold(test,first_guess->data, mask_label, nvox, &initial_energy, &old_max, 0);
+        if(t==0) min=max=test[0]; //
+ 
         /*for(int k=1; k < nlabels+1; k++){
                 sum=n=0; 
                 for(int t=0; t < nvox; t++) {
@@ -742,7 +745,7 @@ int idSURF(data* image, char* outputfilename, int*** regions, int *n_avg_region,
             sizes[2]=image->xmax;
         }
         energy=n=0;
-	    min=max=test[0];	
+
         for (voxel=0; voxel < nvox; voxel++) {
             if(mask_label[voxel] > 0 ){
                 if (max < test[voxel]) max=test[voxel];

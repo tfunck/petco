@@ -4,7 +4,9 @@ int real2voxel(float location, float min, float step){
 //simple function to convert real to voxel coordinates
     //step=1;
     //if ( fmod((location-min), step) == 0 ) printf("Problem! %f\n",(location-min) / step );
-    return   (int) round((location-min)/step);
+    int out=(int) round((location-min)/step);
+    //printf("(%f - %f) / %f --> %d\n", location,min, step, out);
+    return(out );
 }
 
 float voxel2real(int location, float min, float step){

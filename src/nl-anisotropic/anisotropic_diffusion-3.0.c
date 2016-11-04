@@ -5,9 +5,9 @@
 #include "hdf5.h"
 #include "volume_io.h"
 #include "minc_helper.h"
-#include "anisotropic_diffusion.h"
-#include "3x3-C/dsyevh3.h"
-#include "3x3-C/dsyevd3.h"
+#include "nl-anisotropic.h"
+#include "dsyevh3.h" //"3x3-C/dsyevh3.h"
+#include "dsyevd3.h" //"3x3-C/dsyevd3.h"
 #include "pthread.h"
 #include <unistd.h>
 
@@ -164,14 +164,13 @@ float inverse3x3(double* m, double* out){
 
 
 int gradient_threaded(void* args){
-    double* image= ((struct grad_args*) args)->image; 
+    float* image= ((struct grad_args*) args)->image; 
     float* dx=((struct grad_args*) args)->dx; 
     float* dy=((struct grad_args*) args)->dy; 
     float* dz=((struct grad_args*) args)->dz; 
     int thread=((struct grad_args*) args)->thread;
     int nthreads=((struct grad_args*) args)->nthreads;
     int* count=((struct grad_args*) args)->count;
-    
     int zmax=count[0];
     int ymax=count[1];
     int xmax=count[2];
@@ -214,7 +213,7 @@ int gradient_multithread(double* image, float* dx, float* dy, float *dz, int* co
         thread_args[t].thread=t;
         thread_args[t].nthreads=nthreads;
         thread_args[t].count=count;
-        rc= pthread_create(&threads[t], NULL, gradient_threaded, (void *) &thread_args[t] ); //gradient(image, img_dx, img_dy, img_dz);
+        rc= pthread_create(&threads[t], NULL, gradient_threaded, (void *) &thread_args[t] ); 
     }
     for(int t=0; t<nthreads;t++){
         rc = pthread_join(threads[t], NULL);
@@ -279,7 +278,7 @@ int divergence_multithread(float* image,  int* count,float* dx, float* dy, float
         thread_args[t].dz=dz;
         thread_args[t].thread=t;
         thread_args[t].nthreads=nthreads;
-        rc= pthread_create(&threads[t], NULL, divergence_threaded, (void *) &thread_args[t] ); //gradient(image, img_dx, img_dy, img_dz);
+        rc= pthread_create(&threads[t], NULL, divergence_threaded, (void *) &thread_args[t] ); 
         if(rc!=0) pexit("Error: creating thread","" , 1);
     }
     for(int t=0; t<nthreads;t++){
@@ -522,8 +521,6 @@ int structure_tensor_multithread(float** big_tensor, float* dx, float* dy, float
         if(rc!=0) pexit("Error: joining thread", "", 1);
     }
     return(0);
-
-    return(0);
 }
     
 
@@ -535,8 +532,7 @@ Inputs: mask - mask of discrete regions
 
 
 ***********************************/
-int smooth(double* mask, double* image, int* count, double fwhm, double dt, double step, double lambda,  int nthreads, int VERBOSE){
-
+int smooth(float* mask, float* image, int* count, double fwhm, double dt, double step, double lambda,  int nthreads, int VERBOSE){
     double totalTime=fwhm*fwhm / (16*log(2));
     int maxIterations= (int) round( totalTime/ dt);
     dt=totalTime/maxIterations;
@@ -558,12 +554,19 @@ int smooth(double* mask, double* image, int* count, double fwhm, double dt, doub
     float *temp_dz=calloc(nvox, sizeof(float)); 
     float *temp_image=calloc(nvox, sizeof(float));
     float** big_tensor=malloc(nvox*sizeof(*big_tensor));
-    
-    for(int x=0; x < nvox; x++) big_tensor[x]=calloc(9,sizeof(**big_tensor));
-
     double dx2 =step*step;
+
+    if(big_tensor == NULL) { printf("Exit: could not allocate memory for big_tensor\n"); exit(1);}
+    for(int x=0; x < nvox; x++){ 
+        big_tensor[x]=calloc(9,sizeof(**big_tensor));
+        if(big_tensor[x] == NULL) { 
+            printf("Exit: could not allocate memory for big_tensor\n"); 
+            exit(1);
+        }
+    }
     //Calculate gradient of structural image
     for(int iterations=1; iterations <= maxIterations; iterations++){
+        printf("Iteration: %d\n", iterations);
         if(iterations==1){
             gradient_multithread(mask, dx, dy, dz, n, nthreads);
             //writeVolume("dz.mnc", dz, image->start,  image->step, image->wcount, MI_TYPE_FLOAT  );

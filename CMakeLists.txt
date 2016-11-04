@@ -161,11 +161,21 @@ target_link_libraries(join_mask_labels minc_helper  ${MINC2_LIB} m pthread)
 target_include_directories(join_mask_labels PUBLIC ${MINC_INCLUDE_DIR})
 set_target_properties(join_mask_labels PROPERTIES COMPILE_FLAGS "-static -std=c99")
 
+############################
+# Compile join_mask_labels #
+############################
+file(GLOB nl-anisotropic_SRC src/nl-anisotropic/anisotropic_diffusion-3.0.c   src/nl-anisotropic/nl-anisotropic.c src/nl-anisotropic/3x3-C/dsyevh3.c src/nl-anisotropic/3x3-C/dsyevd3.c src/nl-anisotropic/3x3-C/dsyevc3.c src/nl-anisotropic/3x3-C/dsyevq3.c src/nl-anisotropic/3x3-C/dsytrd3.c src/nl-anisotropic/3x3-C/dsyev2.c src/nl-anisotropic/3x3-C/slvsec3.c  include/nl-anisotropic.h  include/minc_helper.h ${MINC_INCLUDE_DIR}/minc2.h )
+add_executable(nl-anisotropic ${nl-anisotropic_SRC})
+message(${nl-anisotropic_SRC})
+target_link_libraries(nl-anisotropic minc_helper  ${MINC2_LIB} m pthread)
+target_include_directories(nl-anisotropic PUBLIC ${MINC_INCLUDE_DIR} "include/3x3-C/" )
+set_target_properties(nl-anisotropic PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
 
 ###########################
 # Set install directories #
 ###########################
-set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag tka minc2ascii crop_from_mask join_mask_labels)
+set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag tka minc2ascii crop_from_mask join_mask_labels nl-anisotropic)
 foreach(prog ${progs}) 
 	install(TARGETS ${prog} DESTINATION bin)
 endforeach(prog)
