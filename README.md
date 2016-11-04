@@ -8,7 +8,7 @@ Miscallaneous programs for analyzing (mostly) PET images
 **surf_dist**: calculate geodesic surface distance from a roi [5]  
 **mincgroupstats**: extract statistics for multiple images with multiple atlases/binary masks (surface or volumetric)  
 **surf_defrag**: degfragment (remove holes) in a surface roi [5]  
-**crop_to_mask**: crop an image to the accordin to the min/max z, y, and x dimensions of a binary mask  
+**crop_to_mask**: crop an image to the according to the min/max z, y, and x dimensions of a binary mask  
 **minc2ascii**: convert minc to ascii file  
 **minc_integrate**: upsample a minc file by integrating over voxels  
 
