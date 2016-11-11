@@ -39,11 +39,11 @@ typedef struct image {
     unsigned int* count;
     double* start;
     double* step;
-	double val;
+    double val;
     int n_roi;
     int ngroups;
     int ndim;
-	int index;
+    int index;
     int n;
     int n3d;
     int label;
