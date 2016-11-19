@@ -174,14 +174,13 @@ set_target_properties(nl-anisotropic PROPERTIES COMPILE_FLAGS "-static -std=c99"
 ###################
 # Compile wm_dist #
 ###################
-set(wm_dist_SRC  src/wm_dist/wm_dist-2.0.c  include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
+set(wm_dist_SRC  src/wm_dist/wm_dist-3.0.c  include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
 add_executable(wm_dist ${wm_dist_SRC})
 target_link_libraries(wm_dist minc_helper  ${MINC2_LIB} m pthread)
 target_include_directories(wm_dist PUBLIC ${MINC_INCLUDE_DIR})
-set_target_properties(wm_dist PROPERTIES COMPILE_FLAGS "-static -std=c99")
-
-
-
+set_target_properties(wm_dist PROPERTIES COMPILE_FLAGS "-static -std=c99 ")
+    # -O0 -ffast-math  -fauto-inc-dec   -fbranch-count-reg -fcombine-stack-adjustments    -fcompare-elim  -fcprop-registers -fdce  -fdefer-pop -fdelayed-branch -fdse -fforward-propagate -fguess-branch-probability -fif-conversion2   -fif-conversion -finline-functions-called-once -fipa-pure-const -fipa-profile   -fipa-reference -fmerge-constants   -fmove-loop-invariants -freorder-blocks  -fsplit-wide-types   -ftree-bit-ccp -ftree-ccp -ftree-ch  -ftree-copy-prop  -ftree-dce -ftree-dominator-opts -ftree-dse  -ftree-forwprop -ftree-fre  -ftree-phiprop -ftree-sink    -ftree-sra -ftree-pta -ftree-ter -funit-at-a-time -fthread-jumps  -falign-functions  -falign-jumps  -falign-loops  -falign-labels -fcaller-saves  -fcrossjumping -fcse-follow-jumps  -fcse-skip-blocks  -fdelete-null-pointer-checks -fdevirtualize    -fexpensive-optimizations  -fgcse  -fgcse-lm      -finline-small-functions   -findirect-inlining    -fipa-cp    -fipa-sra          -foptimize-sibling-calls -fpartial-inlining  -fpeephole2   -freorder-blocks-and-partition -freorder-functions  -frerun-cse-after-loop  -fsched-interblock  -fsched-spec   -fschedule-insns  -fschedule-insns2 -fstrict-aliasing -fstrict-overflow  -ftree-builtin-call-dce  -ftree-switch-conversion -ftree-pre  -ftree-vrp     -fpeel-loops  -fipa-cp-clone")
+#        
 ###########################
 # Set install directories #
 ###########################

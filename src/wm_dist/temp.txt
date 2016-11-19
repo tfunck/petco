@@ -1,0 +1,92 @@
+
+int find_zero_index(float* mat,int i, int n){
+    for(int j=0; j<n; j++){
+        if(mat[i*n+j]==0){
+            printf("Found zero index at %d %d\n", i, j);
+            zero_index=j; //Found 0 value for entry. This gives the initial WM index
+            return(j);
+        }
+    }
+    else return(-1);
+}
+
+int find_filled_column(float* mat,int zero_index, int n){
+    for(int k=0; k<n; k++){
+        int index0=k*n+zero_index;
+        int index1=k*n+zero_index+1;
+        printf("%d %d %d %f %f\n", k, zero_index, index0,  mat[index0],  mat[index1] );
+        if( mat[index0] == 0 && mat[index1] != pseudo_inf && k != i){//Found column with the values needed to fill column j
+            from_col=k;
+            return(j);
+        }
+    }
+    return(-1);
+}
+void fill_matrix (float* mat, int n){
+    /*********************************************
+     * Fill in skipped entries of distance matrix
+     *********************************************/
+    for(int i=0; i<n; i++){
+        int zero_index=-1;
+        int from_col=-1;
+        if(mat[i*n+1]==pseudo_inf){//Found a column at i with entry value of inf
+            printf("Found in at %d %d\n", i, 1);
+            zero_index=find_zero_index(mat, i,n);
+            if(zero_index==-1) {printf("Problem finding zero index of column %d\n",i); continue;}
+
+            find_filled_column( mat, zero_index, n);
+            if(from_col==-1) {printf("Problem finding column from which to copy from to fill %d\n",i); continue;}
+            for(int k=0; k<n; k++){
+                if(k<10) printf("%f --> %f\n",mat[from_col*n+k],mat[i*n+k]  );
+                mat[i*n+k]=mat[from_col*n+k];
+            }
+        }
+    }
+}
+
+struct node{
+    float* dist;
+    int index, z,y,x;
+    struct node* left, *right, *parent;
+};
+
+struct node* newNode(struct node* parent, float* dist, int index, int z, int y, int x){
+   struct node* new=malloc(sizeof(*new));
+   new->parent=parent;
+   new->dist=dist;
+   new->index=index;
+   new->z=z;
+   new->y=y;
+   new->x=x;
+   return(new);
+}
+
+struct node* insert(struct node* in, float* dist, int index, int z, int y, int x){
+    struct new=newNode(in,dist,index,z,y,x);
+    if(*in==NULL) new=newNode(in,dist,index,z,y,x);
+    else if( *dist <= *in->dist) insert(in->left, dist, index, z, y, x);
+    else if( *dist > *in->dist) insert(in->right, dist, index, z, y, x);
+    return(new);
+}
+
+struct node* removeMin(struct node** in){
+
+    if( (*in)->left != NULL) removeMin(in);
+    else if ((*in)->right ==NULL){ //No left or right child
+        if((*in)->parent=NULL) *in=NULL;
+        else (*in)->parent->left=NULL; //Severs link between parent and current node
+    }
+    else if( in->right != NULL){//No left child, but right child exists
+        if( (*in)->parent==NULL){ //Promote right child to be root node
+            *in=in->right; 
+            (*in)->right->parent=NULL; //Root node has NULL parent
+        }
+        else{ //Parent node now points to right child
+            (*in)->parent->left = (*in)->right; 
+            (*in)->right->parent=*in; //right child points back to parent
+        }
+    }
+        
+    return(in)
+
+}
