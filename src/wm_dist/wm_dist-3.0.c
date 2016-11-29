@@ -6,7 +6,7 @@
 #include <malloc.h>
 #include <math.h>
 #include <pthread.h>
-#include <unistd.h>
+#include <stdbool.h>
 #include "minc2.h"
 #include "minc_helper.h"
 #define TRUE 1
@@ -60,7 +60,7 @@ void swap(struct node* a, struct node* b){
     a->p=p;
 }
 
-void sort_up(struct node* heap,int i, int* index_array){
+void sort_up(struct node* heap,int i, bool* index_array){
     int j=(int) floor(i/2);
     struct node* parent=&heap[j];
    
@@ -79,7 +79,7 @@ void sort_up(struct node* heap,int i, int* index_array){
 //25   30
 
 
-void sort_down(struct node* heap,int i, int* index_array){
+void sort_down(struct node* heap,int i, bool* index_array){
     int r=2*i;
     int l=2*i+1;
     int i2;
@@ -107,7 +107,7 @@ void sort_down(struct node* heap,int i, int* index_array){
 
 }
 
-void sort(struct node* heap, int i, int* index_array){
+void sort(struct node* heap, int i, bool* index_array){
     int p=(int) floor(i/2);
     int l=i*2;
     int r=2*i+1;
@@ -121,7 +121,7 @@ void sort(struct node* heap, int i, int* index_array){
 
 }
 
-void delete(struct node* heap,int i, int n,int* index_array){
+void delete(struct node* heap,int i, int n, bool* index_array){
     //printf("Delete %d %d %f\n", heap[i].index, heap[i].dist, *heap[i].dist );
     index_array[heap[i].index]=n;
     index_array[heap[n].index]=i;
@@ -132,7 +132,7 @@ void delete(struct node* heap,int i, int n,int* index_array){
 
 }
 
-void insert(struct node* heap, int i, float* dist, int index, int z, int y, int x, int* index_array){
+void insert(struct node* heap, int i, float* dist, int index, int z, int y, int x, bool* index_array){
     heap[i].index=index;
     //heap[i].z=z;
     //heap[i].y=y;
@@ -163,14 +163,18 @@ void useage();
 }*/
 
 struct wm_vol_args{
+    char* example_fn;
+    char* density_fn;
     data* img;
+    unsigned int* density;
     int** gm_border;
     int* img_vol;
-    float* mat; 
+    int write_vertex;
     int label;
     int thread;
     int nthreads;
     int n;
+    float* mat; 
 };
 
 
@@ -187,7 +191,7 @@ int check_for_wm(int* img_vol, int z, int y, int x, int zmax, int ymax, int xmax
     return(0);
 }
 
-int** wm_gm_border(data* img, float** mesh, const int label, const int* img_vol,int** fill_wm, const int n, int* nReplace){
+int** wm_gm_border(data* img, float** mesh, const int label, const int* img_vol,int** fill_wm, const int n, int* nReplace, int wm_search_depth){
     int zmax=img->zmax;
     int ymax=img->ymax;
     int xmax=img->xmax;
@@ -215,7 +219,12 @@ int** wm_gm_border(data* img, float** mesh, const int label, const int* img_vol,
         int found_wm=FALSE;
         int p=0;
         float min_d=pseudo_inf;
-        while(found_wm==FALSE || p < 3){
+        border[i][0]=z*xmax*ymax+y*xmax+x;
+        border[i][1]=z;
+        border[i][2]=y;
+        border[i][3]=x;
+        border[i][4]=1; //number of vertices with this start location
+        while(found_wm==FALSE && p <= wm_search_depth){
             p++;
             for(int zi=z-p; zi < z+p; zi++ ){
                 for(int yi=y-p; yi < y+p; yi++ ){
@@ -230,8 +239,8 @@ int** wm_gm_border(data* img, float** mesh, const int label, const int* img_vol,
                                 border[i][1]=zi;
                                 border[i][2]=yi;
                                 border[i][3]=xi;
-                                border[i][4]=FALSE; //Skip = FALSE
-                                found_wm=TRUE;                    
+                                border[i][4]=1; //Skip = FALSE
+                                found_wm=TRUE;   
                             }
                         } 
                     }
@@ -239,16 +248,16 @@ int** wm_gm_border(data* img, float** mesh, const int label, const int* img_vol,
             }
         }
     }
-
-    for(int i=0; i<n; i++){
-        if(border[i][4] == FALSE){
-            for(int j=0; j<n; j++){
-                if(i != j && border[i][0]==border[j][0]){
-                    fill_wm[*nReplace][0]=i;//border[i][0];
-                    fill_wm[*nReplace][1]=j;//border[j][0];
-                    border[j][4]=TRUE;
-                    *nReplace += 1;
-                    //printf("%d %d %d %d == %d %d %d %d\n",border[i][0],border[i][1],border[i][2],border[i][3],border[j][0],border[j][1],border[j][2],border[j][3]);
+    for(int i=0; i<n; i++){ //For each voxels nearest to a vertex
+        if(border[i][4] > 0){
+            for(int j=0; j<n; j++){ //For all other voxels nearest to a vertex
+                if(i != j && border[i][0]==border[j][0]){//If these two voxels are the same...
+                    fill_wm[*nReplace][0]=i;//then keep track of the voxel we will copy from 
+                    fill_wm[*nReplace][1]=j;//and the voxel we will copy to when filling in gaps in distance matrix.
+                    border[i][4] += 1; //Increment the number of replicate voxels for this specific voxel
+                    border[j][4]=0; //For the j voxel, set number of replicates to zero so that we know it's distance map is
+                                    //already taken care of by voxel i
+                    *nReplace += 1; //Increase the number of voxels to be replaced by 1/
                 }
             }
         }
@@ -257,19 +266,21 @@ int** wm_gm_border(data* img, float** mesh, const int label, const int* img_vol,
     //for(int i=0; i< *nReplace; i++){
     //    printf("%d\t%d\n", fill_wm[i][0], fill_wm[i][1]);
     //}
-    //printf("%d / %d = %3.1f of voxels can be skipped \n", *nReplace ,n, 100.0 * *nReplace/n); 
+    //for(int i=0; i<n; i++) if(border[i][4] > 0) printf("%d\n", border[i][4]);
+   if(VERBOSE) printf("%3.1f% (%d / %d) of voxels can be skipped \n", 100.0 * (float) *nReplace / n, *nReplace ,n); 
 
     return(border);
 }
 
-float** readVertices(const char* Meshfilename,  int* nvertices ){
+float** readVertices(const char* Meshfilename,  int* nvertices, int subsample, int subsample_factor ){
     char buffer1[100];
     int i; 
     int vertices;
     float** mesh;
     FILE *MeshFile=fopen(Meshfilename, "rt");
     char *token;
-    char dlm[]=" "; 
+    char dlm[]=" ";
+    int nmax; 
 
 
     fgets(buffer1, sizeof(buffer1), MeshFile) ;
@@ -282,6 +293,15 @@ float** readVertices(const char* Meshfilename,  int* nvertices ){
     strtok(NULL, dlm); 
     strtok(NULL, dlm); 
     *nvertices=atoi(strtok(NULL, dlm));
+
+    nmax=(int) 2 + round( (*nvertices-2)/pow(subsample_factor, subsample)); //2+(n1_vert-2)/(4^(s))
+
+    if(nmax < 2 && subsample < 0){ 
+        printf("Subsampled %d times with factor %d. This gives less than 2 vertices. Please try using less subsampling of the cortical surface mesh.\n"); 
+        exit(1);
+    }
+    
+    if(VERBOSE && subsample > 0) printf("Mesh with %d vertices was subsampled %d (by factor of %d) to %d vertices\n", *nvertices, subsample, subsample_factor, nmax);
     mesh=malloc(sizeof(*mesh) * *nvertices);
 
     for(i=0; i< *nvertices; i++){
@@ -291,7 +311,7 @@ float** readVertices(const char* Meshfilename,  int* nvertices ){
         mesh[i][2]=atof(strtok(buffer1, dlm)); //x
         mesh[i][1]=atof(strtok(NULL, dlm)); //y
         mesh[i][0]=atof(strtok(NULL, dlm)); //z
-        if(i>999){ *nvertices=i; break; }
+        if(i>=nmax && subsample>0){ *nvertices=i; break; }
     }
      
     fclose(MeshFile);
@@ -312,7 +332,7 @@ float quad(float a, float b, float c){
 
 
 
-void update( int* fixed, float* distances,  int index, int z, int  y, int  x){
+void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
     int xpp, xmm, ypp, ymm, zpp, zmm;
     int ixp, ixpp, ixm, ixmm, iyp, iypp, iym, iymm, izp, izpp, izm, izmm;
     int xp, xm, yp, ym, zp, zm;
@@ -515,35 +535,10 @@ void update( int* fixed, float* distances,  int index, int z, int  y, int  x){
             }
         } 
 
-         /*if( sol <= 0  ){
-            printf("Fixed points\n");
-            printf("X: %d\t%d\t%d\t%d\t%d\n", fixed[ixmm], fixed[ixm], fixed[index], fixed[ixp], fixed[ixpp] );
-            printf("Y: %d\t%d\t%d\t%d\t%d\n", fixed[iymm], fixed[iym], fixed[index], fixed[iyp], fixed[iypp] );
-            printf("Z: %d\t%d\t%d\t%d\t%d\n", fixed[izmm], fixed[izm], fixed[index], fixed[izp], fixed[izpp] );
 
-            printf("Distances\n");
-            printf("X: %7.2f\t%7.2f\t%7.2f\t%7.2f\t%7.2f\n", xdmm, xdm, d, xdp, xdpp );
-            printf("Y: %7.2f\t%7.2f\t%7.2f\t%7.2f\t%7.2f\n", ydmm, ydm, d, ydp, ydpp );
-            printf("Z: %7.2f\t%7.2f\t%7.2f\t%7.2f\t%7.2f\n", zdmm, zdm, d, zdp, zdpp );
-            printf("a: ");
-            for(int k=0; k<6; k++) printf("%f ", alist[k]); printf("\n");
-            printf("b: ");
-            for(int k=0; k<6; k++) printf("%f ", blist[k]); printf("\n");
-            printf("c: ");
-            for(int k=0; k<6; k++) printf("%f ", clist[k]); printf("\n");
-            printf("a=%f, b=%f, c=%f\n", a, b, c);
-            printf("Discriminant: %f\n", disc);
-            printf("%f --> %f %f --> %f\n", distances[index], sol1, sol2, sol);
-            if(isnan(sol)) pexit("Solution is NaN!", "", 1);
-            else if(isinf(sol)) pexit("Solution is inf!", "", 1);
-            else if(sol<=0) pexit("Solution is 0.", "", 1);
-            else if(distances[index] > sol) pexit("New distance is less than previous", "", 1);
-            else pexit("Problem with solution of Eikonal equation", "", 1);
-        }/**/
-        //printf("%f --> %f\n", distances[index], sol);
         distances[index]= (sol > 0) ? sol : distances[index];
 }
-int add_neighbours(struct node* considered, int* img_vol, float* distances, int* fixed, int* considered_array, int* nconsidered, const int label,const int  z, const int  y, const int x, const int init ){
+int add_neighbours(struct node* considered, int* img_vol, float* distances, bool* fixed, bool* considered_array, int* nconsidered, const int label,const int  z, const int  y, const int x, const int init ){
     int zi, yi, xi, z1, y1, x1, xp, xm, yp, ym, zp, zm;
     int i0, i1, i2, i3, i4, i5;
         xp=x+1;
@@ -639,41 +634,88 @@ int add_neighbours(struct node* considered, int* img_vol, float* distances, int*
     return(*nconsidered);
 }
 
-void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,const int label,const  int start,const int step){
+int min_path(int index, int z, int y, int x, float* distances, unsigned int* density, _Bool* fixed, int* img_vol, float min, int factor){
+    int min_index=pseudo_inf;
+    float local_min=min;
+    int z0 = (z-1 >= 0) ? z-1 : 0;
+    int y0 = (y-1 >= 0) ? y-1 : 0;
+    int x0 = (x-1 >= 0) ? x-1 : 0;
+    int z1 = (z+1 < zmax) ? z+1 : zmax;
+    int y1 = (y+1 < ymax) ? y+1 : ymax;
+    int x1 = (x+1 < xmax) ? x+1 : xmax;
+    int min_zi, min_yi, min_xi;
+    for(int zi=z0; zi <= z1; zi++){ 
+        for(int yi=y0; yi <= y1; yi++){ 
+            for(int xi=x0; xi <= x1; xi++){
+                int index1=zi*xymax+yi*xmax+xi;
+                if( /*fixed[index1] == TRUE &&*/ index1 != index && distances[index1] < local_min){
+                    min_index=index1;
+                    local_min=distances[index1]; 
+                    min_zi=zi;
+                    min_yi=yi;
+                    min_xi=xi;
+                }
+            } 
+        }
+    }
+    if(min_index != pseudo_inf ) {
+        //printf("\t%d %d %d : %d %d %f %d\n", min_zi, min_yi, min_xi, fixed[min_index], distances[min_index], img_vol[min_index], density[min_index]);
+        density[min_index] += factor;
+        min_path(min_index, min_zi, min_yi, min_xi, distances, density, fixed, img_vol, local_min, factor);
+    }
+
+    return(0);
+}
+
+int min_paths(int cur_i, float* distances, unsigned int* density, _Bool* fixed, int* img_vol, int** gm_border, int n, int factor){
+
+    for(int i=0; i<n; i++){
+        //printf("%d\n", i);
+        if(gm_border[i][4] != TRUE && i != cur_i){
+            int index=gm_border[i][0];
+            int z=gm_border[i][1];
+            int y=gm_border[i][2];
+            int x=gm_border[i][3];
+            float min=distances[index];
+            min_path(index, z, y, x, distances, density, fixed, img_vol, min , factor);
+        } //else printf("Skipped\n");
+    }
+}
+
+void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,const int label, int write_vertex,char* example_fn, unsigned int *density, char* density_fn,  const  int start,const int step){
     int max =img->n3d;
-    int* fixed=calloc(max, sizeof(*fixed));
-    int* considered_array=calloc(max, sizeof(*considered_array));
+    bool* fixed=malloc(max * sizeof(*fixed));
+    bool* considered_array=malloc(max * sizeof(*considered_array));
     struct node* considered=malloc(max *sizeof(*considered)); //, *considered_last=FALSE, *minNode=FALSE;
     float* distances=malloc(max*sizeof(*distances));
-    float* temp=malloc(max*sizeof(*distances));
     int  nconsidered;
     int index;
     char testfn[2000];
     int x, y, z;
     int wm_total=0;
+    int i;
 
 
-
-    for(int i=start; i < n; i += step){ //Iterate over nodes on WM-GM border
-        if(i % 100 == 0) printf("Thread %d: %3.3f\r",start, (float) 100.0 * i/n);
+    for( i=start; i < n; i += step){ //Iterate over nodes on WM-GM border
+        if(VERBOSE){ printf("\rThread %d: %3.1f",start, (float) 100.0 * i/n); fflush(stdout);}
+        //printf("Thread %d: %3.1f\n",start, (float) 100.0 * i/n);
         int continued=FALSE;
         int init_c;
         for(int j=0; j<max; j++){ 
             considered[j].dist=&pseudo_inf;
             distances[j]=pseudo_inf;
-            temp[j]=0;
             fixed[j]=considered_array[j]=FALSE;
         }
         nconsidered=0; 
 
-        if(gm_border[i][4]==TRUE){continued=TRUE; printf("Continued for %d %d %d %d\n", gm_border[i][0], gm_border[i][1], gm_border[i][2], gm_border[i][3]);continue;}
+        if(gm_border[i][4]==0){ continue;}
         index=gm_border[i][0];
         fixed[index]=TRUE; //Set the starting fixed node
         z=gm_border[i][1];
         y=gm_border[i][2];
         x=gm_border[i][3];
         distances[index]=0;
-        int nfixed=0;
+        //int nfixed=0;
         /************************************
          * Initialize the considered points *
          ************************************/
@@ -699,7 +741,7 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,c
 
 
             delete(considered, 1, nconsidered, considered_array);
-            nfixed++; 
+            //nfixed++; 
             //Decrease the number of considered points
             nconsidered--;
             fixed[index]=TRUE;
@@ -709,26 +751,25 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,c
             add_neighbours(considered, img_vol, distances,fixed, considered_array, &nconsidered,label,  z, y, x,0);
             //if(nfixed > 500) break;
         }
-        if(i==0){
+
+        if(density_fn != NULL){ 
+            min_paths(i, distances, density, fixed, img_vol, gm_border, n, gm_border[i][4]);
+        }
+
+
+        if(i==write_vertex){
             for(int j=0; j<max; j++) distances[j] *= fixed[j];// img_vol[j];
-            sprintf(testfn,"test_wm_%d.mnc", i );
-            writeVolume(testfn, distances, img->start, img->step, img->wcount, MI_TYPE_FLOAT );
+            writeVolume(example_fn, distances, img->start, img->step, img->wcount, MI_TYPE_FLOAT );
         }
-        for(int v=0; v<n; v++){//for v in list of vertices
-            z=gm_border[v][1];//get the index value of the initial wm voxel
-            y=gm_border[v][2];
-            x=gm_border[v][3];
-            index=gm_border[v][0];
-            /*if(distances[index]==pseudo_inf){
-                temp[index]=1;
-                printf("%d: Index %d. Nfixed: %d. Continued? %d. Init Considered %d\n",i,index, nfixed, continued, init_c);
-                break; 
-            }*/
-            mat[i*n+v]=distances[index];
+        if(mat != NULL){
+            for(int v=0; v<n; v++){//for v in list of vertices
+                z=gm_border[v][1];//get the index value of the initial wm voxel
+                y=gm_border[v][2];
+                x=gm_border[v][3];
+                index=gm_border[v][0];
+                mat[i*n+v]=distances[index];
+            }
         }
-
-
-
     }
 
 
@@ -741,13 +782,17 @@ void* wm_dist_threaded(void* args){
     float* mat=((struct wm_vol_args*) args)->mat;
     int** gm_border=((struct wm_vol_args*) args)->gm_border;
     int n=((struct wm_vol_args*) args)->n;
+    int write_vertex=((struct wm_vol_args*) args)->write_vertex;
+    char* example_fn=((struct wm_vol_args*) args)->example_fn;
+    char* density_fn=((struct wm_vol_args*) args)->density_fn;
+    unsigned int* density=((struct wm_vol_args*) args)->density;
     int thread= ((struct wm_vol_args*) args)->thread;
     int nthreads= ((struct wm_vol_args*) args)->nthreads;
     //wm_dist(img, img_vol, gm_border, n, label, thread, nthreads);
-    wm_dist(img, img_vol, gm_border, mat, n, label, thread, nthreads);
+    wm_dist(img, img_vol, gm_border, mat, n, label, write_vertex, example_fn, density, density_fn, thread, nthreads);
 }
 
-int wm_dist_multithreaded(data* img, int* img_vol, int** gm_border, int label, float* mat, int n, int nthreads){
+int wm_dist_multithreaded(data* img, int* img_vol, int** gm_border, int label, float* mat, int n, int nthreads, int  write_vertex, char* example_fn, unsigned int* density, char* density_fn){
     int rc;
     pthread_t threads[nthreads];
     struct wm_vol_args thread_args[nthreads];
@@ -758,6 +803,10 @@ int wm_dist_multithreaded(data* img, int* img_vol, int** gm_border, int label, f
         thread_args[t].mat=mat;
         thread_args[t].n=n;
         thread_args[t].gm_border=gm_border;
+        thread_args[t].write_vertex=write_vertex;
+        thread_args[t].example_fn=example_fn;
+        thread_args[t].density_fn=density_fn;
+        thread_args[t].density=density;
         thread_args[t].thread=t;
         thread_args[t].nthreads=nthreads;
         rc= pthread_create(&threads[t], NULL, wm_dist_threaded, (void *) &thread_args[t] ); 
@@ -767,6 +816,8 @@ int wm_dist_multithreaded(data* img, int* img_vol, int** gm_border, int label, f
         rc = pthread_join(threads[t], NULL);
         if(rc!=0) pexit("Error: joining thread", "", 1);
     }
+
+    if(VERBOSE  ) printf("\r\n");
     return(0);
 }
 
@@ -804,34 +855,93 @@ int main(int argc, char** argv){
     if (argc < 4 || strcmp(argv[0],"-help") ==0  ) useage();
     
     int i=1;
-    float dt=0.1;
-    if(strcmp(argv[i++],"-dt") == 0){
-        dt=atof(argv[i++]);
+    int subsample=-1, wm_search_depth=2, max_threads=-1, write_vertex=-1;
+    int subsample_factor=4;
+    char* example_fn=NULL, *density_fn=NULL;
+    float* mat=NULL;
+    char* matrix_fn=NULL;
+    FILE* matrix_file=fopen(matrix_fn, "w+");
+    //Parse inputs for options
+    for(int c=0; c<argc; c++){
+        if(strcmp(argv[c],"-subsample") == 0){
+            i+=2;
+            c++;
+            subsample=atoi(argv[c]);
+        }
+        else if(strcmp(argv[c],"-subsample_factor") == 0){
+            i+=2;
+            c++;
+            subsample_factor=atoi(argv[c]);
+        }
+        else if(strcmp(argv[c],"-silent")==0){
+            i+=1;
+            VERBOSE=FALSE;
+        }
+        else if(strcmp(argv[c],"-wm_search_depth")==0){
+            i+=2;
+            c++;
+            int temp=atoi(argv[c]);
+            wm_search_depth = (temp>0) ? temp : 2; //make sure search depth is greater than 0
+        }
+        else if(strcmp(argv[c],"-density")==0){
+            i+=2;
+            c++;
+            density_fn=argv[c];
+        }
+        else if(strcmp(argv[c],"-matrix")==0){
+            i+=2;
+            c++;
+            matrix_fn=argv[c];
+            matrix_file=fopen(matrix_fn, "w+");
+        }
+        else if(strcmp(argv[c],"-threads")==0){
+            i+=2;
+            c++;
+            max_threads=atoi(argv[c]);
+        }
+        else if(strcmp(argv[c],"-write_vertex")==0){
+            i+=3;
+            c++;
+            write_vertex=atoi(argv[c]);
+            c++;
+            example_fn=argv[c];
+        }
     }
-    else i=1;
     data img;
     double* dist_vol;
     img.filename=argv[i++];
     char* mesh_fn=argv[i++];
-    int GM=atoi(argv[i++]);
     int label=atoi(argv[i++]);
-    char* output_fn=argv[i++];
-    FILE* output_file=fopen(output_fn, "w+");
-    int nvertices;
+
+
     int* img_vol;
     int** fill_wm;
     char *file_inputs[]={img.filename,  mesh_fn}; //={mesh_filename, node_values_filename};
     int n_input_files=2;
     int nthreads=sysconf(_SC_NPROCESSORS_ONLN);
-    float* mat=NULL;
     int n, nReplace=0;
-    VERBOSE=FALSE;
 
-    //Check input files to make sure they exist
-    printf("%s %s %d \n", file_inputs[0], file_inputs[1], file_inputs[2]);
+    if(VERBOSE){ 
+        printf("Volume:\t%s\n", img.filename);
+        printf("Mesh:  \t%s\n", mesh_fn);
+        printf("Label: \t%d\n", label);
+        printf("Matrix:\t%s\n", matrix_fn);  
+        printf("Search depth: %d\n",wm_search_depth);  
+    }
+    
+
+    //Set maximum number of threads to use. 
+    //Default is the number of cores on system
+    if(max_threads < nthreads && max_threads > 0) nthreads=max_threads;
+    if(VERBOSE) printf("Number of threads: %d\n", nthreads);
+
     //if (check_input_files(file_inputs, n_input_files) != 0) exit(1);
-    float** mesh=readVertices(mesh_fn, &n);
+    float** mesh=readVertices(mesh_fn, &n, subsample, subsample_factor);
+
+    if(VERBOSE) printf("Number of nodes: %d\n ", n);
     img_vol=(int*) readVolume(&img, 1, MI_TYPE_INT);
+    
+    unsigned int* density=calloc(img.n3d, sizeof(*density));
     dx=img.xstep;
     dx2=dx*dx;
     dy=img.ystep;
@@ -842,7 +952,10 @@ int main(int argc, char** argv){
     ymax=img.ymax;
     zmax=img.zmax;
     xymax=xmax*ymax;
-    mat=malloc(sizeof(*mat) * n * n);
+    
+    if(matrix_fn != NULL) mat=malloc(sizeof(*mat) * n * n);
+    else mat=NULL;
+
     fill_wm=malloc(sizeof(*fill_wm) *n);
     for(int i=0; i<n; i++) fill_wm[i]=malloc(sizeof(**fill_wm) *2);
     for(int z=0; z<img.zmax; z++ )
@@ -853,37 +966,61 @@ int main(int argc, char** argv){
                 }
     
     /*Find GM-WM Border*/
-    int** gm_border=wm_gm_border(&img, mesh,label, img_vol, fill_wm,  n, &nReplace);
+    int** gm_border=wm_gm_border(&img, mesh,label, img_vol, fill_wm,  n, &nReplace, wm_search_depth);
+    wm_dist_multithreaded(&img, img_vol, gm_border, label, mat, n, nthreads, write_vertex, example_fn, density, density_fn);
 
-    wm_dist_multithreaded(&img, img_vol, gm_border, label, mat, n, nthreads);
-    //wm_dist(&img, img_vol, gm_border, n, label, 0,1);
-    
-    for(int i=0; i<nReplace; i++){
-        int from=fill_wm[i][0];
-        int to=fill_wm[i][1];
-        for(int j=0; j<n; j++){
-            //printf("%d %f --> %f\n",i, mat[from*n+j],  mat[to*n+j] );
-            mat[to*n+j]=mat[from*n+j];
+    if(density_fn != NULL){ 
+        int nkept=n-nReplace;
+        for(int i=0; i< img.n3d; i++) density[i] = round((float) density[i]/nkept);
+        if(VERBOSE) printf("Writing density map to %s.\n", density_fn);
+        writeVolume(density_fn, density, img.start, img.step, img.wcount, MI_TYPE_INT );
+    }
+
+    if(matrix_fn != NULL){
+        for(int i=0; i<nReplace; i++){
+            int from=fill_wm[i][0];
+            int to=fill_wm[i][1];
+            for(int j=0; j<n; j++){
+                //printf("%d %f --> %f\n",i, mat[from*n+j],  mat[to*n+j] );
+                mat[to*n+j]=mat[from*n+j];
+            }
         }
     }
 
     /******************************
      * Write matrix to outputfile
      ******************************/
-    for(int i=0; i<n; i++){
-        for(int j=0; j<n; j++){
-            fprintf(output_file, "%f", mat[i*n+j]);
-            if(j<n-1) fprintf(output_file, ",");
+    if(matrix_fn != NULL){
+        if(VERBOSE) printf("Distances calculated.\nWriting to %s\n", matrix_fn);
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                fprintf(matrix_file, "%f", mat[i*n+j]);
+                if(j<n-1) fprintf(matrix_file, ",");
+            }
+            fprintf(matrix_file, "\n");
         }
-        fprintf(output_file, "\n");
     }
-
     return 0;
 }
 
 void useage(){
-    printf("Name:\nwm_dist ~ calculate distances in wm.\n");
-    printf("Description:\n");
-    printf("Useage:\n<-dt increment> input.mnc GM WM \n");
+    printf("\nName:\n\twm_dist ~ calculate pairwise distances between points in gm through the  wm.\n");
+    printf("Description:\n\tSolves the Eikonal equation for wavefront propagation using the Fast Marching algorithm\n");
+    printf("Options:\n");
+    printf("   Outputs:\n");
+    printf("\t-density <.mnc>\t\t\t\tMINC volume with number of min paths through voxel, normalized to number of vertices\n");
+    printf("\t-matrix <.csv/.txt>\t\t\tCSV file with pairwise vertex distances\n");
+    printf("\t-write_vertex <int> <example.mnc>\tWrite distance for a vertex to MINC file.\n");
+    printf("   Parameters:\n");
+    printf("\t-wm_search_depth <int>\t\t\tSearch depth of voxels around a node to be checked for WM. Default=2\n");
+    printf("\t-threads <int>\t\t\t\tNumber of threads for parrallel processing. Default=Number of cores\n");
+    printf("\t-subsample <int>\t\t\tNumber of times to subsample cortical surface mesh.\n");
+    printf("\t-subsample_factor <int>\t\t\tFactor by which to subsample (default=4 for CIVET obj).\n");
+    printf("   Miscallaneous:\n");
+    printf("\t-silent\t\t\t\t\tRun silently.\n");
+    printf("Useage:\n\t<options> mask.mnc vertices.obj  <WM label> \n");
+    printf("\tNote: options must come before mandatory arguments\n");
+    printf("Example:\n\t1. -matrix wm_dist.csv sub01_pve_classify.mnc  wm_mesh.obj 3\n");
+    printf("\t2. wm_dist -density density.mnc -threads 4 -write_vertex 105 distances.mnc wm_mask.mnc inner.obj 1\n");
     exit(1);
 }

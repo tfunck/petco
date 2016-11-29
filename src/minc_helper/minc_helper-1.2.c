@@ -23,8 +23,6 @@ double* malloc_check(int dim1, int dim2, int dim3, int dim4, int dtype, int ndim
     else{
 	    n=(unsigned long) dim2*dim3*dim4;
 	}
-	printf("%d %d %d %d\n", dim1, dim2, dim3, dim4);	
-   	printf("Allocating %3.1f GB.\n", (double) n*sizeof(double) / 1024 / 1024 );
    	void *pointer=malloc( dtype*n);
    	if( pointer == NULL){
        printf("Error: Insufficient memory. %3.3f GB required\n", dtype*n*0.0000000009313226 );
@@ -278,7 +276,7 @@ for (z=start[0]; z < start[0]+count[0]; z++) {
         }
     }
 }
-    printf("Min: %f  Max: %f\n", min, max);
+//    printf("Min: %f  Max: %f\n", min, max);
     r = micreate_dimension("zspace", MI_DIMCLASS_SPATIAL, MI_DIMATTR_REGULARLY_SAMPLED, count[0], &hdim[0]);
     r = micreate_dimension("yspace", MI_DIMCLASS_SPATIAL, MI_DIMATTR_REGULARLY_SAMPLED, count[1], &hdim[1]);
     r = micreate_dimension("xspace", MI_DIMCLASS_SPATIAL, MI_DIMATTR_REGULARLY_SAMPLED, count[2], &hdim[2]);
@@ -339,7 +337,7 @@ int writeVolume4d(char* outputfile, void* array, double starts[4],  double separ
             }
         }
     }
-    printf("Min: %f  Max: %f\n", min, max);
+    //printf("Min: %f  Max: %f\n", min, max);
     r = micreate_dimension("time", MI_DIMCLASS_TIME,  MI_DIMATTR_REGULARLY_SAMPLED, count[0], &hdim[0]);
     r = micreate_dimension("zspace", MI_DIMCLASS_SPATIAL, MI_DIMATTR_REGULARLY_SAMPLED, count[1], &hdim[1]);
     r = micreate_dimension("yspace", MI_DIMCLASS_SPATIAL, MI_DIMATTR_REGULARLY_SAMPLED, count[2], &hdim[2]);
