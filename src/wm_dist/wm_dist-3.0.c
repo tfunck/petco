@@ -826,28 +826,23 @@ int wm_dist_multithreaded(data* img, int* img_vol, int** gm_border, int label, f
 /***************************************************************************************************
  *Author: Thomas Funck 
  *Contact: thomas.funck@mail.mcgill.ca
- *Date: January 15, 2016
+ *Date: December 1, 2016
  *Location: Montreal Neurological Institute, Montreal QC
  *
- *Name: surf_dist  
+ *Name: wm_dist  
  *Synopsis: - program to calculate minimum distance from a region to any point within anatomically constrained space
- *
- *Inputs: 
- *          1) Mesh composed of vertices in .obj format
- *          2) Binary mask file (.txt) containing "1" for vertices inside region
- *
- *Outputs: 
- *          1) File (.txt) containing distance values at each node
- * 
  *
  *Description:
  *  Calculates distances from 3D region within anatomically constrained region. 
  *
- *
- *Version History:
- *
- *January, 2016
- *   Version-1.0: 
+ *To do:
+ *  -  Nodes are currently only defined as closest voxels to vertices on mesh. 
+ *      Should extend to add option for volumetric labels around which to create nodes.
+ *      This would add possibility of measuring distances to/from subcortical gm
+ *  - Calculate distances along cortical surface mesh for geodesic distances
+ *  - Read/write nifti images for greater compatibility
+ *  - Write python script
+ *  - Python wrapper
  *
  *
  * ****************************************************************/
@@ -970,8 +965,8 @@ int main(int argc, char** argv){
     wm_dist_multithreaded(&img, img_vol, gm_border, label, mat, n, nthreads, write_vertex, example_fn, density, density_fn);
 
     if(density_fn != NULL){ 
-        int nkept=n-nReplace;
-        for(int i=0; i< img.n3d; i++) density[i] = round((float) density[i]/nkept);
+        //int nkept=n-nReplace;
+        //for(int i=0; i< img.n3d; i++) density[i] = ((float) density[i]/nkept);
         if(VERBOSE) printf("Writing density map to %s.\n", density_fn);
         writeVolume(density_fn, density, img.start, img.step, img.wcount, MI_TYPE_INT );
     }

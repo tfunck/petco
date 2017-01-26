@@ -152,6 +152,27 @@ target_link_libraries(crop_from_mask minc_helper  ${MINC2_LIB} m pthread)
 target_include_directories(crop_from_mask PUBLIC ${MINC_INCLUDE_DIR})
 set_target_properties(crop_from_mask PROPERTIES COMPILE_FLAGS "-static -std=c99")
 
+
+######################
+# Compile tac_volume #
+######################
+set(tac_volume_SRC  src/tac_volume/tac_volume-1.0.c  include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
+add_executable(tac_volume ${tac_volume_SRC})
+target_link_libraries(tac_volume minc_helper  ${MINC2_LIB} m pthread)
+target_include_directories(tac_volume PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(tac_volume PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
+
+##########################
+# Compile minc_integrate #
+#########################
+set(minc_integrate_SRC  src/minc_integrate/minc_integrate-1.0.c  include/minc_helper.h  ${MINC_INCLUDE_DIR}/minc2.h )
+add_executable(minc_integrate ${minc_integrate_SRC})
+target_link_libraries(minc_integrate minc_helper  ${MINC2_LIB} m pthread)
+target_include_directories(minc_integrate PUBLIC ${MINC_INCLUDE_DIR})
+set_target_properties(minc_integrate PROPERTIES COMPILE_FLAGS "-static -std=c99")
+
+
 ############################
 # Compile join_mask_labels #
 ############################
@@ -183,7 +204,7 @@ set_target_properties(wm_dist PROPERTIES COMPILE_FLAGS "-static -std=c99  -O0 -f
 ###########################
 # Set install directories #
 ###########################
-set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag tka minc2ascii crop_from_mask join_mask_labels nl-anisotropic wm_dist)
+set(progs gtm idSURF mincgroupstats srv mincsplit surf_dist surf_defrag tka minc2ascii crop_from_mask join_mask_labels nl-anisotropic wm_dist tac_volume minc_integrate)
 foreach(prog ${progs}) 
 	install(TARGETS ${prog} DESTINATION bin)
 endforeach(prog)

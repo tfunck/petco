@@ -394,7 +394,7 @@ void createVolume(char* newfilename, int num_dim, misize_t *sizes, double *separ
         r = micreate_volume_image(hvol);
          if (r == MI_NOERROR) ;// printf("Created output volume.\n");
             else printf("Error creating output volume.\n");        
-        printf("\nDimensions for %s:\n\t%d %d %d %d\n\t%f %f %f %f\n\t%f %f %f %f\n\n", newfilename, sizes[0], sizes[1], sizes[2], sizes[3], separations[0], separations[1], separations[2], separations[3],  starts[0], starts[1], starts[2], starts[3] );                                                    
+        //printf("\nDimensions for %s:\n\t%d %d %d %d\n\t%f %f %f %f\n\t%f %f %f %f\n\n", newfilename, sizes[0], sizes[1], sizes[2], sizes[3], separations[0], separations[1], separations[2], separations[3],  starts[0], starts[1], starts[2], starts[3] );                                                    
 	}
 	else if(num_dim==3){
         altSeparations[0]=separations[0];
@@ -425,7 +425,7 @@ void createVolume(char* newfilename, int num_dim, misize_t *sizes, double *separ
         if (r == MI_NOERROR);// printf("Created output volume.\n");
         else printf("Error creating output volume.\n");
 
-        //printf("Dimensions for %s:\n\t %d %d %d\n\t %f %f %f\n\t %f %f %f\n\n", newfilename, sizes[1], sizes[2], sizes[3], separations[1], separations[2], separations[3], altStarts[0], altStarts[1], altStarts[2] );
+        //printf("Dimensions for %s:\n\t %d %d %d\n\t %f %f %f\n\t %f %f %f\n\n", newfilename, sizes[0], sizes[1], sizes[2], separations[0], separations[1], separations[2], altStarts[0], altStarts[1], altStarts[2] );
 	}
     miclose_volume(hvol);
 }
