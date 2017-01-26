@@ -85,7 +85,9 @@ int gtm_solve(data* mask, int* mask_array, int nlabels, float** gtm, double fwhm
     double* temp=malloc(nvox*sizeof(*temp)); //
     int x;
     
+    //Allocate array for RSF 
     rsf=calloc( nvox, sizeof(*rsf));
+    //Allocate zero_array that keeps track of GTM for gaussj
     zero_array=malloc(sizeof(*zero_array) * nlabels);
     for(i=0; i< nlabels; i++){ 
         zero_array[i]=calloc(nlabels,  sizeof(**zero_array));
@@ -95,7 +97,7 @@ int gtm_solve(data* mask, int* mask_array, int nlabels, float** gtm, double fwhm
     printf("Label\tNVoxels\tRSF\n");
     for(i=0; i < nlabels; i++){
         label=labels[i];
-        for(int index=0;  index < nvox; index++ ) {
+        for(int index=0;  index < nvox; index++ ){
             if( mask_array[index] == label ){
                 temp[index]=1;
             }
@@ -105,26 +107,28 @@ int gtm_solve(data* mask, int* mask_array, int nlabels, float** gtm, double fwhm
             rsf[k]=temp[k];
             temp[k]=0;
         }
-        //find the proportion of each blurred mask j in mask i
+        //find the proportion of each blurred mask i in mask j
         //cycle through each mask j...
         for(j=0; j < nlabels; j++){
             int label2 = labels[j];
-            gtm[i][j]=0; //initialize to 0, just in case it was automatically set to another value
+            //gtm[j][i]=0; //initialize to 0, just in case it was automatically set to another value
             for(k=0; k < nvox; k++){
-                //Find the amount of rsf of mask j in mask i
+                //Find the amount of rsf of mask i in mask j
                 if( mask_array[k] == label2){ 
                     //for this k we are in our mask i, so we add up the values of mask j at k
                     //printf("%d %f\n", mask_array[k], rsf[k]);
-                    gtm[i][j] += (float) rsf[k]; //this voxel is in region, so we add rsf j to sum
+                    gtm[j][i] += (float) rsf[k]; //this voxel is in region, so we add rsf j to sum
                 }
             }
         }
-    
+    }
+
+    for(i=0; i < nlabels; i++){
         for(j=0; j < nlabels; j++){
-            if(nLocalVoxels[j] > 0) gtm[i][j] /=  nLocalVoxels[j]; //Divide the total signal in mask j 
-            else gtm[i][j]=0;
-            printf("%f\t", gtm[i][j]);
-        } printf("\n");
+            if(nLocalVoxels[j] > 0) gtm[j][i] /=  nLocalVoxels[j]; //Divide the total signal in mask j 
+            else gtm[j][i]=0;
+            printf("%lf,", gtm[j][i]);
+        } //printf("\n");
     }
     printf("\n");
     //for(j=0; j < nlabels; j++)  printf("%d\t%d\n", labels[j], nLocalVoxels[j] );
@@ -132,8 +136,8 @@ int gtm_solve(data* mask, int* mask_array, int nlabels, float** gtm, double fwhm
     gaussj(gtm, nlabels, zero_array, 1);
     for(i=0; i < nlabels; i++){
         for(j=0; j < nlabels; j++){
-            printf("%3.4f\t", gtm[i][j]);
-        } printf("\n");
+            printf("%lf,", gtm[i][j]);
+        } //printf("\n");
     } printf("\n");
 
 
