@@ -127,8 +127,8 @@ int gtm_solve(data* mask, int* mask_array, int nlabels, float** gtm, double fwhm
         for(j=0; j < nlabels; j++){
             if(nLocalVoxels[j] > 0) gtm[j][i] /=  nLocalVoxels[j]; //Divide the total signal in mask j 
             else gtm[j][i]=0;
-            printf("%lf,", gtm[j][i]);
-        } //printf("\n");
+            printf("%lf\t", gtm[j][i]);
+        } printf("\n");
     }
     printf("\n");
     //for(j=0; j < nlabels; j++)  printf("%d\t%d\n", labels[j], nLocalVoxels[j] );
@@ -136,8 +136,8 @@ int gtm_solve(data* mask, int* mask_array, int nlabels, float** gtm, double fwhm
     gaussj(gtm, nlabels, zero_array, 1);
     for(i=0; i < nlabels; i++){
         for(j=0; j < nlabels; j++){
-            printf("%lf,", gtm[i][j]);
-        } //printf("\n");
+            printf("%lf\t", gtm[i][j]);
+        } printf("\n");
     } printf("\n");
 
 

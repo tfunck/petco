@@ -72,6 +72,37 @@ int append_int_array(int*** region, int voxel, int nregion,int** border, int nbo
     return(0);
 }
 /********************************************************************************************
+*Name: get_nlabels
+*Purpose: figure out how many labels are in a mask 
+*Method:     
+*Inputs:    
+*Output:    
+*********************************************************************************************/
+
+int*  get_nlabels(data* mask, int* mask_array, int* nlabels){
+    int* labels=NULL; //labels stores the integer values of atlas
+    for( int z=0;  z < mask->zmax; z++ ) {
+        for( int y=0; y < mask->ymax; y++) {
+            for( int x=0; x < mask->xmax; x++){
+                int index=z*mask->ymax*mask->xmax + y*mask->xmax+x;
+                if( mask_array[index] != 0 ){
+                    int label = mask_array[index];
+                    if ( isin(label, labels, *nlabels) != TRUE){ //label has already been found
+                        (*nlabels) += 1;
+                        labels=realloc(labels, *nlabels * sizeof(*labels));
+                        labels[*nlabels-1]=label;
+                    }  //first time coming across this label
+                    int idx=find(label, labels, *nlabels);
+                }
+            }
+        }
+    }
+    return(labels);
+}
+
+
+
+/********************************************************************************************
 *Name: create_border 
 *Purpose:   
 *Method:     
@@ -818,6 +849,9 @@ int main(int argc, char** argv){
     for(int i=0; i<nvox3d; i++) avg_region[i]=NULL; //Initialize values of region to NULL so that we can use realloc on them
     printf("Finding averaging region for masks.\n");
     //for each mask...
+    //int nlabels=0;
+    //int* labels=get_nlabels(masks, mask_array, &nlabels); //Figure out how many and what labels are in the mask image
+    
     for(int i=0; i<nmasks; i++){
         //read in mask volume 
         masks[i].data=(double*) readVolume(&masks[i], 1, MI_TYPE_DOUBLE );

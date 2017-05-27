@@ -148,7 +148,7 @@ void wm_dist_threaded(void* args){
         int y=gm_border[i][1];
         int x=gm_border[i][2];
         int index=z*ymax*xmax+y*xmax+x;
-            find_border(img_vol, inner, z, y, x, zmax, ymax, xmax, &old_border, &old_nborder, distances, WM, &chunk_size);
+        find_border(img_vol, inner, z, y, x, zmax, ymax, xmax, &old_border, &old_nborder, distances, WM, &chunk_size);
         printf("WM,NBorder\n");
         counter=0;
         while (old_nborder > 0){
@@ -162,7 +162,7 @@ void wm_dist_threaded(void* args){
                 int cy=old_border[i][1];
                 int cx=old_border[i][2];
                 index=cz*ymax*xmax+cy*xmax+cx;
-                    find_border(img_vol, inner, cz, cy, cx, zmax, ymax, xmax, &border, &nborder, distances, WM, &chunk_size);
+                find_border(img_vol, inner, cz, cy, cx, zmax, ymax, xmax, &border, &nborder, distances, WM, &chunk_size);
             }
            
             //set border voxels to inside

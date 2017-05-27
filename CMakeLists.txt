@@ -64,7 +64,7 @@ set_target_properties(minc_fftw PROPERTIES COMPILE_FLAGS "-std=c99")
 ##################
 # Compile idSURF #
 ##################
-set(idSURF_SRC src/idSURF/idSURF-4.1.1.c src/idSURF/gaussianiir3d.c   ${MINC_INCLUDE_DIR}/minc2.h include/minc_helper.h)
+set(idSURF_SRC src/idSURF/idSURF-4.1.2.c src/idSURF/gaussianiir3d.c   ${MINC_INCLUDE_DIR}/minc2.h include/minc_helper.h)
 add_executable(idSURF ${idSURF_SRC})
 target_link_libraries(idSURF  minc_helper ${MINC2_LIB} m pthread )
 target_include_directories(idSURF PUBLIC ${MINC_INCLUDE_DIR})
