@@ -325,8 +325,8 @@ float quad(float a, float b, float c){
     float temp1=2*a;
     float sol1=(-b + temp ) / temp1;
     float sol2=(-b - temp ) / temp1;
-    sol1 = (isnan(sol1) || isinf(sol1)) ? 0 : sol1;
-    sol2 = (isnan(sol2) || isinf(sol2)) ? 0 : sol2;
+    sol1 = (temp1 < 0 || disc < 0) ? 0 : sol1;
+    sol2 = (temp1 < 0 || disc < 0) ? 0 : sol2;
     float sol=(sol1 > sol2) ? sol1 : sol2;
 }
 
@@ -512,7 +512,6 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
             //printf("3D solution: %f %f %f\n", sol, sol1, sol2);     
             //printf("2D Solutions: %f (%f %f) %f (%f %f)  %f (%f %f)\n", altsol[0], altsols[0][0], altsols[0][1], altsol[1], altsols[1][0], altsols[1][1], altsol[2], altsols[2][0], altsols[2][1]); 
             sol=quick_max(altsol[0], altsol[1], altsol[2] ); 
-            
             if (  sol <=0 ){
                 /***************************
                  *Try to find a 1D solution*
@@ -534,8 +533,7 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
                 sol=quick_max(altsol[0], altsol[1], altsol[2]);
             }
         } 
-
-
+        //if( isnan(sol) ) { printf("%f\n", sol); exit(0); }
         distances[index]= (sol > 0) ? sol : distances[index];
 }
 int add_neighbours(struct node* considered, int* img_vol, float* distances, bool* fixed, bool* considered_array, int* nconsidered, const int label,const int  z, const int  y, const int x, const int init ){
@@ -631,46 +629,64 @@ int add_neighbours(struct node* considered, int* img_vol, float* distances, bool
             }
         }
 
+    //for(int cc=0; cc < zmax*ymax*xmax; cc++) if(cc == 3374631 ) printf("\nDistances:  %f, %d\n", distances[cc], cc); 
+
     return(*nconsidered);
 }
 
-int min_path(int index, int z, int y, int x, float* distances, unsigned int* density, _Bool* fixed, int* img_vol, float min, int factor){
+int min_path(int index, int z, int y, int x, 
+        float* distances /*distance map*/, 
+        unsigned int* density, /*map of voxels tranversed by min distance paths*/ 
+        _Bool* fixed, /*map of fixed points*/ 
+        int* img_vol, 
+        float min, 
+        int factor){
     int min_index=pseudo_inf;
     float local_min=min;
-    int z0 = (z-1 >= 0) ? z-1 : 0;
-    int y0 = (y-1 >= 0) ? y-1 : 0;
-    int x0 = (x-1 >= 0) ? x-1 : 0;
-    int z1 = (z+1 < zmax) ? z+1 : zmax;
-    int y1 = (y+1 < ymax) ? y+1 : ymax;
-    int x1 = (x+1 < xmax) ? x+1 : xmax;
     int min_zi, min_yi, min_xi;
-    for(int zi=z0; zi <= z1; zi++){ 
-        for(int yi=y0; yi <= y1; yi++){ 
-            for(int xi=x0; xi <= x1; xi++){
-                int index1=zi*xymax+yi*xmax+xi;
-                if( /*fixed[index1] == TRUE &&*/ index1 != index && distances[index1] < local_min){
-                    min_index=index1;
-                    local_min=distances[index1]; 
-                    min_zi=zi;
-                    min_yi=yi;
-                    min_xi=xi;
-                }
-            } 
+    int break_point=0, c=1;
+    
+
+    //while(break_point == 0 || c < 3 ){
+        int z0 = (z-c >= 0) ? z-1 : 0;
+        int y0 = (y-c >= 0) ? y-1 : 0;
+        int x0 = (x-c >= 0) ? x-1 : 0;
+        int z1 = (z+c < zmax) ? z+1 : zmax;
+        int y1 = (y+c < ymax) ? y+1 : ymax;
+        int x1 = (x+c < xmax) ? x+1 : xmax;
+        for(int zi=z0; zi <= z1; zi++){ 
+            for(int yi=y0; yi <= y1; yi++){ 
+                for(int xi=x0; xi <= x1; xi++){
+                    int index1=zi*xymax+yi*xmax+xi;
+                    if( fixed[index1] == TRUE && index1 != index && distances[index1] < local_min){
+                        min_index=index1;
+                        local_min=distances[index1]; 
+                        min_zi=zi;
+                        min_yi=yi;
+                        min_xi=xi;
+                        break_point=1;
+                    }
+                } 
+            }
         }
-    }
-    if(min_index != pseudo_inf ) {
-        //printf("\t%d %d %d : %d %d %f %d\n", min_zi, min_yi, min_xi, fixed[min_index], distances[min_index], img_vol[min_index], density[min_index]);
+     //   c++;
+    //}
+    
+    if(min_index != pseudo_inf && break_point == 1 ) {
+        //printf("\t%d %d %d : %d %d %f %d, %d\n", min_zi, min_yi, min_xi, fixed[min_index], distances[min_index], img_vol[min_index], density[min_index], c);
         density[min_index] += factor;
         min_path(min_index, min_zi, min_yi, min_xi, distances, density, fixed, img_vol, local_min, factor);
-    }
+   }
 
     return(0);
 }
 
 int min_paths(int cur_i, float* distances, unsigned int* density, _Bool* fixed, int* img_vol, int** gm_border, int n, int factor){
-
+    //FIXME: Seems like the algorithm hits a local minimum? 
+    
     for(int i=0; i<n; i++){
-        //printf("%d\n", i);
+        //For each voxel that is on the GM-WM border, track the minimum distance back to the curent
+       //voxel on the GM-WM border. 
         if(gm_border[i][4] != TRUE && i != cur_i){
             int index=gm_border[i][0];
             int z=gm_border[i][1];
@@ -678,8 +694,38 @@ int min_paths(int cur_i, float* distances, unsigned int* density, _Bool* fixed, 
             int x=gm_border[i][3];
             float min=distances[index];
             min_path(index, z, y, x, distances, density, fixed, img_vol, min , factor);
-        } //else printf("Skipped\n");
+        } /**/ //else printf("Skipped\n");
     }
+    return(0);
+}
+
+int eikonal(struct node* considered, int*  img_vol, float*  distances, bool* fixed, bool* considered_array, const int label, int  z, int y, int  x){
+    int nconsidered=0; 
+    /************************************
+     * Initialize the considered points *
+     ************************************/
+    add_neighbours(considered, img_vol, distances,fixed, considered_array, &nconsidered, label,  z, y, x, 1);
+    int init_c=nconsidered;
+    while(nconsidered > 0){
+        /********************************************************
+         * 3. Add mininum distance point to list of fixed points
+         ********************************************************/
+        int index=considered[1].index;
+        z=(int) floor(index / (xymax));
+        y=(int) floor(index-  z*xymax)/xmax; 
+        x=(int) floor(index-z*xymax-y*xmax);
+
+        delete(considered, 1, nconsidered, considered_array);
+        //Decrease the number of considered points
+        nconsidered--;
+        fixed[index]=TRUE;
+        /***********************************************************************
+         * Add points surrounding new fixed point to list of considered points
+         ***********************************************************************/
+        add_neighbours(considered, img_vol, distances,fixed, considered_array, &nconsidered,label,  z, y, x, 0);
+    }
+
+    return(0);
 }
 
 void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,const int label, int write_vertex,char* example_fn, unsigned int *density, char* density_fn,  const  int start,const int step){
@@ -688,7 +734,6 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,c
     bool* considered_array=malloc(max * sizeof(*considered_array));
     struct node* considered=malloc(max *sizeof(*considered)); //, *considered_last=FALSE, *minNode=FALSE;
     float* distances=malloc(max*sizeof(*distances));
-    int  nconsidered;
     int index;
     char testfn[2000];
     int x, y, z;
@@ -706,7 +751,6 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,c
             distances[j]=pseudo_inf;
             fixed[j]=considered_array[j]=FALSE;
         }
-        nconsidered=0; 
 
         if(gm_border[i][4]==0){ continue;}
         index=gm_border[i][0];
@@ -715,44 +759,13 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,c
         y=gm_border[i][2];
         x=gm_border[i][3];
         distances[index]=0;
-        //int nfixed=0;
-        /************************************
-         * Initialize the considered points *
-         ************************************/
-        add_neighbours(considered, img_vol, distances,fixed, considered_array, &nconsidered, label,  z, y, x, 1);
-        init_c=nconsidered;
-        while(nconsidered > 0){
-            /********************************************************
-             * 3. Add mininum distance point to list of fixed points
-             ********************************************************/
-            index=considered[1].index;
-            z=(int) floor(index / (xymax));
-            y=(int) floor(index-  z*xymax)/xmax;// considered[1].y;
-            x=(int) floor(index-z*xymax-y*xmax);
 
-            /*for( int v=1; v<=nconsidered; v++){
-                    index=considered[v].index;
-                    z=(int) floor(index / (xymax));
-                    y=(int) floor(index-  z*xymax)/xmax;// considered[1].y;
-                    x=(int) floor(index-z*xymax-y*xmax);
-                    printf("Considered1:%d %d %d %d %d %f\n",v, index, z, y, x, distances[index]);
-                    exit(0);
-            }*/
-
-
-            delete(considered, 1, nconsidered, considered_array);
-            //nfixed++; 
-            //Decrease the number of considered points
-            nconsidered--;
-            fixed[index]=TRUE;
-            /***********************************************************************
-             * Add points surrounding new fixed point to list of considered points
-             ***********************************************************************/
-            add_neighbours(considered, img_vol, distances,fixed, considered_array, &nconsidered,label,  z, y, x,0);
-            //if(nfixed > 500) break;
-        }
-
-        if(density_fn != NULL){ 
+        eikonal(considered, img_vol, distances,fixed, considered_array, label,  z, y, x);
+      
+        if(density_fn != NULL){
+            /*
+             * Find minimum path across distance gradient 
+             */ 
             min_paths(i, distances, density, fixed, img_vol, gm_border, n, gm_border[i][4]);
         }
 
@@ -771,8 +784,10 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,c
             }
         }
     }
-
-
+    free(considered);
+    free(distances);
+    free(fixed); 
+    free(considered_array); 
 }
 
 void* wm_dist_threaded(void* args){
@@ -924,7 +939,6 @@ int main(int argc, char** argv){
         printf("Search depth: %d\n",wm_search_depth);  
     }
     
-
     //Set maximum number of threads to use. 
     //Default is the number of cores on system
     if(max_threads < nthreads && max_threads > 0) nthreads=max_threads;
@@ -959,11 +973,15 @@ int main(int argc, char** argv){
                 if(z<=1 || y <= 1 || x<=1 || z >= img.zmax-2 || y >= img.ymax-2 || x >= img.xmax-2){
                     img_vol[z*img.ymax*img.xmax+y*img.xmax+x]=0;
                 }
-    
+    if(matrix_fn != NULL) free(mat);
+
     /*Find GM-WM Border*/
     int** gm_border=wm_gm_border(&img, mesh,label, img_vol, fill_wm,  n, &nReplace, wm_search_depth);
-    wm_dist_multithreaded(&img, img_vol, gm_border, label, mat, n, nthreads, write_vertex, example_fn, density, density_fn);
-
+    if(nthreads > 1){
+        wm_dist_multithreaded(&img, img_vol, gm_border, label, mat, n, nthreads, write_vertex, example_fn, density, density_fn);
+    } else {
+        wm_dist(&img, img_vol, gm_border, mat, n, label, write_vertex, example_fn, density, density_fn, 0, 1);
+    }
     if(density_fn != NULL){ 
         //int nkept=n-nReplace;
         //for(int i=0; i< img.n3d; i++) density[i] = ((float) density[i]/nkept);
@@ -995,6 +1013,16 @@ int main(int argc, char** argv){
             fprintf(matrix_file, "\n");
         }
     }
+    for(int i=0; i<n; i++){ 
+        free(fill_wm[i]);
+        free(gm_border[i]);
+        free(mesh[i]);
+    }
+    free(mesh);
+    free(gm_border);
+    free(fill_wm); 
+    free(img_vol);
+    free(density);
     return 0;
 }
 
