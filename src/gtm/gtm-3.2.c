@@ -211,6 +211,7 @@ int gtm_apply(data* image, data* masks, int* mask_array, int* labels, int* nLoca
             int val = mask_array[index]; 
             if( val != 0){
                 int idx=find(val, labels , nlabels);
+                //printf("%d %f\n", idx, trueValues[idx]);
                 array[index]=(float) trueValues[idx];     
             }
         }

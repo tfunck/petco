@@ -950,6 +950,7 @@ int main(int argc, char** argv){
     int *mask_label;//keeps track of which mask to use for the nearest neighbours and averaging region
     int max_iterations; //maximum number of iterations for iterative deconvolution with idSURF
     int max_avg; //maximum number of voxels over which to average.
+    int nthreads=sysconf(_SC_NPROCESSORS_ONLN);
     int smooth_only=0;
     int cubic_averaging_region=FALSE;
     double* test;
@@ -960,8 +961,7 @@ int main(int argc, char** argv){
     misize_t *sizes;
     misize_t *starts;
     float *temp_array;
-    int nthreads=sysconf(_SC_NPROCESSORS_ONLN);
-    data** temp=parse_input(argc, argv, &nimages, &nmasks, &max_iterations, &max_avg, &fwhm, &tolerance,  &outputfilename, &smooth_only, &cubic_averaging_region);
+    data** temp=parse_input(argc, argv, &nthreads, &nimages, &nmasks, &max_iterations, &max_avg, &fwhm, &tolerance,  &outputfilename, &smooth_only, &cubic_averaging_region);
     data* image=temp[0];
     data* masks=temp[1];
     data* first_guess=temp[2];
@@ -1051,7 +1051,7 @@ void useage(){
 }
 
 
-data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, int* max_iterations, int* max_avg, float* fwhm, float* tolerance, char** outputfilename, int* smooth_only, int *cubic_averaging_region ){
+data** parse_input(int argc, char** argv, int* nthreads,  int* nimages, int *nmasks, int* max_iterations, int* max_avg, float* fwhm, float* tolerance, char** outputfilename, int* smooth_only, int *cubic_averaging_region ){
     int i, temp_i=0;
     char* linear="-linear";
     char* nearest="-nearest";
@@ -1091,6 +1091,12 @@ data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, int* max_i
             i++;
             *fwhm=atof(argv[i]); 
             set_fwhm=1; 
+        }
+        else if(strcmp(argv[i], "-nthreads" )==0 ){
+            i++;
+            *nthreads=atoi(argv[i]); 
+            //Not sure if this is needed:
+            //set_nthreads=1; 
         }
         else if(strcmp(argv[i], "-max-iterations" )==0 ){
             i++;

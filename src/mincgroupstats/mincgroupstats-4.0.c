@@ -164,19 +164,9 @@ int stats_3D(data** images,   int nimages, data* atlas, int natlas, point*** roi
     return(0);
 }
 
-void print_output(FILE* output_f, data* images, data* atlas, int natlas, struct result ***output, int a /*atlas number*/, int i/*roi number*/, int j/*image number*/, int t, int mean_only ){
+void print_output(FILE* output_f, data* images, data* atlas, int natlas, struct result ***output, int a /*atlas number*/, int i/*roi number*/, int j/*image number*/, int t, int mean_only, int bids ){
   	int total=0;
   	if(output_f == NULL){
-	  	/*for(int g=0; g<images[j].ngroups; g++) printf("%s,", images[j].groups[g]); 
-		for(int a=0; a<natlas; a++){
-			total+=atlas[a].ngroups;
-		 	if( j <= total){
-				for( int g=0; g<atlas[a].ngroups; g++){
-					printf("%s,", atlas[a].groups[g]);
-				}
-		 		break;
-		 	}
-		}*/
 		if(mean_only != TRUE){ 
             for( int g=0; g<images[j].ngroups; g++) printf("%s,", images[j].groups[g]); 
             for( int g=0; g<atlas[a].ngroups; g++) printf("%s,", atlas[a].groups[g]);
@@ -188,16 +178,13 @@ void print_output(FILE* output_f, data* images, data* atlas, int natlas, struct 
 
 	}
 	else{
-		//for(int g=0; g<images[j].ngroups; g++) fprintf(output_f, "%s,", images[j].groups[g]); 
-	    //for(int k=0; k < natlas; k++) for( int g=0; g<atlas[k].ngroups; g++) fprintf(output_f, "%s,", atlas[k].groups[g]); 
-	  	//fprintf(output_f, "%d,%d,%d,%f,%f,%f,%f,%f\n",images[j].ndim, output[j][i][t].roi,   t, output[j][i][t].avg, output[j][i][t].sd, output[j][i][t].min, output[j][i][t].max, output[j][i][t].vol );
-		for( int g=0; g<images[j].ngroups; g++) fprintf(output_f,"%s,", images[j].groups[g]); 
+        for( int g=0; g<images[j].ngroups; g++) fprintf(output_f,"%s,", images[j].groups[g]); 
         for( int g=0; g<atlas[a].ngroups; g++) fprintf(output_f,"%s,", atlas[a].groups[g]);
         fprintf(output_f, "%d,%d,%d,%f,%f,%f,%f,%f\n",images[j].ndim, output[j][i][t].roi,   t, output[j][i][t].avg, output[j][i][t].sd, output[j][i][t].min, output[j][i][t].max, output[j][i][t].vol );
     }
 }
 
-int get_descriptive_stats(data* images, int nimages, data* atlas /**/, int natlas, int nframes, point*** roi_list, int* roi_list_n , int n_roi, int** nat_id, int** unique_id,  int* n_nat_id,  char* interpolation_method, char* output_fn, int mean_only){
+int get_descriptive_stats(data* images, int nimages, data* atlas /**/, int natlas, int nframes, point*** roi_list, int* roi_list_n , int n_roi, int** nat_id, int** unique_id,  int* n_nat_id,  char* interpolation_method, char* output_fn, int mean_only, int bids){
     int i, j, t, index, n_temp_images;
     unsigned int total=0;
     data** temp_images=NULL;
@@ -208,6 +195,7 @@ int get_descriptive_stats(data* images, int nimages, data* atlas /**/, int natla
 	  output_f = fopen(output_fn, "wb");
 	  if (output_f==NULL) pexit("Error: could not write to", output_fn , 1);
 	}
+    if(bids == TRUE) fprintf(output_f, "sub,ses,task,ndim,roi,frame,mean,sd,min,max,vol");
 
     for (i=0; i< nimages; i++) {
         output[i]=malloc(sizeof(**output) * (n_roi));
@@ -249,7 +237,7 @@ int get_descriptive_stats(data* images, int nimages, data* atlas /**/, int natla
             if( images[j].tmax>=t){/*Iterate over images*/
                 for(int a=0; a < natlas; a++){
                     for(i=0; i<atlas[a].n_roi; i++){ /*Iterate over ROI*/
-                        print_output(output_f, images, atlas, natlas, output, a, unique_id[a][i], j, t, mean_only);
+                        print_output(output_f, images, atlas, natlas, output, a, unique_id[a][i], j, t, mean_only, bids);
                     }
                 }
             }
@@ -500,7 +488,7 @@ int parse_sub_input(int *i, char** argv, data* ptr){
 }
 
 
-int parse_input(int argc, char** argv, data** images, int* nimages, data** atlas, int *natlas, char** interpolation_method, char** output_fn, int* mean_only ){
+int parse_input(int argc, char** argv, data** images,  int* nimages, data** atlas, int *natlas, char** interpolation_method, char** output_fn, int* mean_only, int* bids ){
     int i;
     char* linear="-linear";
     char* nearest="-nearest";
@@ -509,6 +497,10 @@ int parse_input(int argc, char** argv, data** images, int* nimages, data** atlas
     *atlas=NULL;
     data* tmp=NULL;
     for( i=1; i < argc; i++ ){
+
+        if( strcmp(argv[i], "--bids")==0 ){ 
+            bids = TRUE;
+        }
         if(strcmp(argv[i], "-i" ) == 0 ){
             allocate_vol(&(*images), nimages);
             parse_sub_input(&i, argv, &((*images)[*nimages-1]) );
@@ -561,6 +553,7 @@ int main(int argc, char** argv){
     int nmask_voxels;
 	int n_roi=0;
     int mean_only=FALSE;
+    int bids=FALSE;
 	int* n_nat_id=NULL;
     int** nat_id=NULL;
     int** unique_id=NULL;
@@ -569,7 +562,7 @@ int main(int argc, char** argv){
     struct roi_aggregate atlas_voxels;
 	point*** roi_list=NULL; /*list of points for each roi*/
    	int* roi_list_n=NULL; /*number of points in each roi*/
-    parse_input(argc, argv, &images, &nimages, &atlas, &natlas, &interpolation_method, &output_fn, &mean_only );
+    parse_input(argc, argv, &images, &nimages, &atlas, &natlas, &interpolation_method, &output_fn, &mean_only, &bids );
     //printf("Received Inputs:\nImages\tVolumes\tSurfs\n%d\t%d\n", nimages, natlas);
     if(nimages == 0 || natlas==0 ) useage();
     //load volumetric masks 
@@ -600,7 +593,7 @@ int main(int argc, char** argv){
 		images[i].data=malloc_check(nframes, images[i].zmax, images[i].ymax, images[i].xmax, sizeof(double), images[i].ndim);
     }
 	//printf("Getting descriptive stats"); fflush(stdout);
-    get_descriptive_stats(images, nimages, atlas, natlas, nframes, roi_list, roi_list_n, n_roi, nat_id, unique_id, n_nat_id, interpolation_method, output_fn, mean_only); 
+    get_descriptive_stats(images, nimages, atlas, natlas, nframes, roi_list, roi_list_n, n_roi, nat_id, unique_id, n_nat_id, interpolation_method, output_fn, mean_only, bids); 
     return(0);
 }
 
