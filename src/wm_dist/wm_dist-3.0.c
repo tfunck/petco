@@ -124,7 +124,7 @@ void sort(struct node* heap, int i, bool* index_array){
 
 }
 
-void delete(struct node* heap,int i, int n, bool* index_array, int run){
+void delete(struct node* heap,int i, unsigned long n, bool* index_array, int run){
     //printf("Delete %d %d %f\n", heap[i].index, heap[i].dist, *heap[i].dist );
     index_array[heap[i].index]=n; //Set index of node in heap[i] to n (number of considered voxels
     index_array[heap[n].index]=i; //Set index of node heap[n] in index_array to i (1)
@@ -181,7 +181,7 @@ struct wm_vol_args{
     int label;
     int thread;
     int nthreads;
-    int n;
+    unsigned long n;
     float* mat; 
 };
 
@@ -199,7 +199,7 @@ int check_for_wm(int* img_vol, int z, int y, int x, int zmax, int ymax, int xmax
     return(0);
 }
 
-int** wm_gm_border(data* img, float** mesh, const int label, const int* img_vol,int** fill_wm, const int n, int* nReplace, int wm_search_depth){
+int** wm_gm_border(data* img, float** mesh, const int label, const int* img_vol,int** fill_wm, const unsigned long n, int* nReplace, int wm_search_depth){
     int zmax=img->zmax;
     int ymax=img->ymax;
     int xmax=img->xmax;
@@ -280,7 +280,7 @@ int** wm_gm_border(data* img, float** mesh, const int label, const int* img_vol,
     return(border);
 }
 
-float** readVertices(const char* Meshfilename,  int* nvertices, int subsample, int subsample_factor ){
+float** readVertices(const char* Meshfilename,  unsigned long* nvertices, int subsample, int subsample_factor ){
     char buffer1[100];
     int i; 
     int vertices;
@@ -694,7 +694,7 @@ int min_path(int index, int z, int y, int x,
     return(0);
 }
 
-int min_paths(int cur_i, float* distances, unsigned int* density, _Bool* fixed, int* img_vol, int** gm_border, int n, int factor){
+int min_paths(int cur_i, float* distances, unsigned int* density, _Bool* fixed, int* img_vol, int** gm_border, unsigned long n, int factor){
     //FIXME: Seems like the algorithm hits a local minimum? 
     
     for(int i=0; i<n; i++){
@@ -741,7 +741,7 @@ int eikonal(struct node* considered, int*  img_vol, float*  distances, bool* fix
     return(0);
 }
 
-void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,const int label, int write_vertex,char* example_fn, unsigned int *density, char* density_fn,  const  int start,const int step){
+void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const unsigned long n,const int label, int write_vertex,char* example_fn, unsigned int *density, char* density_fn,  const  int start,const int step){
     int max =img->n3d;
     bool* fixed=malloc(max * sizeof(*fixed));
     bool* considered_array=malloc(max * sizeof(*considered_array));
@@ -752,7 +752,6 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,c
     int x, y, z;
     int wm_total=0;
     int i;
-
 
     for( i=start; i < n; i += step){ //Iterate over nodes on WM-GM border
         if(VERBOSE){ printf("\rThread %d: %3.1f",start, (float) 100.0 * i/n); fflush(stdout);}
@@ -808,19 +807,19 @@ void* wm_dist_threaded(void* args){
     int* img_vol=((struct wm_vol_args*) args)->img_vol;
     float* mat=((struct wm_vol_args*) args)->mat;
     int** gm_border=((struct wm_vol_args*) args)->gm_border;
-    int n=((struct wm_vol_args*) args)->n;
+    unsigned long n=((struct wm_vol_args*) args)->n;
     int write_vertex=((struct wm_vol_args*) args)->write_vertex;
     char* example_fn=((struct wm_vol_args*) args)->example_fn;
     char* density_fn=((struct wm_vol_args*) args)->density_fn;
     unsigned int* density=((struct wm_vol_args*) args)->density;
     int thread= ((struct wm_vol_args*) args)->thread;
     int nthreads= ((struct wm_vol_args*) args)->nthreads;
-    //wm_dist(img, img_vol, gm_border, n, label, thread, nthreads);
     wm_dist(img, img_vol, gm_border, mat, n, label, write_vertex, example_fn, density, density_fn, thread, nthreads);
 }
 
-int wm_dist_multithreaded(data* img, int* img_vol, int** gm_border, int label, float* mat, int n, int nthreads, int  write_vertex, char* example_fn, unsigned int* density, char* density_fn){
+int wm_dist_multithreaded(data* img, int* img_vol, int** gm_border, int label, float* mat, unsigned long n, int nthreads, int  write_vertex, char* example_fn, unsigned int* density, char* density_fn){
     int rc;
+
     pthread_t threads[nthreads];
     struct wm_vol_args thread_args[nthreads];
     for(int t=0; t< nthreads; t++){
@@ -941,7 +940,7 @@ int main(int argc, char** argv){
     char *file_inputs[]={img.filename,  mesh_fn}; //={mesh_filename, node_values_filename};
     int n_input_files=2;
     int nthreads=sysconf(_SC_NPROCESSORS_ONLN);
-    int n, nReplace=0;
+    unsigned long n, nReplace=0;
 
     if(VERBOSE){ 
         printf("Volume:\t%s\n", img.filename);
