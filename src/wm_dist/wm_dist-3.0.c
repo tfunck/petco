@@ -13,7 +13,7 @@
 #define FALSE 0
 #define MAX 99999 //FIXME: Only makes sense for brains at the mm scale, may have to be adapted for other applications
 int VERBOSE=TRUE;
-float pseudo_inf=9999999;
+float pseudo_inf=999999999999;
 float dx, dy, dz, dx2, dy2, dz2;
 int xmax, ymax, zmax, xymax;
 
@@ -25,6 +25,9 @@ struct node{
 };
 
 float quick_max(float a, float b, float c){
+  	if( isnan(a) || a > pseudo_inf ) a = 0;
+  	if( isnan(b) || b > pseudo_inf ) b = 0;
+  	if( isnan(c) || c > pseudo_inf ) c = 0;
     if(b < a){
         if(a<c) return(c);
         else return(a);
@@ -72,11 +75,11 @@ void sort_up(struct node* heap,int i, bool* index_array){
         sort_up(parent,j, index_array);
     }
 }
-//    15
-//   /
-//  27
-// /  \
-//25   30
+//         15 (p)
+//     	  /
+//    	 27
+//   	/  \
+// (l) 25   30 (r)
 
 
 void sort_down(struct node* heap,int i, bool* index_array){
@@ -88,7 +91,7 @@ void sort_down(struct node* heap,int i, bool* index_array){
     struct node* temp;
 
     if ( *lnode->dist < *heap[i].dist || *rnode->dist < *heap[i].dist){
-    //printf("Sorting Down: Current %d %f, LChild %d %f, RChild %d %f\n", i, *heap[i].dist, r, *rnode->dist, l, *lnode->dist  ); 
+	    //if(i > max)	printf("Sorting Down: Current %d %f, LChild %d %f, RChild %d %f\n", i, *heap[i].dist, r, *rnode->dist, l, *lnode->dist  ); 
         if ( *lnode->dist < *rnode->dist ){   //lnode is smaller than right node
             temp=lnode;
             i2=l;
@@ -121,14 +124,19 @@ void sort(struct node* heap, int i, bool* index_array){
 
 }
 
-void delete(struct node* heap,int i, int n, bool* index_array){
+void delete(struct node* heap,int i, int n, bool* index_array, int run){
     //printf("Delete %d %d %f\n", heap[i].index, heap[i].dist, *heap[i].dist );
-    index_array[heap[i].index]=n;
-    index_array[heap[n].index]=i;
-    swap(&heap[i],&heap[n]);
-    heap[n].dist=&pseudo_inf;
-    heap[n].p=NULL;
-    sort_down(heap, i, index_array);
+    index_array[heap[i].index]=n; //Set index of node in heap[i] to n (number of considered voxels
+    index_array[heap[n].index]=i; //Set index of node heap[n] in index_array to i (1)
+    swap(&heap[i],&heap[n]); //swap the nodes at position i and n
+    heap[n].dist=&pseudo_inf; //set the distance of the node that is now at n to be equal to (pseudo) infinity. this means that this node has been travelled
+	heap[n].p=NULL; //delete the parent node for the node at n
+	//FIXME shouldn't the node be actually deleted from memory?
+	//if(run >= 2285 && n >= 2858   ){ // 2298
+	//  for(int o=0; o<n ; o++) 
+	//	  if(heap[o].dist == NULL) printf("Uh oh, heap corrupted at %d\n", o);
+    //}
+    sort_down(heap, i, index_array); //sort the children of the first node
 
 }
 
@@ -512,6 +520,7 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
             //printf("3D solution: %f %f %f\n", sol, sol1, sol2);     
             //printf("2D Solutions: %f (%f %f) %f (%f %f)  %f (%f %f)\n", altsol[0], altsols[0][0], altsols[0][1], altsol[1], altsols[1][0], altsols[1][1], altsol[2], altsols[2][0], altsols[2][1]); 
             sol=quick_max(altsol[0], altsol[1], altsol[2] ); 
+			//printf("Quick max sol: %f\n", sol);
             if (  sol <=0 ){
                 /***************************
                  *Try to find a 1D solution*
@@ -531,10 +540,14 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
                 altsol[2] = quad(alta[2], altb[2], altc[2]);
                 //printf("1D Solution %f %f %f\n", altsol[0], altsol[1], altsol[2]);
                 sol=quick_max(altsol[0], altsol[1], altsol[2]);
+				//printf("Quick max sol: %f\n", sol);
             }
         } 
-        //if( isnan(sol) ) { printf("%f\n", sol); exit(0); }
+        if( isnan(sol) || sol > pseudo_inf ) sol=0; // { printf("%f\n", sol); exit(0); }
+
         distances[index]= (sol > 0) ? sol : distances[index];
+
+        if( sol > pseudo_inf) { printf("Broken sol: %f %f\n", sol,distances[index] ); exit(0); }
 }
 int add_neighbours(struct node* considered, int* img_vol, float* distances, bool* fixed, bool* considered_array, int* nconsidered, const int label,const int  z, const int  y, const int x, const int init ){
     int zi, yi, xi, z1, y1, x1, xp, xm, yp, ym, zp, zm;
@@ -699,7 +712,7 @@ int min_paths(int cur_i, float* distances, unsigned int* density, _Bool* fixed, 
     return(0);
 }
 
-int eikonal(struct node* considered, int*  img_vol, float*  distances, bool* fixed, bool* considered_array, const int label, int  z, int y, int  x){
+int eikonal(struct node* considered, int*  img_vol, float*  distances, bool* fixed, bool* considered_array, const int label, int  z, int y, int  x, int run){
     int nconsidered=0; 
     /************************************
      * Initialize the considered points *
@@ -715,7 +728,7 @@ int eikonal(struct node* considered, int*  img_vol, float*  distances, bool* fix
         y=(int) floor(index-  z*xymax)/xmax; 
         x=(int) floor(index-z*xymax-y*xmax);
 
-        delete(considered, 1, nconsidered, considered_array);
+        delete(considered, 1, nconsidered, considered_array, run);
         //Decrease the number of considered points
         nconsidered--;
         fixed[index]=TRUE;
@@ -758,9 +771,8 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const int n,c
         z=gm_border[i][1];
         y=gm_border[i][2];
         x=gm_border[i][3];
-        distances[index]=0;
-
-        eikonal(considered, img_vol, distances,fixed, considered_array, label,  z, y, x);
+        distances[index]=0.0;
+        eikonal(considered, img_vol, distances,fixed, considered_array, label,  z, y, x, i);
       
         if(density_fn != NULL){
             /*
@@ -973,7 +985,7 @@ int main(int argc, char** argv){
                 if(z<=1 || y <= 1 || x<=1 || z >= img.zmax-2 || y >= img.ymax-2 || x >= img.xmax-2){
                     img_vol[z*img.ymax*img.xmax+y*img.xmax+x]=0;
                 }
-    if(matrix_fn != NULL) free(mat);
+    //if(matrix_fn != NULL) free(mat);
 
     /*Find GM-WM Border*/
     int** gm_border=wm_gm_border(&img, mesh,label, img_vol, fill_wm,  n, &nReplace, wm_search_depth);
