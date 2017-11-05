@@ -511,8 +511,11 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
         c=-1+clist[0]+clist[1]+clist[2]+clist[3]+clist[4]+clist[5];
 
         sol=quad(a, b, c);
-        
-        //printf("\n3D %f %f %f --> %f\n", a, b, c, sol);
+       
+        /*
+        if(x==111 && y==159 && z==82){ 
+            printf("\n3D %f %f %f --> %f\n", a, b, c, sol);
+        }*/
 
         if( sol <= 0 ){
             /***************************
@@ -531,9 +534,13 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
             altsol[0] = quad(alta[0], altb[0], altc[0]);
             altsol[1] = quad(alta[1], altb[1], altc[1]);
             altsol[2] = quad(alta[2], altb[2], altc[2]);
-            //printf("2D Solutions\n");
-            //for(int kk=0; kk<3; kk++) printf("\t%f %f %f\n", alta[kk], altb[kk], altc[kk]);
-            //printf("%f  %f  %f \n", altsol[0],  altsol[1], altsol[2]); 
+
+            /*if(x==111 && y==159 && z==82){ 
+                printf("2D Solutions\n");
+                for(int kk=0; kk<3; kk++) printf("\t%f %f %f\n", alta[kk], altb[kk], altc[kk]);
+                printf("%f  %f  %f \n", altsol[0],  altsol[1], altsol[2]); 
+            }*/
+
             sol=quick_max(altsol[0], altsol[1], altsol[2] ); 
             if (  sol <=0 ){
                 /***************************
@@ -554,12 +561,15 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
                 altsol[2] = quad(alta[2], altb[2], altc[2]);
                 sol=quick_max(altsol[0], altsol[1], altsol[2]);
 
-                //printf("1D Solutions\n");
-                //for(int kk=0; kk<3; kk++) printf("\t%f %f %f\n", alta[kk], altb[kk], altc[kk]);
-                //printf("1D Solution %f %f %f: %f\n", altsol[0], altsol[1], altsol[2], sol);
+                /*if(x==111 && y==159 && z==82){ 
+                    printf("1D Solutions\n");
+                    for(int kk=0; kk<3; kk++) printf("\t%f %f %f\n", alta[kk], altb[kk], altc[kk]);
+                    printf("1D Solution %f %f %f: %f\n", altsol[0], altsol[1], altsol[2], sol);
+                }*/
             }
         } 
-        if( isnan(sol) || sol > pseudo_inf || sol < 0  ) { 
+        //if(x==111 && y==159 && z==82) printf("Sol: %f\n", sol);
+        if( isnan(sol) || sol > pseudo_inf || sol <= 0  ) { 
             //printf("Broken sol: %f %f\n", sol,distances[index] ); 
             //exit(0); 
         }
@@ -616,10 +626,9 @@ int add_neighbours(struct node* considered, int* img_vol, float* distances, bool
                 *nconsidered += 1;
                 insert(considered,  *nconsidered, &(distances[i2]), i2, z, yp, x, considered_array );
             }
-
             if(init) distances[i2]=dy;
             else{ 
-                update(fixed,distances, i2,z , yp, x);
+                update(fixed,distances, i2, z, yp, x);
                 sort(considered, considered_array[i2], considered_array);
             }
         }
@@ -734,7 +743,7 @@ int eikonal(struct node* considered, int*  img_vol, float*  distances, bool* fix
      * Initialize the considered points *
      ************************************/
     add_neighbours(considered, img_vol, distances,fixed, considered_array, &nconsidered, label,  z, y, x, 1);
-    int init_c=nconsidered;
+
     while(nconsidered > 0){
         /********************************************************
          * 3. Add mininum distance point to list of fixed points
@@ -743,7 +752,7 @@ int eikonal(struct node* considered, int*  img_vol, float*  distances, bool* fix
         z=(int) floor(index / (xymax));
         y=(int) floor(index-  z*xymax)/xmax; 
         x=(int) floor(index-z*xymax-y*xmax);
-        if(distances[index] < 0 ) {printf("negative value %d %d %d %f\n", z, y, x, distances[index]); exit(0);}
+        //if(distances[index] <= 0 ) {printf("negative/zero value %d %d %d %f\n", z, y, x, distances[index]); }
         delete(considered, 1, nconsidered, considered_array, run);
         //Decrease the number of considered points
         nconsidered--;
@@ -767,13 +776,10 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const unsigne
     int index;
     char testfn[2000];
     int x, y, z;
-    int wm_total=0;
     int i;
 
     for( i=start; i < n; i += step){ //Iterate over nodes on WM-GM border
         if(VERBOSE){ printf("\rThread %d: %3.1f",start, (float) 100.0 * i/n); fflush(stdout);}
-        int continued=FALSE;
-        int init_c;
         for(int j=0; j<max; j++){ 
             considered[j].dist=&pseudo_inf;
             distances[j]=pseudo_inf;
@@ -789,14 +795,16 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const unsigne
         eikonal(considered, img_vol, distances,fixed, considered_array, label,  z, y, x, i);
 
         if(density_fn != NULL){
-            /* 
-             * Find minimum path across distance gradient 
-             */ 
+            // Find minimum path across distance gradient 
             min_paths(i, distances, density, fixed, img_vol, gm_border, n, gm_border[i][4]);
         }
 
+        //for(int j=0; j<max; j++){
+        //    if(distances[j] == 0 && fixed[j] == 1) printf("2 Problem voxel\n");
+        //}
+
         if(  i ==write_vertex || write_vertex == -1){
-            for(int j=0; j<max; j++) distances[j] *= fixed[j];// img_vol[j];
+            for(int j=0; j<max; j++) distances[j] *= fixed[j];
             if(write_vertex==-1) sprintf(example_fn, "vertex_%d.mnc", i);
             //printf("Writing vertex %d to %s\n", i, example_fn);
             writeVolume(example_fn, distances, img->start, img->step, img->wcount, MI_TYPE_FLOAT );
@@ -979,7 +987,7 @@ int main(int argc, char** argv){
     //if (check_input_files(file_inputs, n_input_files) != 0) exit(1);
     float** mesh=readVertices(mesh_fn, surface_mask_fn, &n, subsample, subsample_factor);
 
-    if(VERBOSE) printf("Number of nodes: %d\n ", n);
+    if(VERBOSE) printf("Number of nodes: %d\n", n);
     img_vol=(int*) readVolume(&img, 1, MI_TYPE_INT);
     
     unsigned int* density=calloc(img.n3d, sizeof(*density));
@@ -993,7 +1001,7 @@ int main(int argc, char** argv){
     ymax=img.ymax;
     zmax=img.zmax;
     xymax=xmax*ymax;
-    
+    if(VERBOSE) printf("dz,dy,dx: %f %f %f\n", dz,dy,dx); 
     if(matrix_fn != NULL) mat=malloc(sizeof(*mat) * n * n);
     else mat=NULL;
 
