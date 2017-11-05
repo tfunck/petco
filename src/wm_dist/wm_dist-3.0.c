@@ -24,20 +24,6 @@ struct node{
     //, z,y,x;
 };
 
-float quick_max(float a, float b, float c){
-  	if( isnan(a) || a > pseudo_inf ) a = 0;
-  	if( isnan(b) || b > pseudo_inf ) b = 0;
-  	if( isnan(c) || c > pseudo_inf ) c = 0;
-    if(b < a){
-        if(a<c) return(c);
-        else return(a);
-    } else{
-        if(b<c) return(c);
-        else return(b);
-    }
-}
-
-
 
 void swap(struct node* a, struct node* b){
     //int z=b->z;
@@ -280,29 +266,33 @@ int** wm_gm_border(data* img, float** mesh, const int label, const int* img_vol,
     return(border);
 }
 
-float** readVertices(const char* Meshfilename,  unsigned long* nvertices, int subsample, int subsample_factor ){
-    char buffer1[100];
-    int i; 
+float** readVertices(const char* Meshfilename, const char* surface_mask_fn, unsigned long* nvertices, int subsample, int subsample_factor ){
+    char *maskBuffer=NULL, *meshBuffer=NULL;
+    int i=0; 
     int vertices;
     float** mesh;
     FILE *MeshFile=fopen(Meshfilename, "rt");
+    FILE *MaskFile;
     char *token;
     char dlm[]=" ";
-    int nmax; 
+    int nmax, meshBufferN=0, maskBufferN=0; 
+    int maskValue=1, recorded_vertices=0;
 
 
-    fgets(buffer1, sizeof(buffer1), MeshFile) ;
-
+    getline(&meshBuffer, &meshBufferN, MeshFile) ;
     //read nvertices from file
-    strtok(buffer1, dlm);  
+    strtok(meshBuffer, dlm);  
     strtok(NULL, dlm); 
     strtok(NULL, dlm);  
     strtok(NULL, dlm); 
     strtok(NULL, dlm); 
     strtok(NULL, dlm); 
     *nvertices=atoi(strtok(NULL, dlm));
+    
+    if(subsample > 0) nmax=(int) 2 + round( (*nvertices-2)/pow(subsample_factor, subsample)); //2+(n1_vert-2)/(4^(s))
+    else nmax=*nvertices ;
 
-    nmax=(int) 2 + round( (*nvertices-2)/pow(subsample_factor, subsample)); //2+(n1_vert-2)/(4^(s))
+    if ( surface_mask_fn != NULL ) MaskFile=fopen(surface_mask_fn, "rt");
 
     if(nmax < 2 && subsample < 0){ 
         printf("Subsampled %d times with factor %d. This gives less than 2 vertices. Please try using less subsampling of the cortical surface mesh.\n"); 
@@ -311,17 +301,31 @@ float** readVertices(const char* Meshfilename,  unsigned long* nvertices, int su
     
     if(VERBOSE && subsample > 0) printf("Mesh with %d vertices was subsampled %d (by factor of %d) to %d vertices\n", *nvertices, subsample, subsample_factor, nmax);
     mesh=malloc(sizeof(*mesh) * *nvertices);
+    //for(i=0; i< *nvertices; i++){
+    while( getline(&meshBuffer, &meshBufferN, MeshFile) != 0 )  {
+        if ( surface_mask_fn != NULL ) { 
+            getline(&maskBuffer, &maskBufferN, MaskFile);
+            maskValue = atoi(maskBuffer);
+        }
 
-    for(i=0; i< *nvertices; i++){
-        mesh[i]=malloc(3*sizeof(**mesh));    
-        fgets(buffer1, sizeof(buffer1), MeshFile);
+        if( maskValue != 0 ){
+            mesh[recorded_vertices]=malloc(3*sizeof(**mesh));    
+            mesh[recorded_vertices][2]=atof(strtok(meshBuffer, dlm)); //x
+            mesh[recorded_vertices][1]=atof(strtok(NULL, dlm)); //y
+            mesh[recorded_vertices][0]=atof(strtok(NULL, dlm)); //z
+            recorded_vertices++;
+        }
 
-        mesh[i][2]=atof(strtok(buffer1, dlm)); //x
-        mesh[i][1]=atof(strtok(NULL, dlm)); //y
-        mesh[i][0]=atof(strtok(NULL, dlm)); //z
-        if(i>=nmax && subsample>0){ *nvertices=i; break; }
+        i++;
+        if( i >= nmax ) break; 
     }
-     
+
+    if(subsample > 0) *nvertices = nmax;
+
+    if(surface_mask_fn != NULL){ *nvertices=recorded_vertices;}
+
+    free(maskBuffer); 
+    free(meshBuffer); 
     fclose(MeshFile);
     return(mesh);
 }
@@ -329,16 +333,25 @@ float** readVertices(const char* Meshfilename,  unsigned long* nvertices, int su
 
 float quad(float a, float b, float c){
     float disc=b*b-4*a*c;
-    float temp=sqrt(disc);
+    float temp=(disc>0) ? sqrt(disc) : 0;
     float temp1=2*a;
     float sol1=(-b + temp ) / temp1;
     float sol2=(-b - temp ) / temp1;
+    //printf("\tquad: %f %f\n");
     sol1 = (temp1 < 0 || disc < 0) ? 0 : sol1;
     sol2 = (temp1 < 0 || disc < 0) ? 0 : sol2;
     float sol=(sol1 > sol2) ? sol1 : sol2;
 }
 
-
+float quick_max(float a, float b, float c){
+    if(b < a){
+        if(a<c) return(c);
+        else return(a);
+    } else{
+        if(b<c) return(c);
+        else return(b);
+    }
+}
 
 void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
     int xpp, xmm, ypp, ymm, zpp, zmm;
@@ -348,7 +361,7 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
     float xdp, xdpp, xdm, xdmm,  ydp, ydpp, ydm, ydmm, zdm, zdmm, zdp, zdpp;
     float alist[6], blist[6], clist[6];
     float alta[3], altb[3], altc[3];
-    float altdisc[3], altsols[3][2];
+    float altdisc[3];
     float altsol[3];
     float sol, sol1, sol2;
     float alpha, disc, t, a,b, c; 
@@ -476,7 +489,6 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
             }
         } 
         if(fixed[izp]==TRUE) {//Z++ second order
-
             if( fixed[izpp]==TRUE){
                 alpha = 9 / (4 * dz2);
                 t=(zdpp-4*zdp)/3;
@@ -499,6 +511,8 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
         c=-1+clist[0]+clist[1]+clist[2]+clist[3]+clist[4]+clist[5];
 
         sol=quad(a, b, c);
+        
+        //printf("\n3D %f %f %f --> %f\n", a, b, c, sol);
 
         if( sol <= 0 ){
             /***************************
@@ -517,10 +531,10 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
             altsol[0] = quad(alta[0], altb[0], altc[0]);
             altsol[1] = quad(alta[1], altb[1], altc[1]);
             altsol[2] = quad(alta[2], altb[2], altc[2]);
-            //printf("3D solution: %f %f %f\n", sol, sol1, sol2);     
-            //printf("2D Solutions: %f (%f %f) %f (%f %f)  %f (%f %f)\n", altsol[0], altsols[0][0], altsols[0][1], altsol[1], altsols[1][0], altsols[1][1], altsol[2], altsols[2][0], altsols[2][1]); 
+            //printf("2D Solutions\n");
+            //for(int kk=0; kk<3; kk++) printf("\t%f %f %f\n", alta[kk], altb[kk], altc[kk]);
+            //printf("%f  %f  %f \n", altsol[0],  altsol[1], altsol[2]); 
             sol=quick_max(altsol[0], altsol[1], altsol[2] ); 
-			//printf("Quick max sol: %f\n", sol);
             if (  sol <=0 ){
                 /***************************
                  *Try to find a 1D solution*
@@ -538,16 +552,19 @@ void update( bool* fixed, float* distances,  int index, int z, int  y, int  x){
                 altsol[0] = quad(alta[0], altb[0], altc[0]);
                 altsol[1] = quad(alta[1], altb[1], altc[1]);
                 altsol[2] = quad(alta[2], altb[2], altc[2]);
-                //printf("1D Solution %f %f %f\n", altsol[0], altsol[1], altsol[2]);
                 sol=quick_max(altsol[0], altsol[1], altsol[2]);
-				//printf("Quick max sol: %f\n", sol);
+
+                //printf("1D Solutions\n");
+                //for(int kk=0; kk<3; kk++) printf("\t%f %f %f\n", alta[kk], altb[kk], altc[kk]);
+                //printf("1D Solution %f %f %f: %f\n", altsol[0], altsol[1], altsol[2], sol);
             }
         } 
-        if( isnan(sol) || sol > pseudo_inf ) sol=0; // { printf("%f\n", sol); exit(0); }
-
-        distances[index]= (sol > 0) ? sol : distances[index];
-
-        if( sol > pseudo_inf) { printf("Broken sol: %f %f\n", sol,distances[index] ); exit(0); }
+        if( isnan(sol) || sol > pseudo_inf || sol < 0  ) { 
+            //printf("Broken sol: %f %f\n", sol,distances[index] ); 
+            //exit(0); 
+        }
+        else distances[index]= sol ;
+        //distances[index]= (sol > 0) ? sol : distances[index];
 }
 int add_neighbours(struct node* considered, int* img_vol, float* distances, bool* fixed, bool* considered_array, int* nconsidered, const int label,const int  z, const int  y, const int x, const int init ){
     int zi, yi, xi, z1, y1, x1, xp, xm, yp, ym, zp, zm;
@@ -579,7 +596,7 @@ int add_neighbours(struct node* considered, int* img_vol, float* distances, bool
             }
             if(init) distances[i0]=dx;
             else{  
-                update(fixed,distances, i0,z , y,  xp);
+                update(fixed,distances, i0, z, y, xp);
                 sort(considered, considered_array[i0], considered_array);
             }
         }
@@ -642,7 +659,6 @@ int add_neighbours(struct node* considered, int* img_vol, float* distances, bool
             }
         }
 
-    //for(int cc=0; cc < zmax*ymax*xmax; cc++) if(cc == 3374631 ) printf("\nDistances:  %f, %d\n", distances[cc], cc); 
 
     return(*nconsidered);
 }
@@ -727,7 +743,7 @@ int eikonal(struct node* considered, int*  img_vol, float*  distances, bool* fix
         z=(int) floor(index / (xymax));
         y=(int) floor(index-  z*xymax)/xmax; 
         x=(int) floor(index-z*xymax-y*xmax);
-
+        if(distances[index] < 0 ) {printf("negative value %d %d %d %f\n", z, y, x, distances[index]); exit(0);}
         delete(considered, 1, nconsidered, considered_array, run);
         //Decrease the number of considered points
         nconsidered--;
@@ -737,6 +753,7 @@ int eikonal(struct node* considered, int*  img_vol, float*  distances, bool* fix
          ***********************************************************************/
         add_neighbours(considered, img_vol, distances,fixed, considered_array, &nconsidered,label,  z, y, x, 0);
     }
+
 
     return(0);
 }
@@ -755,7 +772,6 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const unsigne
 
     for( i=start; i < n; i += step){ //Iterate over nodes on WM-GM border
         if(VERBOSE){ printf("\rThread %d: %3.1f",start, (float) 100.0 * i/n); fflush(stdout);}
-        //printf("Thread %d: %3.1f\n",start, (float) 100.0 * i/n);
         int continued=FALSE;
         int init_c;
         for(int j=0; j<max; j++){ 
@@ -763,7 +779,6 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const unsigne
             distances[j]=pseudo_inf;
             fixed[j]=considered_array[j]=FALSE;
         }
-
         if(gm_border[i][4]==0){ continue;}
         index=gm_border[i][0];
         fixed[index]=TRUE; //Set the starting fixed node
@@ -772,17 +787,18 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const unsigne
         x=gm_border[i][3];
         distances[index]=0.0;
         eikonal(considered, img_vol, distances,fixed, considered_array, label,  z, y, x, i);
-      
+
         if(density_fn != NULL){
-            /*
+            /* 
              * Find minimum path across distance gradient 
              */ 
             min_paths(i, distances, density, fixed, img_vol, gm_border, n, gm_border[i][4]);
         }
 
-
-        if(i==write_vertex){
+        if(  i ==write_vertex || write_vertex == -1){
             for(int j=0; j<max; j++) distances[j] *= fixed[j];// img_vol[j];
+            if(write_vertex==-1) sprintf(example_fn, "vertex_%d.mnc", i);
+            //printf("Writing vertex %d to %s\n", i, example_fn);
             writeVolume(example_fn, distances, img->start, img->step, img->wcount, MI_TYPE_FLOAT );
         }
         if(mat != NULL){
@@ -880,7 +896,7 @@ int main(int argc, char** argv){
     int subsample_factor=4;
     char* example_fn=NULL, *density_fn=NULL;
     float* mat=NULL;
-    char* matrix_fn=NULL;
+    char* matrix_fn=NULL, *surface_mask_fn=NULL;
     FILE* matrix_file=fopen(matrix_fn, "w+");
     //Parse inputs for options
     for(int c=0; c<argc; c++){
@@ -926,6 +942,11 @@ int main(int argc, char** argv){
             write_vertex=atoi(argv[c]);
             c++;
             example_fn=argv[c];
+        } 
+        else if(strcmp(argv[c],"-surface_mask")==0){
+            i+=2;
+            c++;
+            surface_mask_fn=argv[c];
         }
     }
     data img;
@@ -933,8 +954,6 @@ int main(int argc, char** argv){
     img.filename=argv[i++];
     char* mesh_fn=argv[i++];
     int label=atoi(argv[i++]);
-
-
     int* img_vol;
     int** fill_wm;
     char *file_inputs[]={img.filename,  mesh_fn}; //={mesh_filename, node_values_filename};
@@ -947,7 +966,9 @@ int main(int argc, char** argv){
         printf("Mesh:  \t%s\n", mesh_fn);
         printf("Label: \t%d\n", label);
         printf("Matrix:\t%s\n", matrix_fn);  
-        printf("Search depth: %d\n",wm_search_depth);  
+        printf("Search depth: %d\n",wm_search_depth);
+        if( surface_mask_fn != NULL ) printf("Surface Mask: %s\n", surface_mask_fn);  
+        if( example_fn != NULL ) printf("Example_fn: %s\n", example_fn);  
     }
     
     //Set maximum number of threads to use. 
@@ -956,17 +977,17 @@ int main(int argc, char** argv){
     if(VERBOSE) printf("Number of threads: %d\n", nthreads);
 
     //if (check_input_files(file_inputs, n_input_files) != 0) exit(1);
-    float** mesh=readVertices(mesh_fn, &n, subsample, subsample_factor);
+    float** mesh=readVertices(mesh_fn, surface_mask_fn, &n, subsample, subsample_factor);
 
     if(VERBOSE) printf("Number of nodes: %d\n ", n);
     img_vol=(int*) readVolume(&img, 1, MI_TYPE_INT);
     
     unsigned int* density=calloc(img.n3d, sizeof(*density));
-    dx=img.xstep;
+    dx=fabsf(img.xstep);
     dx2=dx*dx;
-    dy=img.ystep;
+    dy=fabsf(img.ystep);
     dy2=dy*dy;
-    dz=img.zstep;
+    dz=fabsf(img.zstep);
     dz2=dz*dz;
     xmax=img.xmax;
     ymax=img.ymax;
@@ -1015,7 +1036,7 @@ int main(int argc, char** argv){
      * Write matrix to outputfile
      ******************************/
     if(matrix_fn != NULL){
-        if(VERBOSE) printf("Distances calculated.\nWriting to %s\n", matrix_fn);
+        if(VERBOSE) printf("\nDistances calculated.\nWriting to %s\n", matrix_fn);
         for(int i=0; i<n; i++){
             for(int j=0; j<n; j++){
                 fprintf(matrix_file, "%f", mat[i*n+j]);
