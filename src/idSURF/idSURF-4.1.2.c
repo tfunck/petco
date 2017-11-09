@@ -7,7 +7,8 @@
 #include "gaussianiir3d.h"
 
 void useage();
-data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, int* max_iterations, int* max_avg, float* fwhm, float* tolerance, char** outputfilename, int* smooth_only, int* cubic_averaging_regiong );
+//data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, int* max_iterations, int* max_avg, float* fwhm, float* tolerance, char** outputfilename, int* smooth_only, int* cubic_averaging_regiong );
+data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, int* max_iterations, int* max_avg, float* fwhm, float* tolerance, char** outputfilename, int* smooth_only, int *cubic_averaging_region );
 int local_allocate_vol(data* ptr, int* n, char* argv_next);
 
 
@@ -96,12 +97,13 @@ int*  get_nlabels(data* mask, int* mask_array, int* nlabels){
                 int index=z*mask->ymax*mask->xmax + y*mask->xmax+x;
                 if( mask_array[index] != 0 ){
                     int label = mask_array[index];
-                    if ( isin2(label, labels, *nlabels) != TRUE){ //label has already been found
+                    if ( isin2(label, labels, *nlabels) != TRUE){ //first time coming across this label
+
                         (*nlabels) += 1;
                         labels=realloc(labels, *nlabels * sizeof(*labels));
                         labels[*nlabels-1]=label;
-                    }  //first time coming across this label
-                    int idx=find(label, labels, *nlabels);
+                    }  
+                    //int idx=find(label, labels, *nlabels);
                 }
             }
         }
@@ -219,7 +221,6 @@ int find_cubic_averaging_region(data* img, int*** region, int* n_region, int nla
                                         region[index]=realloc(region[index], sizeof(*region[index])*nngh);
                                         region[index][nngh-1]=malloc(2*sizeof(**region[index]));
                                         if(region[index] == NULL ) pexit("Could not allocate memory in function <find_cubic_averaging_region", "", 1);
-                                         
                                         region[index][nngh-1][0]=t;
                                         region[index][nngh-1][1]=1;
                                         n_region[index]=nngh;
@@ -449,6 +450,7 @@ double avg(int **region, double* data,  int max_ngh ){
     int index;
     for(int j=0; j< max_ngh; j++){
         index=region[j][0];
+        if(data[index]==0.0) printf("Averaging over a 0: %d\n", index);
         value += data[index]  ;
     }
     return(value/max_ngh);
@@ -501,13 +503,12 @@ int SURF(double* data, int***  region, int* n_avg_region, double* total_weight_l
     for(int i=0; i < nvox; i++){
         if(n_avg_region[i] > 0) {
             //printf("%d\t%d\n", i, n_avg_region[i]);
-            value=avg(region[i], data, n_avg_region[i]);
-            //printf("%f\n", value); 
-            //value=idw(region[i], data, total_weight_list[i], n_avg_region[i], p);
-            //if(value < 0) printf("%f\t%f\n", data[i], value);
+            value=1.0; //avg(region[i], data, n_avg_region[i]);
         } else value=0; //data[i];
         temp[i]=value;
     }
+    
+    //Once averages have been calculated for all voxels, update the data array
     for(int i=0; i<nvox; i++) data[i]=temp[i];
    
     free(temp);
@@ -674,12 +675,12 @@ int idSURF(data* image, char* outputfilename, int*** regions, int *n_avg_region,
     float sum=0;
     double sum_obs=0, sum_blr=0, sum_res=0, sum_ts=0, sum_tr=0, sum_r2=0;
     VERBOSE=1;
-    if(image->tmax==0){
+    if(image->tmax==0){//3D
         wcount_3d=image->wcount;
         start_3d=image->start;
         step_3d=image->step;
     }
-    else {
+    else {//4D
         wcount_3d=&(image->wcount[1]);
         start_3d=&(image->start[1]);
         step_3d=&(image->step[1]);
@@ -688,6 +689,7 @@ int idSURF(data* image, char* outputfilename, int*** regions, int *n_avg_region,
     else max_frames= image->tmax;
     float *temp=malloc(nvox*sizeof(*temp));
 
+    //find maximum labels value
     for(int i=0; i < nvox; i++) if( nlabels < mask_label[i]) nlabels=mask_label[i];
     
     
@@ -707,7 +709,7 @@ int idSURF(data* image, char* outputfilename, int*** regions, int *n_avg_region,
         double initial_energy=0, old_max=0;
         if(first_guess->filename != NULL) read_frame(first_guess, t, first_guess->data, MI_TYPE_DOUBLE); 
         else first_guess->data=observed;
-
+        
         copy_with_threshold(test,first_guess->data, mask_label, nvox, &initial_energy, &old_max, 0);
         if(t==0) min=max=test[0]; //
         
@@ -747,7 +749,7 @@ int idSURF(data* image, char* outputfilename, int*** regions, int *n_avg_region,
                         residuals[voxel]=residual;
                     }
                 }
-            }
+            } else printf("Smoothing Only\n");
 
             /******************
             *Noise attenuation*
@@ -857,9 +859,10 @@ int main(int argc, char** argv){
     int* labels=get_nlabels(masks, mask_data, &nlabels); //Figure out how many and what labels are in the mask image
     find_neighbours(max_avg, near_ngh, n_near_ngh, mask_label, mask_data, nlabels, labels,  masks);
     if( cubic_averaging_region == TRUE){ 
-        printf("Finding averaging region...");fflush(stdout);
+        printf("Finding cubic averaging region...");fflush(stdout);
         find_cubic_averaging_region(image, avg_region, n_avg_region, nlabels, labels, mask_data,  max_avg);
-        printf("Done.");
+
+        printf("Done.\n");
     }
     else{
         //For voxels in masks, find nearest (i.e., adjacent) neighbours
@@ -867,12 +870,15 @@ int main(int argc, char** argv){
         //find_averaging_region(int*** region, int* n_region, int* mask_label, int **ngh, int* nngh, int nlabels, int* labels, int nvoxels, int* mask, int max_ngh)
         printf("Finding averaging region...");fflush(stdout);
         find_averaging_region(avg_region, n_avg_region, mask_label, near_ngh, n_near_ngh, nvox3d,  nlabels, labels, mask_data, max_avg );
-        printf("Done.");
+        printf("Done.\n");
         //find distance weights for averaging region
         //free(masks[i].data);
     }
-    get_total_weight(avg_region_weights, avg_region, nvox3d,  p, n_avg_region);
-    free(mask_data);
+    //get_total_weight(avg_region_weights, avg_region, nvox3d,  p, n_avg_region);
+
+    //for( int o=0; o < image->n3d; o++ ) if(image->data[o] != (double) mask_label[o]) printf("Image / Mask mismatch %d %f\n", mask_label[o], image->data[o]);
+             /* */  
+    //free(mask_data);
     printf("Performing iterative deconvolution.\n");
     idSURF(image, outputfilename,  avg_region, n_avg_region, avg_region_weights, mask_label, max_iterations, fwhm,  p, tolerance, masks, nmasks, max_avg, nlabels, labels, smooth_only, first_guess);
 

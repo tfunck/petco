@@ -9,7 +9,7 @@
 #include "gaussianiir3d.h"
 
 void useage();
-data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, int* max_iterations, int* max_avg, float* fwhm, float* tolerance, char** outputfilename, int* smooth_only, int* cubic_averaging_regiong );
+data** parse_input(int argc, char** argv, int* nthreads, int* nimages, int *nmasks, int* max_iterations, int* max_avg, float* fwhm, float* tolerance, char** outputfilename, int* smooth_only, int* cubic_averaging_regiong );
 int local_allocate_vol(data* ptr, int* n, char* argv_next);
 int idSURF(void* args);
 
@@ -153,6 +153,7 @@ int get_box(int x, int m, int max){
 int find_cubic_averaging_region(data* img, int*** region, int* n_region,  double* mask, int max_ngh){
     int nvoxels=img->n;
     int nngh;
+    printf("Cubic averaging region\n");
     for(int z=0; z< img->zmax; z++){
         //printf("%d\n", z);
         for(int y=0; y< img->ymax; y++){
@@ -178,7 +179,7 @@ int find_cubic_averaging_region(data* img, int*** region, int* n_region,  double
                                     region[index]=realloc(region[index], sizeof(*region[index])*nngh);
                                     region[index][nngh-1]=malloc(2*sizeof(**region[index]));
                                     if(region[index] == NULL ) pexit("Could not allocate memory in function <find_cubic_averaging_region", "", 1);
-                                     
+                                    if(mask[t] == 0 ) print("mask[%d]=%d\n", index, t); 
                                     region[index][nngh-1][0]=t;
                                     region[index][nngh-1][1]=1;
                                     n_region[index]=nngh;
@@ -778,7 +779,6 @@ int idSURF(void* args){
             fflush(stdout);
             if(smooth_only != 1){ 
                 
-
                 sum=n=0; 
                 for(int t=0; t < nvox; t++) {
                     if(mask_label[t] == 3) { 
@@ -1005,7 +1005,7 @@ int main(int argc, char** argv){
         printf("Finding neighbours...");
         find_neighbours(max_avg, near_ngh, n_near_ngh, mask_label, i, &masks[i]);
         print("Done.\n");
-
+        printf("Cubic Averaging Regiong: %d\n", cubic_averaging_region);
         if( cubic_averaging_region == TRUE){ 
             printf("Finding cubic averaging region...");
             find_cubic_averaging_region(image, avg_region, n_avg_region, masks[i].data,  max_avg);

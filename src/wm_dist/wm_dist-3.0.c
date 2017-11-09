@@ -799,10 +799,6 @@ void wm_dist(data* img, int* img_vol, int** gm_border, float* mat, const unsigne
             min_paths(i, distances, density, fixed, img_vol, gm_border, n, gm_border[i][4]);
         }
 
-        //for(int j=0; j<max; j++){
-        //    if(distances[j] == 0 && fixed[j] == 1) printf("2 Problem voxel\n");
-        //}
-
         if(  i ==write_vertex || write_vertex == -1){
             for(int j=0; j<max; j++) distances[j] *= fixed[j];
             if(write_vertex==-1) sprintf(example_fn, "vertex_%d.mnc", i);
