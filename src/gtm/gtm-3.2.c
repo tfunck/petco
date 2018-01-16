@@ -51,8 +51,8 @@ struct linfo* get_nlabels(data* mask, int* mask_array){
         for( int y=0; y < mask->ymax; y++) {
             for( int x=0; x < mask->xmax; x++){
                 int index=z*mask->ymax*mask->xmax + y*mask->xmax+x;
-                if( mask_array[index] != 0 ){
-                    int label = mask_array[index];
+                if( round(mask_array[index]) > 0 ){
+                    int label = round(mask_array[index]);
                     if ( isin(label, labels, nlabels) != TRUE){ //label has already been found
                         nlabels++;
                         labels=realloc(labels, nlabels * sizeof(*labels));
@@ -66,6 +66,7 @@ struct linfo* get_nlabels(data* mask, int* mask_array){
             }
         }
     }
+    for(int i=0; i<nlabels; i++) printf("Label: %d %d\n", i, labels[i]);
     label_info->labels=labels;
     label_info->nlabels=nlabels;
     label_info->nLocalVoxels=nLocalVoxels;
@@ -177,7 +178,7 @@ int gtm_apply(data* image, data* masks, int* mask_array, int* labels, int* nLoca
         //Cycle through the entire image
         for(k=0; k < nVoxels; k++){
             //if the point k is in mask i then...
-            if(  mask_array[k] != 0){
+            if(  mask_array[k] > 0){
                 int val = mask_array[k];
                 int i = find(val, labels, nlabels);
                 if( i < 0 ) pexit("Error: label list does not contain value", "", 1);
@@ -192,7 +193,7 @@ int gtm_apply(data* image, data* masks, int* mask_array, int* labels, int* nLoca
         //check that there are voxels in the mask before taking the average of the 
         //observed values within the mask.
         for(i=0; i< nlabels; i++){ 
-            if (nLocalVoxels > 0) obsValues[i] /= nLocalVoxels[i];
+            if (nLocalVoxels > 1) obsValues[i] /= nLocalVoxels[i];
             else obsValues[i]=0;
         }
         printf("%d\tObserved\n",t );
@@ -208,10 +209,9 @@ int gtm_apply(data* image, data* masks, int* mask_array, int* labels, int* nLoca
         for(int x=0; x <nlabels; x++) printf("%d\t%d\t%f\n", labels[x], x, trueValues[x]);
         printf("\n");
         for(index=0; index < nVoxels; index++){
-            int val = mask_array[index]; 
-            if( val != 0){
+            int val = mask_array[index];
+            if( val > 0){
                 int idx=find(val, labels , nlabels);
-                //printf("%d %f\n", idx, trueValues[idx]);
                 array[index]=(float) trueValues[idx];     
             }
         }
@@ -228,12 +228,11 @@ int gtm_apply(data* image, data* masks, int* mask_array, int* labels, int* nLoca
             sizes[1]=image->ymax;
             sizes[2]=image->xmax;
         }
-        if(t==0){min=max=(double) trueValues[0];}
+        if(t==0){min=max=(double) array[0];}
         for (int l=0; l < nlabels; l++) {
             if (max <(double) trueValues[l]) max=(double) trueValues[l];
             if (min >(double) trueValues[l]) min=(double) trueValues[l];
         }
-
         //for(int a=0; a < 4; a++) printf("%d ", sizes[a] ); printf("\n");
         //for(int a=0; a < 4; a++) printf("%d ", starts[a] ); printf("\n");
 
@@ -293,6 +292,7 @@ int main(int argc, char** argv){
     double fwhm;
     float **gtm;
     int* mask_array;
+    float* temp_array;
     int* nLocalVoxels; 
     int* labels;    
     int nmasks=0;
@@ -301,7 +301,11 @@ int main(int argc, char** argv){
     data* masks=temp[1];
 
     image->data=(double*) readVolume(image, 1, MI_TYPE_DOUBLE ); //Load PET image
-    mask_array=(int*) readVolume(masks, 1, MI_TYPE_INT ); //Load mask image
+    temp_array=(float*) readVolume(masks, 1, MI_TYPE_FLOAT ); //Load mask image
+    mask_array=malloc(sizeof(*mask_array)*image->n);
+    for(int i=0; i<image->n; i++) mask_array[i]=round(temp_array[i]);
+    free(temp_array);
+
     createVolume(outputfilename, image->ndim, image->wcount, image->step, image->start, MI_TYPE_FLOAT); //Create output MINC file
 
     struct linfo* label_info=get_nlabels(masks, mask_array); //Figure out how many and what labels are in the mask image
