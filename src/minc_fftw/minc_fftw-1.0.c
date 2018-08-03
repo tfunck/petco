@@ -87,6 +87,7 @@ double* pad(double* img, int* N, int* M, int* N_pad){
     for(int i=0; i<3; i++) N_pad[i]= N[i]+2*pad_dim[i];
    
     double* img_pad=calloc(N_pad[0] * N_pad[1] * N_pad[2], sizeof(*img_pad));
+	//if(img_pad == NULL ) { printf("Error allocating memory for img_pad\n"); exit(1); }
     //printf("%d %d %d\n", M[0], M[1], M[2] );
     //printf("%d %d %d\n", N[0], N[1], N[2] );
     //printf("%d %d %d\n", N_pad[0], N_pad[1], N_pad[2]);
@@ -120,6 +121,75 @@ int remove_pad(double* img, double* img_pad, int* N, int* M){
 
 double gaussian(double a, double b, double c, double x){ return(a * exp(- b * (x-c)*(x-c) ));}
 
+double anisotropic_gaussian(double a, double mz, double my, double mx, double sdz, double sdy, double sdx, double z, double y, double x){ 
+  	return(a * exp( -1 * ( ((x-mx)*(x-mx)/ (2 * sdx * sdx) ) + ((y-my)*(y-my)/ (2 * sdy * sdy) ) + ((z-mz)*(z-mz)/ (2 * sdx * sdx) ) )) );
+}
+
+
+double* create_anisotropic_filter(double fwhm[3], int* N, double* step){
+    /*Create Gaussian kernel*/
+    double pi=3.14159265359;
+    double t=0.0001; //tolerance level for the precision of the approximation of the gaussian
+    double sd0=fwhm[0]/(2*sqrt(2*log(2)));
+    double sd1=fwhm[1]/(2*sqrt(2*log(2)));
+    double sd2=fwhm[2]/(2*sqrt(2*log(2)));
+	double a0=1/(sd0 * sqrt(2*pi));
+	double a1=1/(sd1 * sqrt(2*pi));
+	double a2=1/(sd2 * sqrt(2*pi));
+    double a=a1*a2*a0; //1/(sd0*sd1*sd2*pow(2*pi, 3/2));
+    double min0 = sd0 * sqrt( -2* log(t/a0)  );
+    double min1 = sd1 * sqrt( -2* log(t/a1)  );
+    double min2 = sd2 * sqrt( -2* log(t/a2)  );
+    int minima[3]= { ceil(min0/fabsf(step[0])),   ceil(min1/fabsf(step[1])),   ceil(min2/fabsf(step[2])) }; //minimal distance in voxels needed to achieve desired precision 
+    int length[3]={minima[0]*2+1, minima[1]*2+1, minima[2]*2+1 };
+    double start[3]={};
+    //double** gauss1d=malloc(sizeof(*gauss1d)* 3);
+    double* out = calloc(length[0]*length[1]*length[2], sizeof(*out) );
+	double mz=length[0]*step[0]/2., my=length[1]*step[1]/2. , mx=length[2]*step[2]/2.;
+	printf("%f %f %f\n", fwhm[0], fwhm[1], fwhm[2]);
+	printf("%f %f %f\n", sd0, sd2, sd2);
+    /*for(int i=0; i<3; i++){ 
+        N[i]=length[i];//Pass length of kernel so that it will be accessible outside of this function. 
+        gauss1d[i]=malloc(length[i]*sizeof(**gauss1d));
+        for(int k=0; k< minima[i]; k++){
+            int k1=minima[i]-k-1;
+            int k2=minima[i]+1+k;
+            //gaussian is symmetric so only need to calculate one side
+            gauss1d[i][k1]=gauss1d[i][k2]= gaussian(a, b, 0, (k+1)*step[i] );
+
+        }
+        gauss1d[i][ minima[i]  ]=gaussian(a, b, 0, 0 );
+        //for(int k=0; k< length[i]; k++) printf("%d %f\n", i, gauss1d[i][k]);
+    }*/
+	
+    N[0]=length[0];//Pass length of kernel so that it will be accessible outside of this function. 
+    N[1]=length[1];//Pass length of kernel so that it will be accessible outside of this function. 
+    N[2]=length[2];//Pass length of kernel so that it will be accessible outside of this function. 
+	double test_sum=0;
+	printf("%d %d %d\n", length[0], length[1], length[2]);
+    for(int z=0; z<length[0]; z++ ){
+        for(int y=0; y<length[1]; y++ ){
+            for(int x=0; x<length[2]; x++ ){
+                int index=z*length[1]*length[2]+y*length[2]+x;
+
+                out[index]=anisotropic_gaussian(a, mz, my, mx, sd0, sd1, sd2, (double) z*step[0], (double) y*step[1], (double) x*step[2] ); 
+            	test_sum += out[index];
+			}
+			printf("\n");
+		} 
+	printf("\n\n");
+	}
+
+	printf("Gaussian filter sum: %f\n", test_sum);
+	if( fabs(test_sum - 1) > t  ){
+		printf("Bad Filter!\n"); exit(0) ;
+	}	  
+    
+    //for(int i=0; i<3; i++) free(gauss1d[i]);
+	//free(gauss1d);
+    return(out);
+}
+
 double* create_filter(double fwhm, int* N, double* step){
     /*Create Gaussian kernel*/
     double pi=3.14159265359;
@@ -133,6 +203,7 @@ double* create_filter(double fwhm, int* N, double* step){
     double start[3]={};
     double** gauss1d=malloc(sizeof(*gauss1d)* 3);
     double* out = calloc(length[0]*length[1]*length[2], sizeof(*out) );
+
     for(int i=0; i<3; i++){ 
         N[i]=length[i];//Pass length of kernel so that it will be accessible outside of this function. 
         gauss1d[i]=malloc(length[i]*sizeof(**gauss1d));
@@ -192,6 +263,40 @@ int gaussian_filter( double* input, double fwhm, unsigned int* N, double* step){
     int Mmax;
     fftw_complex *signal, *SIGNAL, *f, *F;
     double* fgaussian=create_filter(fwhm, M, step); 
+    double* input_pad=pad(input, N, M, N_pad);
+    double* fgaussian_pad=pad_like(fgaussian, M, N_pad);
+
+    int Nmax=N_pad[0] * N_pad[1] * N_pad[2];
+    Mmax=M[0]*M[1]*M[2];
+   
+    signal = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Nmax);
+    SIGNAL = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Nmax);
+    f = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Nmax);
+    F = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Nmax);
+    forward(input_pad, signal, SIGNAL, N_pad);  //Forward FFT signal
+    forward(fgaussian_pad, f, F, N_pad);        //Forward FFT filter
+    filter(SIGNAL, F, Nmax );
+    inverse(input_pad, signal, SIGNAL, N_pad);  //Inverse filter
+
+    fftshift(input_pad, N_pad);
+    remove_pad(input, input_pad, N, M );
+
+    free(input_pad);
+    free(fgaussian_pad);
+    free(fgaussian);
+    fftw_free(f);
+    fftw_free(F);
+    fftw_free(signal);
+    fftw_free(SIGNAL);
+    return(0);
+}
+
+int anisotropic_gaussian_filter( double* input, double fwhm[3], unsigned int* N, double* step){
+    int M[3];
+    int N_pad[3];
+    int Mmax;
+    fftw_complex *signal, *SIGNAL, *f, *F;
+    double* fgaussian=create_anisotropic_filter(fwhm, M, step); 
     double* input_pad=pad(input, N, M, N_pad);
     double* fgaussian_pad=pad_like(fgaussian, M, N_pad);
 

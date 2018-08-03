@@ -74,7 +74,7 @@ struct linfo* get_nlabels(data* mask, int* mask_array){
 }
 
 
-int gtm_solve(data* mask, int* mask_array, int nlabels, float** gtm, double fwhm, int* labels, int* nLocalVoxels){
+int gtm_solve(data* mask, int* mask_array, int nlabels, float** gtm, double fwhm[3], int* labels, int* nLocalVoxels){
     double* rsfTotal;
     int i, j, k, n=0;
     mihandle_t image;
@@ -103,7 +103,8 @@ int gtm_solve(data* mask, int* mask_array, int nlabels, float** gtm, double fwhm
                 temp[index]=1;
             }
         }
-        gaussian_filter(temp, fwhm, mask->count, mask->step); 
+		anisotropic_gaussian_filter(temp, fwhm, mask->count, mask->step); 
+        //gaussian_filter(temp, fwhm[0], mask->count, mask->step); 
         for(int k=0; k<nvox; k++){ 
             rsf[k]=temp[k];
             temp[k]=0;
@@ -250,7 +251,7 @@ int gtm_apply(data* image, data* masks, int* mask_array, int* labels, int* nLoca
 
 
 void useage(){
-    printf("gtm -fwhm <value> -pet pet.mnc -mask mask1.mnc -o output.mnc\n");
+    printf("gtm -fwhm <value> <value> <value> -pet pet.mnc -mask mask1.mnc -o output.mnc\n");
     exit(1);
 }
 
@@ -289,14 +290,14 @@ int main(int argc, char** argv){
     int nVoxels;
     int nimages=0;
     int nlabels=0;
-    double fwhm;
+    double fwhm[3];
     float **gtm;
     int* mask_array;
     float* temp_array;
     int* nLocalVoxels; 
     int* labels;    
     int nmasks=0;
-    data** temp=parse_input(argc, argv, &nimages, &nmasks, &fwhm, &outputfilename );
+    data** temp=parse_input(argc, argv, &nimages, &nmasks, fwhm, &outputfilename );
     data* image=temp[0];
     data* masks=temp[1];
 
@@ -336,7 +337,7 @@ int main(int argc, char** argv){
 }
 
 
-data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, double* fwhm, char** outputfilename ){
+data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, double fwhm[3], char** outputfilename ){
     int i;
     char* linear="-linear";
     char* nearest="-nearest";
@@ -369,7 +370,11 @@ data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, double* fw
         }
         else if(strcmp(argv[i], "-fwhm" )==0 ){
             i++;
-            *fwhm=atof(argv[i]); 
+            fwhm[0]=atof(argv[i]); 
+           	i++; 
+			fwhm[1]=atof(argv[i]); 
+			i++;
+            fwhm[2]=atof(argv[i]); 
             set_fwhm=1; 
         }
         else if(strcmp(argv[i], "-o" )==0 ){
