@@ -251,7 +251,7 @@ int gtm_apply(data* image, data* masks, int* mask_array, int* labels, int* nLoca
 
 
 void useage(){
-    printf("gtm -fwhm <value> <value> <value> -pet pet.mnc -mask mask1.mnc -o output.mnc\n");
+    printf("gtm -z <z fwhm> -y <y fwhm> -x <x fwhm> -pet pet.mnc -mask mask1.mnc -o output.mnc\n");
     exit(1);
 }
 
@@ -368,14 +368,20 @@ data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, double fwh
             printf("Mask: %s\n",  masks[*nmasks-1].filename );
             set_mask=1; 
         }
-        else if(strcmp(argv[i], "-fwhm" )==0 ){
+        else if(strcmp(argv[i], "-z" )==0 ){
             i++;
             fwhm[0]=atof(argv[i]); 
-           	i++; 
-			fwhm[1]=atof(argv[i]); 
-			i++;
+            set_fwhm+=1; 
+        } 
+ 		else if(strcmp(argv[i], "-y" )==0 ){
+            i++;
+            fwhm[1]=atof(argv[i]); 
+            set_fwhm+=1; 
+        }
+        else if(strcmp(argv[i], "-x" )==0 ){
+            i++;
             fwhm[2]=atof(argv[i]); 
-            set_fwhm=1; 
+            set_fwhm+=1; 
         }
         else if(strcmp(argv[i], "-o" )==0 ){
             i++;
@@ -383,7 +389,7 @@ data** parse_input(int argc, char** argv,  int* nimages, int *nmasks, double fwh
             set_outputfilename=1; 
         }
     }
-    if(set_pet != 1 || set_mask != 1 || set_fwhm != 1 || set_outputfilename != 1 ){
+    if(set_pet != 1 || set_mask != 1 || set_fwhm != 3 || set_outputfilename != 1 ){
         useage();
     }
 return(output);

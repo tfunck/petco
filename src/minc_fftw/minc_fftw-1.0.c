@@ -146,27 +146,11 @@ double* create_anisotropic_filter(double fwhm[3], int* N, double* step){
     //double** gauss1d=malloc(sizeof(*gauss1d)* 3);
     double* out = calloc(length[0]*length[1]*length[2], sizeof(*out) );
 	double mz=length[0]*step[0]/2., my=length[1]*step[1]/2. , mx=length[2]*step[2]/2.;
-	printf("%f %f %f\n", fwhm[0], fwhm[1], fwhm[2]);
-	printf("%f %f %f\n", sd0, sd2, sd2);
-    /*for(int i=0; i<3; i++){ 
-        N[i]=length[i];//Pass length of kernel so that it will be accessible outside of this function. 
-        gauss1d[i]=malloc(length[i]*sizeof(**gauss1d));
-        for(int k=0; k< minima[i]; k++){
-            int k1=minima[i]-k-1;
-            int k2=minima[i]+1+k;
-            //gaussian is symmetric so only need to calculate one side
-            gauss1d[i][k1]=gauss1d[i][k2]= gaussian(a, b, 0, (k+1)*step[i] );
-
-        }
-        gauss1d[i][ minima[i]  ]=gaussian(a, b, 0, 0 );
-        //for(int k=0; k< length[i]; k++) printf("%d %f\n", i, gauss1d[i][k]);
-    }*/
 	
     N[0]=length[0];//Pass length of kernel so that it will be accessible outside of this function. 
     N[1]=length[1];//Pass length of kernel so that it will be accessible outside of this function. 
     N[2]=length[2];//Pass length of kernel so that it will be accessible outside of this function. 
 	double test_sum=0;
-	printf("%d %d %d\n", length[0], length[1], length[2]);
     for(int z=0; z<length[0]; z++ ){
         for(int y=0; y<length[1]; y++ ){
             for(int x=0; x<length[2]; x++ ){
@@ -175,14 +159,12 @@ double* create_anisotropic_filter(double fwhm[3], int* N, double* step){
                 out[index]=anisotropic_gaussian(a, mz, my, mx, sd0, sd1, sd2, (double) z*step[0], (double) y*step[1], (double) x*step[2] ); 
             	test_sum += out[index];
 			}
-			printf("\n");
 		} 
-	printf("\n\n");
 	}
 
 	printf("Gaussian filter sum: %f\n", test_sum);
 	if( fabs(test_sum - 1) > t  ){
-		printf("Bad Filter!\n"); exit(0) ;
+		printf("Bad Filter!\n");
 	}	  
     
     //for(int i=0; i<3; i++) free(gauss1d[i]);
