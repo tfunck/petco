@@ -145,8 +145,10 @@ double* create_anisotropic_filter(double fwhm[3], int* N, double* step){
     double start[3]={};
     //double** gauss1d=malloc(sizeof(*gauss1d)* 3);
     double* out = calloc(length[0]*length[1]*length[2], sizeof(*out) );
-	double mz=length[0]*step[0]/2., my=length[1]*step[1]/2. , mx=length[2]*step[2]/2.;
-	
+	double mz=length[0]*fabsf(step[0])/2., my=length[1]*fabsf(step[1])/2. , mx=length[2]*fabsf(step[2])/2.;
+    printf("fwhm: %f %f %f\n", fwhm[0], fwhm[1], fwhm[2]);	
+    printf("step: %f %f %f\n", step[0], step[1], step[2]);
+    print("length: %d %d %d\n", length[0], length[1], length[2]);
     N[0]=length[0];//Pass length of kernel so that it will be accessible outside of this function. 
     N[1]=length[1];//Pass length of kernel so that it will be accessible outside of this function. 
     N[2]=length[2];//Pass length of kernel so that it will be accessible outside of this function. 
@@ -156,12 +158,15 @@ double* create_anisotropic_filter(double fwhm[3], int* N, double* step){
             for(int x=0; x<length[2]; x++ ){
                 int index=z*length[1]*length[2]+y*length[2]+x;
 
-                out[index]=anisotropic_gaussian(a, mz, my, mx, sd0, sd1, sd2, (double) z*step[0], (double) y*step[1], (double) x*step[2] ); 
+                out[index]=anisotropic_gaussian(a, mz, my, mx, sd0, sd1, sd2, (double) z*fabsf(step[0]), (double) y*fabsf(step[1]), (double) x*fabsf(step[2]) ); 
             	test_sum += out[index];
+                printf("%1.6f ", out[index]);
 			}
-		} 
+            printf("\n");
+		}
+        printf("\n");
 	}
-
+    test_sum *= fabsf(step[0]) * fabsf(step[1]) * fabsf(step[2]) ;
 	printf("Gaussian filter sum: %f\n", test_sum);
 	if( fabs(test_sum - 1) > t  ){
 		printf("Bad Filter!\n");
@@ -284,6 +289,7 @@ int anisotropic_gaussian_filter( double* input, double fwhm[3], unsigned int* N,
 
     int Nmax=N_pad[0] * N_pad[1] * N_pad[2];
     Mmax=M[0]*M[1]*M[2];
+
    
     signal = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Nmax);
     SIGNAL = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * Nmax);
