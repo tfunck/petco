@@ -223,10 +223,15 @@ int main(int argc, char** argv){
     count[0]=native_count[0]*scaleFactor; 
     count[1]=native_count[1]*scaleFactor; 
     count[2]=native_count[2]*scaleFactor;
-    int nvox=native_count[0]*native_count[1]*native_count[2];
+    int nvox=count[0]*count[1]*count[2];
+    printf("Inputs --\n");
     printf("Counts: %d %d %d\n", native_count[0], native_count[1], native_count[2]); 
     printf("Starts: %f %f %f\n", zmin, ymin, xmin); 
     printf("Step: %f %f %f\n", native_step[0], native_step[1], native_step[2]);
+    printf("Outputs --\n");
+    printf("Counts: %d %d %d\n", count[0], count[1], count[2]); 
+    printf("Starts: %f %f %f\n", zmin, ymin, xmin); 
+    printf("Step: %f %f %f\n", step[0], step[1], step[2]);
     float* array=calloc(nvox, sizeof(*array));
     int nvoxels_in_mesh=0;
     
